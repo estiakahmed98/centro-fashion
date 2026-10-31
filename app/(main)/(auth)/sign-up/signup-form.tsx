@@ -89,9 +89,9 @@ const SignupForm = () => {
       <div className="h-1 w-full bg-gradient-to-r from-primary via-ring to-destructive rounded-t-xl" />
 
       <CardHeader className="boed-auth-form-heading">
-        <span className="boed-auth-eyebrow mb-3">AURA BOED ACCOUNT</span>
+        <span className="boed-auth-eyebrow mb-3">CENTRO ACCOUNT</span>
         <CardTitle>Make yourself at home</CardTitle>
-        <CardDescription>Create your Aura BOED account and make it personal.</CardDescription>
+        <CardDescription>Create your Centro account and make it personal.</CardDescription>
       </CardHeader>
 
       <CardContent className="boed-auth-form-body">

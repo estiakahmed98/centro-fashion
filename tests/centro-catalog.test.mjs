@@ -8,7 +8,7 @@ const sample = source.find(item => item.file?.startsWith("images/menswear/"));
 
 test("Centro product images map to stable identities and nine categories", () => {
   const rows = loadCentroCatalog();
-  assert.equal(rows.length, 136);
+  assert.equal(rows.length, 139);
   assert.equal(new Set(rows.map(row => row.product.sku)).size, rows.length);
   assert.equal(new Set(rows.flatMap(row => row.categories.map(category => category.slug))).size, 9);
   assert.deepEqual(normalizeCentroCatalog([...source].reverse()).map(row => row.product), rows.map(row => row.product));

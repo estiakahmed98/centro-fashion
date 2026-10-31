@@ -11,7 +11,7 @@ export function EditorialCatalog({ data }: { data: StorefrontCatalogData }) {
   const collections = facets.categories.filter(category => category.showInHeader || category.id === selected?.id);
   const title = filters.q ? `Results for “${filters.q}”` : selected?.name || "The collection";
   return <main className="editorial-catalog">
-    <div className="editorial-catalog-heading"><span className="editorial-kicker">THE AURA BOED WARDROBE</span><h1>{title}</h1><p>Considered pieces. Distinctive details. Find your everyday refinement.</p>
+    <div className="editorial-catalog-heading"><span className="editorial-kicker">THE CENTRO COLLECTION</span><h1>{title}</h1><p>Considered pieces. Distinctive details. Find your everyday refinement.</p>
       <nav className="editorial-category-tabs" aria-label="Collections">
         <Link href="/ecommerce/products" aria-current={!filters.category ? "page" : undefined}>ALL PIECES</Link>
         {collections.map(category => <Link key={category.id} aria-current={selected?.id === category.id ? "page" : undefined} href={`/ecommerce/collections/${category.slug}`}>{category.name.toUpperCase()}</Link>)}

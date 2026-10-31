@@ -7,6 +7,8 @@ export const CENTRO_CATEGORIES = {
   homeTextiles: "Home Textiles", kids: "Kidswear", knitwear: "Knitwear",
   menswear: "Menswear", outerwear: "Outerwear", womenswear: "Womenswear",
 };
+export const CENTRO_REVIEWED_IMAGES = JSON.parse(readFileSync(new URL("../data/centro-reviewed-images.json", import.meta.url), "utf8"));
+const reviewedById = new Map(CENTRO_REVIEWED_IMAGES.map(item => [item.id, item]));
 
 export function centroMediaPath(file, root = process.cwd()) {
   if (typeof file !== "string" || !/^images\/[A-Za-z0-9_]+\/[a-f0-9]{16}\.png$/.test(file)) {
@@ -30,7 +32,9 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
   const catalog = [];
   for (const item of [...source].sort((a, b) => String(a.id).localeCompare(String(b.id)))) {
     if (!["downloaded", "already_exists"].includes(item.status)) continue;
-    const category = item.file?.split("/")[1];
+    const reviewed = reviewedById.get(item.id);
+    if (reviewed && reviewed.role !== "product") continue;
+    const category = reviewed?.category || item.file?.split("/")[1];
     if (!Object.hasOwn(CENTRO_CATEGORIES, category)) continue;
     if (!/^[a-f0-9]{16}$/.test(item.id) || path.posix.basename(item.file) !== `${item.id}.png`) {
       throw new Error("Invalid Centro image identity");
@@ -44,7 +48,7 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
     const sourcePages = (item.source_pages || []).filter(value => {
       try {
         const url = new URL(value);
-        return url.origin === "https://www.centro.com.bd" && url.pathname === "/product" && url.searchParams.get("filter") === category;
+        return url.origin === "https://www.centro.com.bd" && (reviewed?.role === "product" || (url.pathname === "/product" && url.searchParams.get("filter") === category));
       } catch { return false; }
     });
     if (!sourcePages.length) throw new Error(`Missing Centro product source: ${item.id}`);
@@ -56,6 +60,7 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
       sourceId: item.id, sourceUrl: sourcePages[0], sourcePages,
       sourceImageUrl: item.image_url, sourceCategories: item.categories || [],
       sourceChecksum: item.sha256, needsReview: true,
+      nameSource: reviewed ? "visual-image-review" : "generated-category-name",
       stockSource: "user-requested-random-70-200",
       requiresNameVerification: true, requiresPriceVerification: true,
       requiresStockVerification: true, requiresSizeVerification: true,
@@ -64,9 +69,9 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
     catalog.push({
       categories: [{ name: label, slug: `centro-${slug}` }],
       product: {
-        name: `Centro ${label} ${item.id}`, slug: `centro-${slug}-${item.id}`,
+        name: reviewed?.name || `Centro ${label} ${item.id}`, slug: `centro-${slug}-${item.id}`,
         sku, type: "PHYSICAL", description: "", basePrice: 0, currency: "BDT",
-        image, gallery: [image], available: true, featured: false,
+        image, gallery: item.id === "3320106d9057096b" ? [image, centroMediaPath("images/The_Centro_Design_and_Production_Process/d48a20bc5afc7181.png", root)] : [image], available: true, featured: false,
       },
       variants: [{
         sku: `${sku}-1`, price: 0, currency: "BDT", stock,

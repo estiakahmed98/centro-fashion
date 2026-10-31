@@ -58,7 +58,7 @@ export function ProductCard({ product }: { product: EditorialProduct }) {
       <div className="product-meta">
         <Link className="product-name" href={href}>{product.name}</Link>
         <div className="product-price">{formatCurrency(product.price)}{product.originalPrice && product.originalPrice > product.price ? <del>{formatCurrency(product.originalPrice)}</del> : null}</div>
-        <span className="product-color">Aura BOED Collection</span>
+        <span className="product-color">Centro Collection</span>
       </div>
     </article>
   );

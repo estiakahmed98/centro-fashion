@@ -30,7 +30,9 @@ test("import available products with matching warehouse stock; archive only BOED
   assert.equal(created.data.available, true);
   assert.deepEqual(created.data.variants.create[0].stockLevels.create, { warehouseId: 10, quantity: catalog[0].variants[0].stock, reserved: 0 });
   const archived = f.writes.at(-1);
-  assert.deepEqual(archived.where, { sku: { startsWith: "BOED-" }, deleted: false });
+  assert.equal(archived.where.deleted, false);
+  assert.deepEqual(archived.where.OR[0], { sku: { startsWith: "BOED-" } });
+  assert.equal(archived.where.OR[1].sku.in.length, 11);
   assert.equal(archived.data.deleted, true);
   f.writes.length = 0;
   assert.equal((await importCentroCatalog(f.db, catalog)).skipped, 2);

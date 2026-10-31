@@ -1,1 +1,1 @@
-export const DEFAULT_SITE_TITLE = "Boed E-commerce";
+export const DEFAULT_SITE_TITLE = "Centro";

@@ -1,0 +1,902 @@
+[
+  {
+    "id": "02476f1359f4297a",
+    "category": "outerwear",
+    "name": "Brown Belted Funnel Neck Jacket",
+    "role": "product"
+  },
+  {
+    "id": "0305bffe8512b8fb",
+    "category": "outerwear",
+    "name": "Grey Relaxed Sweatshirt and Trousers",
+    "role": "product"
+  },
+  {
+    "id": "03a111e0017f61de",
+    "category": "outerwear",
+    "name": "Cream Belted Wrap Coat",
+    "role": "product"
+  },
+  {
+    "id": "066080eb1e13d5e9",
+    "category": "outerwear",
+    "name": "Black Fringe Hem Jacket",
+    "role": "product"
+  },
+  {
+    "id": "06d6705bf7ab140b",
+    "category": "outerwear",
+    "name": "Black Varsity Jacket",
+    "role": "product"
+  },
+  {
+    "id": "08abcead26e7d387",
+    "category": "outerwear",
+    "name": "Tailoring Tools Still Life",
+    "role": "editorial"
+  },
+  {
+    "id": "164a8efeb9b6e426",
+    "category": "outerwear",
+    "name": "Tailoring Pattern Mannequins",
+    "role": "editorial"
+  },
+  {
+    "id": "1c7c178bf345de3b",
+    "category": "outerwear",
+    "name": "Charcoal Cropped Lapel Jacket",
+    "role": "product"
+  },
+  {
+    "id": "1dfc55c348f4cb39",
+    "category": "outerwear",
+    "name": "Oatmeal Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "1e9deb30e0ae93db",
+    "category": "outerwear",
+    "name": "Black Tailored Coat Detail",
+    "role": "product"
+  },
+  {
+    "id": "2117849f08dadae0",
+    "category": "outerwear",
+    "name": "Navy Double Breasted Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "211da57a3e618bad",
+    "category": "outerwear",
+    "name": "Charcoal Oversized Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "2410dc0700f5d9bd",
+    "category": "outerwear",
+    "name": "Tailoring Jacket In Progress",
+    "role": "editorial"
+  },
+  {
+    "id": "25e0b83c60944c3d",
+    "category": "outerwear",
+    "name": "Charcoal Mens Belted Coat",
+    "role": "product"
+  },
+  {
+    "id": "2abd4edfdb2052d3",
+    "category": "outerwear",
+    "name": "Grey Belted Coat with Plush Collar",
+    "role": "product"
+  },
+  {
+    "id": "2b7eb0ef6dbeb71c",
+    "category": "outerwear",
+    "name": "Kids Black Hooded Jacket",
+    "role": "product"
+  },
+  {
+    "id": "3727d27454eceea5",
+    "category": "outerwear",
+    "name": "Strapless Charcoal Jumpsuit",
+    "role": "product"
+  },
+  {
+    "id": "3c60f8d5091d2967",
+    "category": "outerwear",
+    "name": "Cream Fringed Wrap Coat",
+    "role": "product"
+  },
+  {
+    "id": "40171697ef91b470",
+    "category": "outerwear",
+    "name": "Black Relaxed Tailored Separates",
+    "role": "product"
+  },
+  {
+    "id": "424612fb641731c5",
+    "category": "outerwear",
+    "name": "Cream Double Breasted Blazer",
+    "role": "product"
+  },
+  {
+    "id": "4356db0a032863ad",
+    "category": "outerwear",
+    "name": "Camel Hooded Cape Jacket",
+    "role": "product"
+  },
+  {
+    "id": "453e501e2557e6d3",
+    "category": "outerwear",
+    "name": "Light Grey Belted Trench Coat",
+    "role": "product"
+  },
+  {
+    "id": "48310138fa04ac12",
+    "category": "outerwear",
+    "name": "Black Textured Belted Coat",
+    "role": "product"
+  },
+  {
+    "id": "4927e864cc6b3b90",
+    "category": "outerwear",
+    "name": "Black Coat with Cream Wide Leg Trousers",
+    "role": "product"
+  },
+  {
+    "id": "4ca8b8c0359dfa4c",
+    "category": "outerwear",
+    "name": "Black Belted Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "4e66f1d01145994f",
+    "category": "outerwear",
+    "name": "Checked Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "4eb92243a5dbbe3a",
+    "category": "outerwear",
+    "name": "Charcoal Belted Trench Coat",
+    "role": "product"
+  },
+  {
+    "id": "51b1972d9aeb0fba",
+    "category": "outerwear",
+    "name": "Mens Charcoal Hooded Puffer Jacket",
+    "role": "product"
+  },
+  {
+    "id": "56ae3e20c405dd81",
+    "category": "outerwear",
+    "name": "Black Longline Puffer Coat",
+    "role": "product"
+  },
+  {
+    "id": "57d4eb1e2b65bb14",
+    "category": "outerwear",
+    "name": "Charcoal Wrap Coat",
+    "role": "product"
+  },
+  {
+    "id": "57eeee156307e6d0",
+    "category": "outerwear",
+    "name": "Cream Cropped Jacket and Trousers",
+    "role": "product"
+  },
+  {
+    "id": "58e99ed3cb7aab15",
+    "category": "outerwear",
+    "name": "Camel Double Breasted Belted Coat",
+    "role": "product"
+  },
+  {
+    "id": "5e275997a3ad2000",
+    "category": "outerwear",
+    "name": "Charcoal Oversized Coat",
+    "role": "product"
+  },
+  {
+    "id": "65c720270995afa8",
+    "category": "outerwear",
+    "name": "Grey Long Coat and Black Dress",
+    "role": "product"
+  },
+  {
+    "id": "683a6a619c844632",
+    "category": "outerwear",
+    "name": "Black Wrap Coat",
+    "role": "product"
+  },
+  {
+    "id": "694d7a4a1e699008",
+    "category": "outerwear",
+    "name": "Sand Tailored Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "70eace0a396ed79c",
+    "category": "outerwear",
+    "name": "Beauty Editorial Portrait",
+    "role": "editorial"
+  },
+  {
+    "id": "7525cab2015d251f",
+    "category": "outerwear",
+    "name": "Black Strapless Jumpsuit",
+    "role": "product"
+  },
+  {
+    "id": "77977c2405fd13cc",
+    "category": "outerwear",
+    "name": "Black Tailored Lapel Coat",
+    "role": "product"
+  },
+  {
+    "id": "7ba730c5e5bdecd7",
+    "category": "outerwear",
+    "name": "Beige Cropped Collarless Jacket",
+    "role": "product"
+  },
+  {
+    "id": "7bc49be980ab1540",
+    "category": "outerwear",
+    "name": "Ivory Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "7cdd69dac7d156d8",
+    "category": "outerwear",
+    "name": "Black Pinstripe Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "7e5c052f6e1e61a3",
+    "category": "outerwear",
+    "name": "Cream Button Front Jacket",
+    "role": "product"
+  },
+  {
+    "id": "7efa4d70e23b8c58",
+    "category": "outerwear",
+    "name": "Grey Textured Lapel Jacket",
+    "role": "product"
+  },
+  {
+    "id": "8564c6329d328345",
+    "category": "outerwear",
+    "name": "Charcoal Cropped Jacket and Pleated Skirt",
+    "role": "product"
+  },
+  {
+    "id": "8757bb04dd8eb002",
+    "category": "outerwear",
+    "name": "Black Blouse and Cream Wide Leg Trousers",
+    "role": "product"
+  },
+  {
+    "id": "882ccb3f84de92a6",
+    "category": "outerwear",
+    "name": "Tailoring Measuring Tape",
+    "role": "editorial"
+  },
+  {
+    "id": "88ae0fadd242c3e4",
+    "category": "outerwear",
+    "name": "Ivory Textured Cropped Jacket",
+    "role": "product"
+  },
+  {
+    "id": "88ea9b0957782ea6",
+    "category": "outerwear",
+    "name": "Checked Tailored Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "8a87b96d84c25209",
+    "category": "outerwear",
+    "name": "Cream Cropped Jacket and Matching Trousers",
+    "role": "product"
+  },
+  {
+    "id": "8acc86c34b4ce96f",
+    "category": "outerwear",
+    "name": "Leopard Print Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "8e631fc02ea4b5c1",
+    "category": "outerwear",
+    "name": "Pattern Cutting Studio",
+    "role": "editorial"
+  },
+  {
+    "id": "8ea1a8c847d2c972",
+    "category": "outerwear",
+    "name": "Kids Relaxed Jacket and Trousers",
+    "role": "product"
+  },
+  {
+    "id": "929aceef6ea1232f",
+    "category": "outerwear",
+    "name": "Charcoal Belted Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "974e200a966515d3",
+    "category": "outerwear",
+    "name": "Cream Double Breasted Coat",
+    "role": "product"
+  },
+  {
+    "id": "98247b5137d63832",
+    "category": "outerwear",
+    "name": "Camel Wide Lapel Jacket",
+    "role": "product"
+  },
+  {
+    "id": "98cb1692977e2e69",
+    "category": "outerwear",
+    "name": "Kids Grey Sweatshirt and Joggers",
+    "role": "product"
+  },
+  {
+    "id": "99a05414cd8f4067",
+    "category": "outerwear",
+    "name": "Stone Double Breasted Coat",
+    "role": "product"
+  },
+  {
+    "id": "a18b3a6ef90c3baf",
+    "category": "outerwear",
+    "name": "Colour Block Checked Blazer",
+    "role": "product"
+  },
+  {
+    "id": "a1e2139b2dd3e1a2",
+    "category": "outerwear",
+    "name": "Camel Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "a6d3da8cd298eba0",
+    "category": "outerwear",
+    "name": "Grey Tailored Jacket Detail",
+    "role": "product"
+  },
+  {
+    "id": "a8cf2108f4f0ed77",
+    "category": "outerwear",
+    "name": "Cream Sleeveless Tailored Set",
+    "role": "product"
+  },
+  {
+    "id": "a9edd92a4b64c4e9",
+    "category": "outerwear",
+    "name": "Black Fitted Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "aa101a69b076e6c7",
+    "category": "outerwear",
+    "name": "Charcoal Double Breasted Coat",
+    "role": "product"
+  },
+  {
+    "id": "b2bdf2c06a99eaef",
+    "category": "outerwear",
+    "name": "Black Relaxed Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "b4f5e2e5285a280a",
+    "category": "outerwear",
+    "name": "Blush Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "c6bf7e4a10ec411a",
+    "category": "outerwear",
+    "name": "Black Coat and Camel Pleated Skirt",
+    "role": "product"
+  },
+  {
+    "id": "cc13d2f4af9cac52",
+    "category": "outerwear",
+    "name": "Cream Pinstripe Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "cc35f6ebdaa11d8d",
+    "category": "outerwear",
+    "name": "Black Cropped Jacket and Wide Leg Trousers",
+    "role": "product"
+  },
+  {
+    "id": "cfa46632f47637ae",
+    "category": "outerwear",
+    "name": "Black Double Breasted Coat Detail",
+    "role": "product"
+  },
+  {
+    "id": "d42f4dd6fb1607d2",
+    "category": "outerwear",
+    "name": "Cream Coat and Tailored Separates",
+    "role": "product"
+  },
+  {
+    "id": "d5b086d886ff7062",
+    "category": "outerwear",
+    "name": "Rose Beige Belted Trench Coat",
+    "role": "product"
+  },
+  {
+    "id": "d62014e5626600f1",
+    "category": "outerwear",
+    "name": "Cream Plush Collarless Jacket",
+    "role": "product"
+  },
+  {
+    "id": "da55189a4e262bab",
+    "category": "outerwear",
+    "name": "Camel Oversized Lapel Coat",
+    "role": "product"
+  },
+  {
+    "id": "dc15aa36807b08ab",
+    "category": "outerwear",
+    "name": "Light Grey Longline Coat",
+    "role": "product"
+  },
+  {
+    "id": "e053d048d3b48fdf",
+    "category": "outerwear",
+    "name": "Blush Cropped Jacket and Trousers",
+    "role": "product"
+  },
+  {
+    "id": "ed8ad5963190146f",
+    "category": "outerwear",
+    "name": "Taupe Draped Long Coat",
+    "role": "product"
+  },
+  {
+    "id": "f164faef89c18502",
+    "category": "outerwear",
+    "name": "Tailoring Lapel In Progress",
+    "role": "editorial"
+  },
+  {
+    "id": "f26d0f3ec95eb5c7",
+    "category": "outerwear",
+    "name": "Black Hooded Double Breasted Coat",
+    "role": "product"
+  },
+  {
+    "id": "fd1ff5121808d114",
+    "category": "outerwear",
+    "name": "Blue Tailored Trouser Suit",
+    "role": "product"
+  },
+  {
+    "id": "09ce7493fe7e5a6c",
+    "category": "activewear",
+    "name": "Colourful Print Leisure Shorts",
+    "role": "product"
+  },
+  {
+    "id": "0f2f7f5eeedb51f6",
+    "category": "activewear",
+    "name": "Kids Zip Neck Sports Top",
+    "role": "product"
+  },
+  {
+    "id": "28a85c317a338a95",
+    "category": "activewear",
+    "name": "Kids Grey Active Set",
+    "role": "product"
+  },
+  {
+    "id": "4a0fb218434890da",
+    "category": "activewear",
+    "name": "Mens Printed Active Tank and Shorts",
+    "role": "product"
+  },
+  {
+    "id": "4daee0a77b8693c5",
+    "category": "activewear",
+    "name": "Printed Training Leggings",
+    "role": "product"
+  },
+  {
+    "id": "5a62f642b3f46944",
+    "category": "activewear",
+    "name": "Grey Half Zip Sweatshirt",
+    "role": "product"
+  },
+  {
+    "id": "8cc5a2ba41ae7ed5",
+    "category": "activewear",
+    "name": "Kids Blue Active Set",
+    "role": "product"
+  },
+  {
+    "id": "93b9aaab39488fca",
+    "category": "activewear",
+    "name": "Printed Sports Bra and Black Shorts",
+    "role": "product"
+  },
+  {
+    "id": "c01777a02cf6d820",
+    "category": "activewear",
+    "name": "Pink Active Tank and Black Shorts",
+    "role": "product"
+  },
+  {
+    "id": "df21fa5bd95dd2f5",
+    "category": "activewear",
+    "name": "Mens Abstract Print Leisure Set",
+    "role": "product"
+  },
+  {
+    "id": "e98c08b3bfa2d17d",
+    "category": "activewear",
+    "name": "Grey Long Sleeve Active Co-ord",
+    "role": "product"
+  },
+  {
+    "id": "ffa67169bdfc376f",
+    "category": "activewear",
+    "name": "Kids Orange Polo Shirt",
+    "role": "product"
+  },
+  {
+    "id": "2042a811478e1825",
+    "category": "denim",
+    "name": "Light Blue Denim Shirt",
+    "role": "product"
+  },
+  {
+    "id": "4445a722f69165e7",
+    "category": "denim",
+    "name": "Light Wash Straight Jeans",
+    "role": "product"
+  },
+  {
+    "id": "8cd43ca1f8b43fda",
+    "category": "denim",
+    "name": "Dark Wash Contrast Stitch Jeans",
+    "role": "product"
+  },
+  {
+    "id": "a0611f4675365d4a",
+    "category": "denim",
+    "name": "Denim Collection Still Life",
+    "role": "collection"
+  },
+  {
+    "id": "61c93774d07b282d",
+    "category": "footwear",
+    "name": "Metallic Slip On Loafers",
+    "role": "product"
+  },
+  {
+    "id": "b3bba8179e43adc5",
+    "category": "footwear",
+    "name": "White Slip On Trainers",
+    "role": "product"
+  },
+  {
+    "id": "bc636449ef3ccbe4",
+    "category": "footwear",
+    "name": "Black Lace Up Brogues",
+    "role": "product"
+  },
+  {
+    "id": "f7de20ecf3a3f99a",
+    "category": "footwear",
+    "name": "White Slingback Heels",
+    "role": "product"
+  },
+  {
+    "id": "095e319b4fcb15d2",
+    "category": "homeTextiles",
+    "name": "Textured Neutral Home Throw",
+    "role": "product"
+  },
+  {
+    "id": "113ba33712e2351f",
+    "category": "homeTextiles",
+    "name": "Kids Checked Pyjama Set",
+    "role": "product"
+  },
+  {
+    "id": "3d55e2b270e6823b",
+    "category": "homeTextiles",
+    "name": "Navy Floral Pyjama Set",
+    "role": "product"
+  },
+  {
+    "id": "4ae5159f733c5527",
+    "category": "homeTextiles",
+    "name": "Printed Textile Swatches",
+    "role": "editorial"
+  },
+  {
+    "id": "700295631b1c8285",
+    "category": "homeTextiles",
+    "name": "Grey Checked Shirt and Shorts Sleepwear",
+    "role": "product"
+  },
+  {
+    "id": "80186fb3a8b24f01",
+    "category": "homeTextiles",
+    "name": "Home Textiles Design Moodboard",
+    "role": "editorial"
+  },
+  {
+    "id": "8273637c6041287f",
+    "category": "homeTextiles",
+    "name": "Pastel T-shirt and Shorts Sleepwear",
+    "role": "product"
+  },
+  {
+    "id": "bd0e45f8d6b3262c",
+    "category": "homeTextiles",
+    "name": "Mens Navy Sleepwear Set",
+    "role": "product"
+  },
+  {
+    "id": "becde05df96b5cf6",
+    "category": "homeTextiles",
+    "name": "Graphic T-shirt and Printed Lounge Trousers",
+    "role": "product"
+  },
+  {
+    "id": "c1215bf0121791cd",
+    "category": "homeTextiles",
+    "name": "Soft Neutral Cushion Covers",
+    "role": "product"
+  },
+  {
+    "id": "c5755c5a01f5fd09",
+    "category": "homeTextiles",
+    "name": "Kids Printed Lounge Set",
+    "role": "product"
+  },
+  {
+    "id": "c883cb1bf91687aa",
+    "category": "homeTextiles",
+    "name": "Patterned Hooded Robe",
+    "role": "product"
+  },
+  {
+    "id": "e88b2c86a2872047",
+    "category": "homeTextiles",
+    "name": "Plum Tie Waist Bathrobe",
+    "role": "product"
+  },
+  {
+    "id": "053d5f81b0790d65",
+    "category": "kids",
+    "name": "Kids Striped Knit Sweater",
+    "role": "product"
+  },
+  {
+    "id": "0b9cbe6e362b8a53",
+    "category": "kids",
+    "name": "Kids Black Graphic Sweatshirt",
+    "role": "product"
+  },
+  {
+    "id": "2c84df9fda71b8fb",
+    "category": "kids",
+    "name": "Kids Dark Long Sleeve Dress",
+    "role": "product"
+  },
+  {
+    "id": "3bc3f8cc319341ba",
+    "category": "kids",
+    "name": "Kids Blue Casual Co-ord",
+    "role": "product"
+  },
+  {
+    "id": "474e0fd3d0d8702f",
+    "category": "kids",
+    "name": "Kids Lilac Sleeveless Dress",
+    "role": "product"
+  },
+  {
+    "id": "7a385b38896650cf",
+    "category": "kids",
+    "name": "Kids Colour Block Polo Shirt",
+    "role": "product"
+  },
+  {
+    "id": "ccfcc454337d07fa",
+    "category": "kids",
+    "name": "Kids Pink Printed Lounge Set",
+    "role": "product"
+  },
+  {
+    "id": "d8722093bc6d2acb",
+    "category": "kids",
+    "name": "Kids Orange Short Dungarees",
+    "role": "product"
+  },
+  {
+    "id": "1c3bc463619a9278",
+    "category": "knitwear",
+    "name": "Knitwear Yarn Palette",
+    "role": "editorial"
+  },
+  {
+    "id": "50f435488c9a29f5",
+    "category": "knitwear",
+    "name": "Grey Textured Layering Knit",
+    "role": "product"
+  },
+  {
+    "id": "9ec5632748f6024a",
+    "category": "knitwear",
+    "name": "Cream Collared Open Knit Top",
+    "role": "product"
+  },
+  {
+    "id": "e0bb62f4e74fd90a",
+    "category": "knitwear",
+    "name": "Cream Contrast Trim Knit Set",
+    "role": "product"
+  },
+  {
+    "id": "33d5b726c9820f4e",
+    "category": "menswear",
+    "name": "Mens Tropical Print Shirt and Shorts",
+    "role": "product"
+  },
+  {
+    "id": "ae5930a6e8939877",
+    "category": "menswear",
+    "name": "Mens Geometric Print Polo Shirt",
+    "role": "product"
+  },
+  {
+    "id": "b564ec9add4f1432",
+    "category": "menswear",
+    "name": "Mens Grey Contrast Placket Sweatshirt",
+    "role": "product"
+  },
+  {
+    "id": "cd5d3e68585018e3",
+    "category": "menswear",
+    "name": "Mens Blue Abstract Print Shirt",
+    "role": "product"
+  },
+  {
+    "id": "481aa184e1247bfa",
+    "category": "womenswear",
+    "name": "Cream Cardigan and Striped Top",
+    "role": "product"
+  },
+  {
+    "id": "533c694a4822e011",
+    "category": "womenswear",
+    "name": "White Cropped Top and Denim Maxi Skirt",
+    "role": "product"
+  },
+  {
+    "id": "9d9640391830b963",
+    "category": "womenswear",
+    "name": "Cream Graphic Sweatshirt",
+    "role": "product"
+  },
+  {
+    "id": "9f21f9dfe1d74116",
+    "category": "womenswear",
+    "name": "Striped Long Sleeve Shirt Dress",
+    "role": "product"
+  },
+  {
+    "id": "b4fdefa45a3adb66",
+    "category": "womenswear",
+    "name": "White Graphic T-shirt",
+    "role": "product"
+  },
+  {
+    "id": "e9b519d47e93b290",
+    "category": "womenswear",
+    "name": "Lilac Sweatshirt and Shorts Co-ord",
+    "role": "product"
+  },
+  {
+    "id": "ef1c9a87b13cc75b",
+    "category": "womenswear",
+    "name": "White Sleeveless Midi Dress",
+    "role": "product"
+  },
+  {
+    "id": "c2002ad031799164",
+    "category": "outerwear",
+    "name": "Black Zip Front Windbreaker",
+    "role": "product"
+  },
+  {
+    "id": "1b930f7d7aa6cc65",
+    "category": "outerwear",
+    "name": "Grey Cropped Lapel Jacket",
+    "role": "product"
+  },
+  {
+    "id": "3afbaf7c1dd13621",
+    "category": "womenswear",
+    "name": "Relaxed Grey Blazer",
+    "role": "product"
+  },
+  {
+    "id": "4ee23370af779ab4",
+    "category": "kids",
+    "name": "Ribbed Winter Beanie",
+    "role": "product"
+  },
+  {
+    "id": "5a6a3e8d7cb97247",
+    "category": "menswear",
+    "name": "Relaxed Everyday Trousers",
+    "role": "product"
+  },
+  {
+    "id": "6b5f4a31da3de294",
+    "category": "womenswear",
+    "name": "Relaxed Black Blazer",
+    "role": "product"
+  },
+  {
+    "id": "701a334bebc6801f",
+    "category": "womenswear",
+    "name": "Wide Leg Black Trousers",
+    "role": "product"
+  },
+  {
+    "id": "92226553df6b99c5",
+    "category": "outerwear",
+    "name": "Blue Utility Trench Coat",
+    "role": "product"
+  },
+  {
+    "id": "c07988db17cf1c78",
+    "category": "kids",
+    "name": "Kids Graphic Sweatshirt",
+    "role": "product"
+  },
+  {
+    "id": "f3ecd7ad40f0ade6",
+    "category": "homeTextiles",
+    "name": "Soft Pink Bedding Set",
+    "role": "product"
+  },
+  {
+    "id": "3320106d9057096b",
+    "category": "outerwear",
+    "name": "Cream Tailored Blazer",
+    "role": "product"
+  },
+  {
+    "id": "392f052310420806",
+    "category": "outerwear",
+    "name": "Charcoal Pinstripe Tailored Blazer",
+    "role": "product"
+  },
+  {
+    "id": "8c0b3b1db8219fac",
+    "category": "denim",
+    "name": "Light Blue Relaxed Jeans",
+    "role": "product"
+  },
+  {
+    "id": "9b3fd3d8a41086df",
+    "category": "kids",
+    "name": "Kids Everyday Tank Top",
+    "role": "product"
+  }
+]

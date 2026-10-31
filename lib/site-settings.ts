@@ -13,7 +13,7 @@ export type StoreType = (typeof STORE_TYPES)[number];
 export type CurrencyPosition = (typeof CURRENCY_POSITIONS)[number];
 
 export const SITE_SETTINGS_DEFAULTS = {
-  storeName: "Boed E-commerce",
+  storeName: "Centro",
   storeTagline: "Quality products, secure shopping and dependable service.",
   defaultSeoDescription:
     "Discover quality products with clear information, secure checkout and dependable delivery.",
@@ -22,8 +22,8 @@ export const SITE_SETTINGS_DEFAULTS = {
   timezone: "Asia/Dhaka",
   locale: "en-BD",
   storeType: "GENERAL" as StoreType,
-  logo: "/assets/favicon.png",
-  favicon: "/assets/favicon.png",
+  logo: "/centro/brand.svg",
+  favicon: "/centro/brand.svg",
 } as const;
 
 export type SiteSettingsInput = GoogleAnalyticsSettings & {
@@ -282,7 +282,7 @@ export function resolveSiteSettings(
   const derivedKeywords = parseKeywords([
     storeName,
     ...catalogKeywords,
-    "Boed E-commerce",
+    "Centro",
     "ecommerce",
     "online shopping",
     "secure checkout",

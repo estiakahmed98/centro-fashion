@@ -122,7 +122,7 @@ const SigninForm = () => {
       <div className="h-1 w-full bg-gradient-to-r from-primary via-ring to-destructive rounded-t-xl" />
 
       <CardHeader className="boed-auth-form-heading">
-        <span className="boed-auth-eyebrow mb-3">AURA BOED ACCOUNT</span>
+        <span className="boed-auth-eyebrow mb-3">CENTRO ACCOUNT</span>
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account. Your world is waiting.</CardDescription>
       </CardHeader>

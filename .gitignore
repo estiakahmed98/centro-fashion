@@ -52,6 +52,9 @@ next-env.d.ts
 
 # Recovery copy of retired storefront assets; never publish with the site.
 /backups/retired-boed-assets/
+/backups/retired-editorial-assets/
+/backups/centro-audit/
+/backups/centro-preview/
 
 # Local OAuth credentials (use environment variables or a secret manager)
 /utility/credentials.json

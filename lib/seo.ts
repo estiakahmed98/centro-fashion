@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DEFAULT_SITE_TITLE } from "@/lib/site-defaults";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
 import { prisma } from "@/lib/prisma";
@@ -101,7 +102,7 @@ const loadSiteSettingsForSeo = unstable_cache(async (): Promise<SiteSettingsSeo>
   } catch {
     return resolveSiteSettings();
   }
-}, ["site-settings-seo"], { revalidate: 3600, tags: ["site-settings"] });
+}, ["site-settings-seo", DEFAULT_SITE_TITLE], { revalidate: 3600, tags: ["site-settings"] });
 
 export const getSiteSettingsForSeo = cache(async (): Promise<SiteSettingsSeo> => {
   return loadSiteSettingsForSeo();
