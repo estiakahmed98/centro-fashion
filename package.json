@@ -110,6 +110,7 @@
     "seed:boed": "tsx scripts/seed-boed.ts",
     "test:boed": "npm run test:centro",
     "seed:centro": "tsx scripts/seed-centro.ts",
+    "seed:centro-stock": "tsx scripts/publish-centro-stock.ts",
     "test:centro": "node --import tsx --test tests/centro-catalog.test.mjs tests/centro-seed.test.mjs tests/boed-categories.test.mjs",
     "seed:admin": "tsx scripts/seed-admin.ts"
   },

@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
+import { randomInt } from "node:crypto";
 
 export const CENTRO_CATEGORIES = {
   activewear: "Activewear", denim: "Denim", footwear: "Footwear",
@@ -20,8 +21,8 @@ export function centroMediaPath(file, root = process.cwd()) {
   return `/centro/${file}`;
 }
 
-// Each unique product image becomes a review draft. The crawl does not say
-// which shots share a product, or supply prices, sizes and stock quantities.
+// Stock and availability are explicitly requested demo defaults. Other missing
+// source details remain flagged for review.
 export function normalizeCentroCatalog(source, root = process.cwd()) {
   if (!Array.isArray(source)) throw new Error("Invalid Centro image report");
   const identities = new Set();
@@ -50,10 +51,12 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
     const label = CENTRO_CATEGORIES[category];
     const slug = category.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
     const sku = `CENTRO-${item.id.toUpperCase()}`;
+    const stock = randomInt(70, 201);
     const review = {
       sourceId: item.id, sourceUrl: sourcePages[0], sourcePages,
       sourceImageUrl: item.image_url, sourceCategories: item.categories || [],
       sourceChecksum: item.sha256, needsReview: true,
+      stockSource: "user-requested-random-70-200",
       requiresNameVerification: true, requiresPriceVerification: true,
       requiresStockVerification: true, requiresSizeVerification: true,
       requiresDescriptionReview: true, requiresGalleryReview: true,
@@ -63,10 +66,10 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
       product: {
         name: `Centro ${label} ${item.id}`, slug: `centro-${slug}-${item.id}`,
         sku, type: "PHYSICAL", description: "", basePrice: 0, currency: "BDT",
-        image, gallery: [image], available: false, featured: false,
+        image, gallery: [image], available: true, featured: false,
       },
       variants: [{
-        sku: `${sku}-1`, price: 0, currency: "BDT", stock: 0,
+        sku: `${sku}-1`, price: 0, currency: "BDT", stock,
         active: true, isDefault: true, options: { __meta: review },
       }],
       review,

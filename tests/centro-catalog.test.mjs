@@ -11,12 +11,12 @@ test("Centro product images map to stable identities and nine categories", () =>
   assert.equal(rows.length, 136);
   assert.equal(new Set(rows.map(row => row.product.sku)).size, rows.length);
   assert.equal(new Set(rows.flatMap(row => row.categories.map(category => category.slug))).size, 9);
-  assert.deepEqual(normalizeCentroCatalog([...source].reverse()), rows);
+  assert.deepEqual(normalizeCentroCatalog([...source].reverse()).map(row => row.product), rows.map(row => row.product));
   for (const row of rows) {
     assert.ok(row.product.image.startsWith("/centro/images/"));
-    assert.equal(row.product.available, false);
+    assert.equal(row.product.available, true);
     assert.equal(row.product.basePrice, 0);
-    assert.equal(row.variants[0].stock, 0);
+    assert.ok(Number.isInteger(row.variants[0].stock) && row.variants[0].stock >= 70 && row.variants[0].stock <= 200);
     assert.equal(row.variants[0].options.__meta.requiresSizeVerification, true);
     assert.equal(row.variants[0].options.Size, undefined);
     assert.ok(row.review.sourcePages.length);

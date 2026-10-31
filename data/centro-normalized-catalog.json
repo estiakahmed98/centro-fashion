@@ -18,7 +18,7 @@
       "gallery": [
         "/centro/images/activewear/09ce7493fe7e5a6c.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -26,7 +26,7 @@
         "sku": "CENTRO-09CE7493FE7E5A6C-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 155,
         "active": true,
         "isDefault": true,
         "options": {
@@ -46,6 +46,7 @@
             ],
             "sourceChecksum": "ad8ae188c4033275d8cd6bfa380159f8df8b564f0efea58f04a69be77ad45aa5",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -72,6 +73,7 @@
       ],
       "sourceChecksum": "ad8ae188c4033275d8cd6bfa380159f8df8b564f0efea58f04a69be77ad45aa5",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -99,7 +101,7 @@
       "gallery": [
         "/centro/images/activewear/0f2f7f5eeedb51f6.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -107,7 +109,7 @@
         "sku": "CENTRO-0F2F7F5EEEDB51F6-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 161,
         "active": true,
         "isDefault": true,
         "options": {
@@ -124,6 +126,7 @@
             ],
             "sourceChecksum": "5904e17d3c5a15e3d84d7183715e827e07d02b86eceeca527ffe275cfbbb0564",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -147,6 +150,7 @@
       ],
       "sourceChecksum": "5904e17d3c5a15e3d84d7183715e827e07d02b86eceeca527ffe275cfbbb0564",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -174,7 +178,7 @@
       "gallery": [
         "/centro/images/activewear/28a85c317a338a95.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -182,7 +186,7 @@
         "sku": "CENTRO-28A85C317A338A95-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 112,
         "active": true,
         "isDefault": true,
         "options": {
@@ -199,6 +203,7 @@
             ],
             "sourceChecksum": "6a942a36c6de63d1d2d060e6a1d7df06579e4d8105e17e45f75aec010fccd746",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -222,6 +227,7 @@
       ],
       "sourceChecksum": "6a942a36c6de63d1d2d060e6a1d7df06579e4d8105e17e45f75aec010fccd746",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -249,7 +255,7 @@
       "gallery": [
         "/centro/images/activewear/4a0fb218434890da.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -257,7 +263,7 @@
         "sku": "CENTRO-4A0FB218434890DA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 76,
         "active": true,
         "isDefault": true,
         "options": {
@@ -277,6 +283,7 @@
             ],
             "sourceChecksum": "fff77b87b32518b1dfd9306de947ddbdd40af32aa0f169b151c9611ae7aa1e1e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -303,6 +310,7 @@
       ],
       "sourceChecksum": "fff77b87b32518b1dfd9306de947ddbdd40af32aa0f169b151c9611ae7aa1e1e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -330,7 +338,7 @@
       "gallery": [
         "/centro/images/activewear/4daee0a77b8693c5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -338,7 +346,7 @@
         "sku": "CENTRO-4DAEE0A77B8693C5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 92,
         "active": true,
         "isDefault": true,
         "options": {
@@ -355,6 +363,7 @@
             ],
             "sourceChecksum": "fe8c4011e88f53f83e27378e53f0dc097d31682351cbf280d229743b3bf7a0db",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -378,6 +387,7 @@
       ],
       "sourceChecksum": "fe8c4011e88f53f83e27378e53f0dc097d31682351cbf280d229743b3bf7a0db",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -405,7 +415,7 @@
       "gallery": [
         "/centro/images/activewear/5a62f642b3f46944.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -413,7 +423,7 @@
         "sku": "CENTRO-5A62F642B3F46944-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 79,
         "active": true,
         "isDefault": true,
         "options": {
@@ -433,6 +443,7 @@
             ],
             "sourceChecksum": "1f78ed9ab5a3e860f7efde90545eae0979b38e6d83b2c926f03dec39da39b710",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -459,6 +470,7 @@
       ],
       "sourceChecksum": "1f78ed9ab5a3e860f7efde90545eae0979b38e6d83b2c926f03dec39da39b710",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -486,7 +498,7 @@
       "gallery": [
         "/centro/images/activewear/8cc5a2ba41ae7ed5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -494,7 +506,7 @@
         "sku": "CENTRO-8CC5A2BA41AE7ED5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 165,
         "active": true,
         "isDefault": true,
         "options": {
@@ -511,6 +523,7 @@
             ],
             "sourceChecksum": "37eab5f066d5fede891c6ec0d30056e9968d4aaac62cfd267145d4b983efff62",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -534,6 +547,7 @@
       ],
       "sourceChecksum": "37eab5f066d5fede891c6ec0d30056e9968d4aaac62cfd267145d4b983efff62",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -561,7 +575,7 @@
       "gallery": [
         "/centro/images/activewear/93b9aaab39488fca.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -569,7 +583,7 @@
         "sku": "CENTRO-93B9AAAB39488FCA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 173,
         "active": true,
         "isDefault": true,
         "options": {
@@ -586,6 +600,7 @@
             ],
             "sourceChecksum": "cad207ce55f012e928a1221f94b62ccc2b8ce49fe65dcd69d6f6d06f2651edd6",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -609,6 +624,7 @@
       ],
       "sourceChecksum": "cad207ce55f012e928a1221f94b62ccc2b8ce49fe65dcd69d6f6d06f2651edd6",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -636,7 +652,7 @@
       "gallery": [
         "/centro/images/activewear/c01777a02cf6d820.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -644,7 +660,7 @@
         "sku": "CENTRO-C01777A02CF6D820-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 189,
         "active": true,
         "isDefault": true,
         "options": {
@@ -661,6 +677,7 @@
             ],
             "sourceChecksum": "32b40cc2f1891f2679e1dfada1b9602f28a2a6b35d1983605afa08315ebec926",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -684,6 +701,7 @@
       ],
       "sourceChecksum": "32b40cc2f1891f2679e1dfada1b9602f28a2a6b35d1983605afa08315ebec926",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -711,7 +729,7 @@
       "gallery": [
         "/centro/images/activewear/df21fa5bd95dd2f5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -719,7 +737,7 @@
         "sku": "CENTRO-DF21FA5BD95DD2F5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 131,
         "active": true,
         "isDefault": true,
         "options": {
@@ -739,6 +757,7 @@
             ],
             "sourceChecksum": "d0f7ae65d35ce3315cd9a13f47566917a14b5404bebb98ea10b8e0e9bee9edb4",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -765,6 +784,7 @@
       ],
       "sourceChecksum": "d0f7ae65d35ce3315cd9a13f47566917a14b5404bebb98ea10b8e0e9bee9edb4",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -792,7 +812,7 @@
       "gallery": [
         "/centro/images/activewear/e98c08b3bfa2d17d.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -800,7 +820,7 @@
         "sku": "CENTRO-E98C08B3BFA2D17D-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 122,
         "active": true,
         "isDefault": true,
         "options": {
@@ -817,6 +837,7 @@
             ],
             "sourceChecksum": "04b1ff062b7a3e38ea4b98e634823f45365d9c2375f0b00a796a3a459c19ce76",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -840,6 +861,7 @@
       ],
       "sourceChecksum": "04b1ff062b7a3e38ea4b98e634823f45365d9c2375f0b00a796a3a459c19ce76",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -867,7 +889,7 @@
       "gallery": [
         "/centro/images/activewear/ffa67169bdfc376f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -875,7 +897,7 @@
         "sku": "CENTRO-FFA67169BDFC376F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 103,
         "active": true,
         "isDefault": true,
         "options": {
@@ -892,6 +914,7 @@
             ],
             "sourceChecksum": "70a930f2c61fd9aae3ed59e34bd873ceeea8d24dc04fca7003fb024e64572b0f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -915,6 +938,7 @@
       ],
       "sourceChecksum": "70a930f2c61fd9aae3ed59e34bd873ceeea8d24dc04fca7003fb024e64572b0f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -942,7 +966,7 @@
       "gallery": [
         "/centro/images/denim/2042a811478e1825.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -950,7 +974,7 @@
         "sku": "CENTRO-2042A811478E1825-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 157,
         "active": true,
         "isDefault": true,
         "options": {
@@ -967,6 +991,7 @@
             ],
             "sourceChecksum": "a85477d6d80cc3c09717a9ceb23107806bc2fe69980e24fe00d29471c211f41f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -990,6 +1015,7 @@
       ],
       "sourceChecksum": "a85477d6d80cc3c09717a9ceb23107806bc2fe69980e24fe00d29471c211f41f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1017,7 +1043,7 @@
       "gallery": [
         "/centro/images/denim/4445a722f69165e7.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1025,7 +1051,7 @@
         "sku": "CENTRO-4445A722F69165E7-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 98,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1042,6 +1068,7 @@
             ],
             "sourceChecksum": "5512b16edcba2e84da20383accbee031fff5d3ef94e641ee849c4212f01438d2",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1065,6 +1092,7 @@
       ],
       "sourceChecksum": "5512b16edcba2e84da20383accbee031fff5d3ef94e641ee849c4212f01438d2",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1092,7 +1120,7 @@
       "gallery": [
         "/centro/images/denim/8cd43ca1f8b43fda.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1100,7 +1128,7 @@
         "sku": "CENTRO-8CD43CA1F8B43FDA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 135,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1117,6 +1145,7 @@
             ],
             "sourceChecksum": "fb95c901f3fbbe9cb894f35884c6841b829a7155ec2a4db26d7e6bdb545b6304",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1140,6 +1169,7 @@
       ],
       "sourceChecksum": "fb95c901f3fbbe9cb894f35884c6841b829a7155ec2a4db26d7e6bdb545b6304",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1167,7 +1197,7 @@
       "gallery": [
         "/centro/images/denim/a0611f4675365d4a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1175,7 +1205,7 @@
         "sku": "CENTRO-A0611F4675365D4A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 162,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1192,6 +1222,7 @@
             ],
             "sourceChecksum": "55b1c80f7b8bea19f99f596007bec5717b2664d3d8cc4d95a0907e9f40138739",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1215,6 +1246,7 @@
       ],
       "sourceChecksum": "55b1c80f7b8bea19f99f596007bec5717b2664d3d8cc4d95a0907e9f40138739",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1242,7 +1274,7 @@
       "gallery": [
         "/centro/images/footwear/61c93774d07b282d.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1250,7 +1282,7 @@
         "sku": "CENTRO-61C93774D07B282D-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 74,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1267,6 +1299,7 @@
             ],
             "sourceChecksum": "93d7c0b5ac5dfc889ccc2f0c6a5cfe58e816462f44cfdbd87a1ad6dce8452581",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1290,6 +1323,7 @@
       ],
       "sourceChecksum": "93d7c0b5ac5dfc889ccc2f0c6a5cfe58e816462f44cfdbd87a1ad6dce8452581",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1317,7 +1351,7 @@
       "gallery": [
         "/centro/images/footwear/b3bba8179e43adc5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1325,7 +1359,7 @@
         "sku": "CENTRO-B3BBA8179E43ADC5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 173,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1342,6 +1376,7 @@
             ],
             "sourceChecksum": "c851d3e4f8acc0dce54616626cedd350422bc9411b03522a558868e08306fe5f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1365,6 +1400,7 @@
       ],
       "sourceChecksum": "c851d3e4f8acc0dce54616626cedd350422bc9411b03522a558868e08306fe5f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1392,7 +1428,7 @@
       "gallery": [
         "/centro/images/footwear/bc636449ef3ccbe4.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1400,7 +1436,7 @@
         "sku": "CENTRO-BC636449EF3CCBE4-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 84,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1417,6 +1453,7 @@
             ],
             "sourceChecksum": "9fd67d3bbaf18b755c32026022a4d2a60b38d1264fbdde1851c6af29cfdf3d6a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1440,6 +1477,7 @@
       ],
       "sourceChecksum": "9fd67d3bbaf18b755c32026022a4d2a60b38d1264fbdde1851c6af29cfdf3d6a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1467,7 +1505,7 @@
       "gallery": [
         "/centro/images/footwear/f7de20ecf3a3f99a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1475,7 +1513,7 @@
         "sku": "CENTRO-F7DE20ECF3A3F99A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 164,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1492,6 +1530,7 @@
             ],
             "sourceChecksum": "1cebd0c493cd96b7402a321f9c9f917f05066c359de38cfa93af4c8a51ff2679",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1515,6 +1554,7 @@
       ],
       "sourceChecksum": "1cebd0c493cd96b7402a321f9c9f917f05066c359de38cfa93af4c8a51ff2679",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1542,7 +1582,7 @@
       "gallery": [
         "/centro/images/homeTextiles/095e319b4fcb15d2.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1550,7 +1590,7 @@
         "sku": "CENTRO-095E319B4FCB15D2-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 91,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1570,6 +1610,7 @@
             ],
             "sourceChecksum": "5828320e196487d8e4c1bfe72d6670a5440f5dc630ced040391711ccda62045d",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1596,6 +1637,7 @@
       ],
       "sourceChecksum": "5828320e196487d8e4c1bfe72d6670a5440f5dc630ced040391711ccda62045d",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1623,7 +1665,7 @@
       "gallery": [
         "/centro/images/homeTextiles/113ba33712e2351f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1631,7 +1673,7 @@
         "sku": "CENTRO-113BA33712E2351F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 152,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1650,6 +1692,7 @@
             ],
             "sourceChecksum": "27e376ed31e0b4eaafbbb25d1a714d112de25d9ff31873658801650c1e65e17c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1675,6 +1718,7 @@
       ],
       "sourceChecksum": "27e376ed31e0b4eaafbbb25d1a714d112de25d9ff31873658801650c1e65e17c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1702,7 +1746,7 @@
       "gallery": [
         "/centro/images/homeTextiles/3d55e2b270e6823b.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1710,7 +1754,7 @@
         "sku": "CENTRO-3D55E2B270E6823B-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 102,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1729,6 +1773,7 @@
             ],
             "sourceChecksum": "e94852f7461ed34ae57427b713f68dfa062e7b66a080158fd3daebeb1dfaa68e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1754,6 +1799,7 @@
       ],
       "sourceChecksum": "e94852f7461ed34ae57427b713f68dfa062e7b66a080158fd3daebeb1dfaa68e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1781,7 +1827,7 @@
       "gallery": [
         "/centro/images/homeTextiles/4ae5159f733c5527.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1789,7 +1835,7 @@
         "sku": "CENTRO-4AE5159F733C5527-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 147,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1808,6 +1854,7 @@
             ],
             "sourceChecksum": "13425f84cbc455a5175eb7d585781e0198adbbfd6885197dc469db554ecf215c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1833,6 +1880,7 @@
       ],
       "sourceChecksum": "13425f84cbc455a5175eb7d585781e0198adbbfd6885197dc469db554ecf215c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1860,7 +1908,7 @@
       "gallery": [
         "/centro/images/homeTextiles/700295631b1c8285.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1868,7 +1916,7 @@
         "sku": "CENTRO-700295631B1C8285-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 77,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1887,6 +1935,7 @@
             ],
             "sourceChecksum": "33ec08420d2b5fd26b90478fe919d97be399889620ded3b56bcc46170c8bae5a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1912,6 +1961,7 @@
       ],
       "sourceChecksum": "33ec08420d2b5fd26b90478fe919d97be399889620ded3b56bcc46170c8bae5a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -1939,7 +1989,7 @@
       "gallery": [
         "/centro/images/homeTextiles/80186fb3a8b24f01.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -1947,7 +1997,7 @@
         "sku": "CENTRO-80186FB3A8B24F01-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 194,
         "active": true,
         "isDefault": true,
         "options": {
@@ -1967,6 +2017,7 @@
             ],
             "sourceChecksum": "5fbaf321fd0e427e4491a30cd217985629a61d52889041dbbee0d1f180957444",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -1993,6 +2044,7 @@
       ],
       "sourceChecksum": "5fbaf321fd0e427e4491a30cd217985629a61d52889041dbbee0d1f180957444",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2020,7 +2072,7 @@
       "gallery": [
         "/centro/images/homeTextiles/8273637c6041287f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2028,7 +2080,7 @@
         "sku": "CENTRO-8273637C6041287F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 78,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2047,6 +2099,7 @@
             ],
             "sourceChecksum": "11bce8bfa52c567d9c507dc82239526325367598d8251c6a3fc51dca25e8decc",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2072,6 +2125,7 @@
       ],
       "sourceChecksum": "11bce8bfa52c567d9c507dc82239526325367598d8251c6a3fc51dca25e8decc",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2099,7 +2153,7 @@
       "gallery": [
         "/centro/images/homeTextiles/bd0e45f8d6b3262c.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2107,7 +2161,7 @@
         "sku": "CENTRO-BD0E45F8D6B3262C-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 200,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2126,6 +2180,7 @@
             ],
             "sourceChecksum": "6d285771817adfc22f6343b5a2924f4c90d96ebc9f26dc520154b179aec0ace9",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2151,6 +2206,7 @@
       ],
       "sourceChecksum": "6d285771817adfc22f6343b5a2924f4c90d96ebc9f26dc520154b179aec0ace9",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2178,7 +2234,7 @@
       "gallery": [
         "/centro/images/homeTextiles/becde05df96b5cf6.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2186,7 +2242,7 @@
         "sku": "CENTRO-BECDE05DF96B5CF6-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 147,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2205,6 +2261,7 @@
             ],
             "sourceChecksum": "c4b12231a2c041ae184f240b401f46452c93080d0f94c8bbf118d3447d86d53c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2230,6 +2287,7 @@
       ],
       "sourceChecksum": "c4b12231a2c041ae184f240b401f46452c93080d0f94c8bbf118d3447d86d53c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2257,7 +2315,7 @@
       "gallery": [
         "/centro/images/homeTextiles/c1215bf0121791cd.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2265,7 +2323,7 @@
         "sku": "CENTRO-C1215BF0121791CD-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 188,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2285,6 +2343,7 @@
             ],
             "sourceChecksum": "768f3b74b5e543f85363935ade8f61986284e98b22372bb2925f82da71857283",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2311,6 +2370,7 @@
       ],
       "sourceChecksum": "768f3b74b5e543f85363935ade8f61986284e98b22372bb2925f82da71857283",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2338,7 +2398,7 @@
       "gallery": [
         "/centro/images/homeTextiles/c5755c5a01f5fd09.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2346,7 +2406,7 @@
         "sku": "CENTRO-C5755C5A01F5FD09-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 80,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2365,6 +2425,7 @@
             ],
             "sourceChecksum": "b59dc099f994a6542925338a119b89061c0c1417c27a4e61ce547bb923c0f16a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2390,6 +2451,7 @@
       ],
       "sourceChecksum": "b59dc099f994a6542925338a119b89061c0c1417c27a4e61ce547bb923c0f16a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2417,7 +2479,7 @@
       "gallery": [
         "/centro/images/homeTextiles/c883cb1bf91687aa.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2425,7 +2487,7 @@
         "sku": "CENTRO-C883CB1BF91687AA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 195,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2444,6 +2506,7 @@
             ],
             "sourceChecksum": "f001b3d9ccd62f4408267135a7f5e102fbf50b711bdc2470579d6a933d5445a0",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2469,6 +2532,7 @@
       ],
       "sourceChecksum": "f001b3d9ccd62f4408267135a7f5e102fbf50b711bdc2470579d6a933d5445a0",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2496,7 +2560,7 @@
       "gallery": [
         "/centro/images/homeTextiles/e88b2c86a2872047.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2504,7 +2568,7 @@
         "sku": "CENTRO-E88B2C86A2872047-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 175,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2524,6 +2588,7 @@
             ],
             "sourceChecksum": "a623a8458a7843c3ddcc322ad5cc86f3b5d80bb41491371202bfb52b62ffe2f1",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2550,6 +2615,7 @@
       ],
       "sourceChecksum": "a623a8458a7843c3ddcc322ad5cc86f3b5d80bb41491371202bfb52b62ffe2f1",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2577,7 +2643,7 @@
       "gallery": [
         "/centro/images/kids/053d5f81b0790d65.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2585,7 +2651,7 @@
         "sku": "CENTRO-053D5F81B0790D65-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 94,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2602,6 +2668,7 @@
             ],
             "sourceChecksum": "7ccd34d3bd3cd58fbd673e185ebbc62402912ad9e98ea34b81cb19820e15ba86",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2625,6 +2692,7 @@
       ],
       "sourceChecksum": "7ccd34d3bd3cd58fbd673e185ebbc62402912ad9e98ea34b81cb19820e15ba86",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2652,7 +2720,7 @@
       "gallery": [
         "/centro/images/kids/0b9cbe6e362b8a53.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2660,7 +2728,7 @@
         "sku": "CENTRO-0B9CBE6E362B8A53-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 127,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2677,6 +2745,7 @@
             ],
             "sourceChecksum": "344c8182a4cb5bc7d462d3e5246b714893540a64575162a2584b5afbad205d69",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2700,6 +2769,7 @@
       ],
       "sourceChecksum": "344c8182a4cb5bc7d462d3e5246b714893540a64575162a2584b5afbad205d69",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2727,7 +2797,7 @@
       "gallery": [
         "/centro/images/kids/2c84df9fda71b8fb.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2735,7 +2805,7 @@
         "sku": "CENTRO-2C84DF9FDA71B8FB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 157,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2752,6 +2822,7 @@
             ],
             "sourceChecksum": "999d501136e0a6798963494adae09879612b5a4221c9683c266b6eb06ebd5175",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2775,6 +2846,7 @@
       ],
       "sourceChecksum": "999d501136e0a6798963494adae09879612b5a4221c9683c266b6eb06ebd5175",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2802,7 +2874,7 @@
       "gallery": [
         "/centro/images/kids/3bc3f8cc319341ba.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2810,7 +2882,7 @@
         "sku": "CENTRO-3BC3F8CC319341BA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 102,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2827,6 +2899,7 @@
             ],
             "sourceChecksum": "1ca0f03bde8a95f4eba0efc78da79591cf5a209ad012ced92b68ec5a5626215a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2850,6 +2923,7 @@
       ],
       "sourceChecksum": "1ca0f03bde8a95f4eba0efc78da79591cf5a209ad012ced92b68ec5a5626215a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2877,7 +2951,7 @@
       "gallery": [
         "/centro/images/kids/474e0fd3d0d8702f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2885,7 +2959,7 @@
         "sku": "CENTRO-474E0FD3D0D8702F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 71,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2902,6 +2976,7 @@
             ],
             "sourceChecksum": "73e33191427a4f7f35e271f48273e37c0f15341f19ff2996d087afaf12a4ede5",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -2925,6 +3000,7 @@
       ],
       "sourceChecksum": "73e33191427a4f7f35e271f48273e37c0f15341f19ff2996d087afaf12a4ede5",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -2952,7 +3028,7 @@
       "gallery": [
         "/centro/images/kids/7a385b38896650cf.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -2960,7 +3036,7 @@
         "sku": "CENTRO-7A385B38896650CF-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 192,
         "active": true,
         "isDefault": true,
         "options": {
@@ -2977,6 +3053,7 @@
             ],
             "sourceChecksum": "26326790cadc86a6dc13fc23a37062bbf8a91db97d5ed76dbaed6274c7b16c9e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3000,6 +3077,7 @@
       ],
       "sourceChecksum": "26326790cadc86a6dc13fc23a37062bbf8a91db97d5ed76dbaed6274c7b16c9e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3027,7 +3105,7 @@
       "gallery": [
         "/centro/images/kids/ccfcc454337d07fa.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3035,7 +3113,7 @@
         "sku": "CENTRO-CCFCC454337D07FA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 179,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3052,6 +3130,7 @@
             ],
             "sourceChecksum": "4b653b35303cef30188ce2d13c24d0384f821789ec0ea67d88ebda654dfb457b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3075,6 +3154,7 @@
       ],
       "sourceChecksum": "4b653b35303cef30188ce2d13c24d0384f821789ec0ea67d88ebda654dfb457b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3102,7 +3182,7 @@
       "gallery": [
         "/centro/images/kids/d8722093bc6d2acb.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3110,7 +3190,7 @@
         "sku": "CENTRO-D8722093BC6D2ACB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 185,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3127,6 +3207,7 @@
             ],
             "sourceChecksum": "36bb13c50d87eabc3ea02f1c41ac54c7feb54d1ecf9fb4765df7b99769a17fd4",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3150,6 +3231,7 @@
       ],
       "sourceChecksum": "36bb13c50d87eabc3ea02f1c41ac54c7feb54d1ecf9fb4765df7b99769a17fd4",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3177,7 +3259,7 @@
       "gallery": [
         "/centro/images/knitwear/1c3bc463619a9278.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3185,7 +3267,7 @@
         "sku": "CENTRO-1C3BC463619A9278-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 123,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3202,6 +3284,7 @@
             ],
             "sourceChecksum": "aaec80df9f31eacb3f3c5c1e50b61263d2c42a62a60be811b4dd029dfcead440",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3225,6 +3308,7 @@
       ],
       "sourceChecksum": "aaec80df9f31eacb3f3c5c1e50b61263d2c42a62a60be811b4dd029dfcead440",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3252,7 +3336,7 @@
       "gallery": [
         "/centro/images/knitwear/50f435488c9a29f5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3260,7 +3344,7 @@
         "sku": "CENTRO-50F435488C9A29F5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 116,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3277,6 +3361,7 @@
             ],
             "sourceChecksum": "7f7431b6b0a5a2e27d31861a5be916125f679802cae5898b9558eccff52bd08b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3300,6 +3385,7 @@
       ],
       "sourceChecksum": "7f7431b6b0a5a2e27d31861a5be916125f679802cae5898b9558eccff52bd08b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3327,7 +3413,7 @@
       "gallery": [
         "/centro/images/knitwear/9ec5632748f6024a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3335,7 +3421,7 @@
         "sku": "CENTRO-9EC5632748F6024A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 79,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3352,6 +3438,7 @@
             ],
             "sourceChecksum": "b310bc4a892dbd543a665952737355851cc451858c94cd686e845aef7fa6e64a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3375,6 +3462,7 @@
       ],
       "sourceChecksum": "b310bc4a892dbd543a665952737355851cc451858c94cd686e845aef7fa6e64a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3402,7 +3490,7 @@
       "gallery": [
         "/centro/images/knitwear/e0bb62f4e74fd90a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3410,7 +3498,7 @@
         "sku": "CENTRO-E0BB62F4E74FD90A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 88,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3427,6 +3515,7 @@
             ],
             "sourceChecksum": "b915935c3b9cbbd739fe3f215757f1dc4937960a0db8494c52ae255fe62a61e5",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3450,6 +3539,7 @@
       ],
       "sourceChecksum": "b915935c3b9cbbd739fe3f215757f1dc4937960a0db8494c52ae255fe62a61e5",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3477,7 +3567,7 @@
       "gallery": [
         "/centro/images/menswear/33d5b726c9820f4e.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3485,7 +3575,7 @@
         "sku": "CENTRO-33D5B726C9820F4E-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 143,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3505,6 +3595,7 @@
             ],
             "sourceChecksum": "0960f8f1337d8232b3154105d7bac9ee030b3195953446c36d20133923557fcd",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3531,6 +3622,7 @@
       ],
       "sourceChecksum": "0960f8f1337d8232b3154105d7bac9ee030b3195953446c36d20133923557fcd",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3558,7 +3650,7 @@
       "gallery": [
         "/centro/images/menswear/ae5930a6e8939877.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3566,7 +3658,7 @@
         "sku": "CENTRO-AE5930A6E8939877-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 164,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3586,6 +3678,7 @@
             ],
             "sourceChecksum": "37dcc7907a58822deed52481cd8db280f31f8936d2c7c17c46db24e09d584321",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3612,6 +3705,7 @@
       ],
       "sourceChecksum": "37dcc7907a58822deed52481cd8db280f31f8936d2c7c17c46db24e09d584321",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3639,7 +3733,7 @@
       "gallery": [
         "/centro/images/menswear/b564ec9add4f1432.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3647,7 +3741,7 @@
         "sku": "CENTRO-B564EC9ADD4F1432-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 133,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3667,6 +3761,7 @@
             ],
             "sourceChecksum": "6a2fc5a6dd47aebbc4df8fc6f590c2fe7624cc0601bb9366b5ceb863a707bab6",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3693,6 +3788,7 @@
       ],
       "sourceChecksum": "6a2fc5a6dd47aebbc4df8fc6f590c2fe7624cc0601bb9366b5ceb863a707bab6",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3720,7 +3816,7 @@
       "gallery": [
         "/centro/images/menswear/cd5d3e68585018e3.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3728,7 +3824,7 @@
         "sku": "CENTRO-CD5D3E68585018E3-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 79,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3748,6 +3844,7 @@
             ],
             "sourceChecksum": "f69cd1f966c0895e96ee390b4f4e4dc75e08d8a1a5e34123b492a47c833ee18e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3774,6 +3871,7 @@
       ],
       "sourceChecksum": "f69cd1f966c0895e96ee390b4f4e4dc75e08d8a1a5e34123b492a47c833ee18e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3801,7 +3899,7 @@
       "gallery": [
         "/centro/images/outerwear/02476f1359f4297a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3809,7 +3907,7 @@
         "sku": "CENTRO-02476F1359F4297A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 136,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3829,6 +3927,7 @@
             ],
             "sourceChecksum": "b1648c4545d90732f4bc0177aabec7061bdea94d33ce7aa1cc654f8c953eb86b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3855,6 +3954,7 @@
       ],
       "sourceChecksum": "b1648c4545d90732f4bc0177aabec7061bdea94d33ce7aa1cc654f8c953eb86b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3882,7 +3982,7 @@
       "gallery": [
         "/centro/images/outerwear/0305bffe8512b8fb.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3890,7 +3990,7 @@
         "sku": "CENTRO-0305BFFE8512B8FB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 174,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3910,6 +4010,7 @@
             ],
             "sourceChecksum": "4442ef737e64aac8e6aed4e100e383421120f282d7b1e90474b9a9b3f945702d",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -3936,6 +4037,7 @@
       ],
       "sourceChecksum": "4442ef737e64aac8e6aed4e100e383421120f282d7b1e90474b9a9b3f945702d",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -3963,7 +4065,7 @@
       "gallery": [
         "/centro/images/outerwear/03a111e0017f61de.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -3971,7 +4073,7 @@
         "sku": "CENTRO-03A111E0017F61DE-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 182,
         "active": true,
         "isDefault": true,
         "options": {
@@ -3991,6 +4093,7 @@
             ],
             "sourceChecksum": "764af78863d0e0555090ce52511bc9274f2132fad9633116c9cd991f41b8feae",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4017,6 +4120,7 @@
       ],
       "sourceChecksum": "764af78863d0e0555090ce52511bc9274f2132fad9633116c9cd991f41b8feae",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4044,7 +4148,7 @@
       "gallery": [
         "/centro/images/outerwear/066080eb1e13d5e9.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4052,7 +4156,7 @@
         "sku": "CENTRO-066080EB1E13D5E9-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 120,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4072,6 +4176,7 @@
             ],
             "sourceChecksum": "594677d30346ed51413a575a242ae5b799a6f64b3a162a4a207f54de271fde10",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4098,6 +4203,7 @@
       ],
       "sourceChecksum": "594677d30346ed51413a575a242ae5b799a6f64b3a162a4a207f54de271fde10",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4125,7 +4231,7 @@
       "gallery": [
         "/centro/images/outerwear/06d6705bf7ab140b.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4133,7 +4239,7 @@
         "sku": "CENTRO-06D6705BF7AB140B-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 96,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4154,6 +4260,7 @@
             ],
             "sourceChecksum": "7ca999f716ce1e05ffa00bd2ea35c04665762318e9bd0cb00f0b3296837f01df",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4181,6 +4288,7 @@
       ],
       "sourceChecksum": "7ca999f716ce1e05ffa00bd2ea35c04665762318e9bd0cb00f0b3296837f01df",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4208,7 +4316,7 @@
       "gallery": [
         "/centro/images/outerwear/08abcead26e7d387.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4216,7 +4324,7 @@
         "sku": "CENTRO-08ABCEAD26E7D387-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 151,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4236,6 +4344,7 @@
             ],
             "sourceChecksum": "faa25f5b4d0f01779839a65443ebbbf60ccfd120374193fbf410b84968be02e4",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4262,6 +4371,7 @@
       ],
       "sourceChecksum": "faa25f5b4d0f01779839a65443ebbbf60ccfd120374193fbf410b84968be02e4",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4289,7 +4399,7 @@
       "gallery": [
         "/centro/images/outerwear/164a8efeb9b6e426.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4297,7 +4407,7 @@
         "sku": "CENTRO-164A8EFEB9B6E426-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 192,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4318,6 +4428,7 @@
             ],
             "sourceChecksum": "dd78bc4a9a58851b2f5c20592e9824a0a275d053bcc6306b29c5497422ae650c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4345,6 +4456,7 @@
       ],
       "sourceChecksum": "dd78bc4a9a58851b2f5c20592e9824a0a275d053bcc6306b29c5497422ae650c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4372,7 +4484,7 @@
       "gallery": [
         "/centro/images/outerwear/1c7c178bf345de3b.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4380,7 +4492,7 @@
         "sku": "CENTRO-1C7C178BF345DE3B-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 77,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4400,6 +4512,7 @@
             ],
             "sourceChecksum": "e7db17496f7714f2b9eb01e0e560af9982194253496ffb10180c3920e77f8e19",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4426,6 +4539,7 @@
       ],
       "sourceChecksum": "e7db17496f7714f2b9eb01e0e560af9982194253496ffb10180c3920e77f8e19",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4453,7 +4567,7 @@
       "gallery": [
         "/centro/images/outerwear/1dfc55c348f4cb39.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4461,7 +4575,7 @@
         "sku": "CENTRO-1DFC55C348F4CB39-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 121,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4482,6 +4596,7 @@
             ],
             "sourceChecksum": "ace7eceeea17ac3195577bfacedc70da56d7bfb7d10636b687428e967044b9dd",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4509,6 +4624,7 @@
       ],
       "sourceChecksum": "ace7eceeea17ac3195577bfacedc70da56d7bfb7d10636b687428e967044b9dd",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4536,7 +4652,7 @@
       "gallery": [
         "/centro/images/outerwear/1e9deb30e0ae93db.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4544,7 +4660,7 @@
         "sku": "CENTRO-1E9DEB30E0AE93DB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 70,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4564,6 +4680,7 @@
             ],
             "sourceChecksum": "a11a85ab2fe7b6e6f49196e46acde0aac2597acac037535fe72f2bced887dc03",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4590,6 +4707,7 @@
       ],
       "sourceChecksum": "a11a85ab2fe7b6e6f49196e46acde0aac2597acac037535fe72f2bced887dc03",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4617,7 +4735,7 @@
       "gallery": [
         "/centro/images/outerwear/2117849f08dadae0.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4625,7 +4743,7 @@
         "sku": "CENTRO-2117849F08DADAE0-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 195,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4645,6 +4763,7 @@
             ],
             "sourceChecksum": "417d329a24cfc86d18f27c99015f7b2ad0dafcfdc30470fe7c408f06bc81df76",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4671,6 +4790,7 @@
       ],
       "sourceChecksum": "417d329a24cfc86d18f27c99015f7b2ad0dafcfdc30470fe7c408f06bc81df76",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4698,7 +4818,7 @@
       "gallery": [
         "/centro/images/outerwear/211da57a3e618bad.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4706,7 +4826,7 @@
         "sku": "CENTRO-211DA57A3E618BAD-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 147,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4726,6 +4846,7 @@
             ],
             "sourceChecksum": "4d578004ba041a31e14bcf9ef043a3a89404873305dc04dcc2b3a9611e323330",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4752,6 +4873,7 @@
       ],
       "sourceChecksum": "4d578004ba041a31e14bcf9ef043a3a89404873305dc04dcc2b3a9611e323330",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4779,7 +4901,7 @@
       "gallery": [
         "/centro/images/outerwear/2410dc0700f5d9bd.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4787,7 +4909,7 @@
         "sku": "CENTRO-2410DC0700F5D9BD-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 152,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4807,6 +4929,7 @@
             ],
             "sourceChecksum": "32bc4cdcce17cbc72ac4ebb11e039a390efdebac1443fcd7eee0e401d5ead3ee",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4833,6 +4956,7 @@
       ],
       "sourceChecksum": "32bc4cdcce17cbc72ac4ebb11e039a390efdebac1443fcd7eee0e401d5ead3ee",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4860,7 +4984,7 @@
       "gallery": [
         "/centro/images/outerwear/25e0b83c60944c3d.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4868,7 +4992,7 @@
         "sku": "CENTRO-25E0B83C60944C3D-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 91,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4890,6 +5014,7 @@
             ],
             "sourceChecksum": "bd7163a98261db9b9e07f76668d22d215439fdbd2e1e3a83091c5e9d41c6bece",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4918,6 +5043,7 @@
       ],
       "sourceChecksum": "bd7163a98261db9b9e07f76668d22d215439fdbd2e1e3a83091c5e9d41c6bece",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -4945,7 +5071,7 @@
       "gallery": [
         "/centro/images/outerwear/2abd4edfdb2052d3.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -4953,7 +5079,7 @@
         "sku": "CENTRO-2ABD4EDFDB2052D3-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 170,
         "active": true,
         "isDefault": true,
         "options": {
@@ -4973,6 +5099,7 @@
             ],
             "sourceChecksum": "a619a9b36a696451ad4411c946cd7f87cd5086eaeae18f6755853c10182b7417",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -4999,6 +5126,7 @@
       ],
       "sourceChecksum": "a619a9b36a696451ad4411c946cd7f87cd5086eaeae18f6755853c10182b7417",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5026,7 +5154,7 @@
       "gallery": [
         "/centro/images/outerwear/2b7eb0ef6dbeb71c.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5034,7 +5162,7 @@
         "sku": "CENTRO-2B7EB0EF6DBEB71C-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 101,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5055,6 +5183,7 @@
             ],
             "sourceChecksum": "03d411b7dd878b0d9741f6020b2946129404788283ba8d5d52de239dfccfde0b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5082,6 +5211,7 @@
       ],
       "sourceChecksum": "03d411b7dd878b0d9741f6020b2946129404788283ba8d5d52de239dfccfde0b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5109,7 +5239,7 @@
       "gallery": [
         "/centro/images/outerwear/3727d27454eceea5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5117,7 +5247,7 @@
         "sku": "CENTRO-3727D27454ECEEA5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 123,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5137,6 +5267,7 @@
             ],
             "sourceChecksum": "c56e19a135503f03bc7a758a26668d3193e2e39a0e3eabf788440b14b1fc7fe7",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5163,6 +5294,7 @@
       ],
       "sourceChecksum": "c56e19a135503f03bc7a758a26668d3193e2e39a0e3eabf788440b14b1fc7fe7",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5190,7 +5322,7 @@
       "gallery": [
         "/centro/images/outerwear/3c60f8d5091d2967.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5198,7 +5330,7 @@
         "sku": "CENTRO-3C60F8D5091D2967-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 182,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5218,6 +5350,7 @@
             ],
             "sourceChecksum": "94603592046d397f43f8779668946d21659a01001dd358ded4ab6c2fd43e1b16",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5244,6 +5377,7 @@
       ],
       "sourceChecksum": "94603592046d397f43f8779668946d21659a01001dd358ded4ab6c2fd43e1b16",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5271,7 +5405,7 @@
       "gallery": [
         "/centro/images/outerwear/40171697ef91b470.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5279,7 +5413,7 @@
         "sku": "CENTRO-40171697EF91B470-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 146,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5300,6 +5434,7 @@
             ],
             "sourceChecksum": "ab89240733375db47c959f95e00caa472df8ee3268a9170a8b480769690f6baf",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5327,6 +5462,7 @@
       ],
       "sourceChecksum": "ab89240733375db47c959f95e00caa472df8ee3268a9170a8b480769690f6baf",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5354,7 +5490,7 @@
       "gallery": [
         "/centro/images/outerwear/424612fb641731c5.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5362,7 +5498,7 @@
         "sku": "CENTRO-424612FB641731C5-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 72,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5382,6 +5518,7 @@
             ],
             "sourceChecksum": "b41e33cb598b60b101f6d2699a451902b09b35db1e87988a7e20da55d4d97e29",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5408,6 +5545,7 @@
       ],
       "sourceChecksum": "b41e33cb598b60b101f6d2699a451902b09b35db1e87988a7e20da55d4d97e29",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5435,7 +5573,7 @@
       "gallery": [
         "/centro/images/outerwear/4356db0a032863ad.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5443,7 +5581,7 @@
         "sku": "CENTRO-4356DB0A032863AD-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 75,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5463,6 +5601,7 @@
             ],
             "sourceChecksum": "86dab76cf77681590b08ed94fae834be9ed81dc439baecfe30dbb229a1b63d85",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5489,6 +5628,7 @@
       ],
       "sourceChecksum": "86dab76cf77681590b08ed94fae834be9ed81dc439baecfe30dbb229a1b63d85",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5516,7 +5656,7 @@
       "gallery": [
         "/centro/images/outerwear/453e501e2557e6d3.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5524,7 +5664,7 @@
         "sku": "CENTRO-453E501E2557E6D3-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 199,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5544,6 +5684,7 @@
             ],
             "sourceChecksum": "77725fe4f4068afced8522acc68626e0d4c3db1ce0d9af17a021ee3f560ee846",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5570,6 +5711,7 @@
       ],
       "sourceChecksum": "77725fe4f4068afced8522acc68626e0d4c3db1ce0d9af17a021ee3f560ee846",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5597,7 +5739,7 @@
       "gallery": [
         "/centro/images/outerwear/48310138fa04ac12.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5605,7 +5747,7 @@
         "sku": "CENTRO-48310138FA04AC12-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 186,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5627,6 +5769,7 @@
             ],
             "sourceChecksum": "7618e41cfd95f7074a3b2e1f5751f9155e56d7bd142162ced7447186563dd657",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5655,6 +5798,7 @@
       ],
       "sourceChecksum": "7618e41cfd95f7074a3b2e1f5751f9155e56d7bd142162ced7447186563dd657",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5682,7 +5826,7 @@
       "gallery": [
         "/centro/images/outerwear/4927e864cc6b3b90.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5690,7 +5834,7 @@
         "sku": "CENTRO-4927E864CC6B3B90-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 112,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5712,6 +5856,7 @@
             ],
             "sourceChecksum": "1015a98c1a055439322c23ac4ef8aab086ee36d9f2ef48b2e3f09441ab494bdd",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5740,6 +5885,7 @@
       ],
       "sourceChecksum": "1015a98c1a055439322c23ac4ef8aab086ee36d9f2ef48b2e3f09441ab494bdd",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5767,7 +5913,7 @@
       "gallery": [
         "/centro/images/outerwear/4ca8b8c0359dfa4c.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5775,7 +5921,7 @@
         "sku": "CENTRO-4CA8B8C0359DFA4C-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 157,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5795,6 +5941,7 @@
             ],
             "sourceChecksum": "509e64af0f4438864b0cb2b45787edd9d4ad9436d7f7c72d77d3107a9d7dcd5f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5821,6 +5968,7 @@
       ],
       "sourceChecksum": "509e64af0f4438864b0cb2b45787edd9d4ad9436d7f7c72d77d3107a9d7dcd5f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5848,7 +5996,7 @@
       "gallery": [
         "/centro/images/outerwear/4e66f1d01145994f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5856,7 +6004,7 @@
         "sku": "CENTRO-4E66F1D01145994F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 163,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5878,6 +6026,7 @@
             ],
             "sourceChecksum": "4f4d32e41b9993d2fe8f2a488630fe572b94d7d9a01c9d95d389fa92dedfeeac",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5906,6 +6055,7 @@
       ],
       "sourceChecksum": "4f4d32e41b9993d2fe8f2a488630fe572b94d7d9a01c9d95d389fa92dedfeeac",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -5933,7 +6083,7 @@
       "gallery": [
         "/centro/images/outerwear/4eb92243a5dbbe3a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -5941,7 +6091,7 @@
         "sku": "CENTRO-4EB92243A5DBBE3A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 131,
         "active": true,
         "isDefault": true,
         "options": {
@@ -5961,6 +6111,7 @@
             ],
             "sourceChecksum": "fca4ed69bc07c11c93c05a4562e0c714228d9fead82f684c3e01a3a1641d3280",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -5987,6 +6138,7 @@
       ],
       "sourceChecksum": "fca4ed69bc07c11c93c05a4562e0c714228d9fead82f684c3e01a3a1641d3280",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6014,7 +6166,7 @@
       "gallery": [
         "/centro/images/outerwear/51b1972d9aeb0fba.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6022,7 +6174,7 @@
         "sku": "CENTRO-51B1972D9AEB0FBA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 143,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6042,6 +6194,7 @@
             ],
             "sourceChecksum": "1963990d6e1c2e00864585f7db3a20cdf6240d835c368e20497eadf530932e68",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6068,6 +6221,7 @@
       ],
       "sourceChecksum": "1963990d6e1c2e00864585f7db3a20cdf6240d835c368e20497eadf530932e68",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6095,7 +6249,7 @@
       "gallery": [
         "/centro/images/outerwear/56ae3e20c405dd81.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6103,7 +6257,7 @@
         "sku": "CENTRO-56AE3E20C405DD81-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 168,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6123,6 +6277,7 @@
             ],
             "sourceChecksum": "5f96a635d9d0e8925efb0ab2e4c4ec5e3882d0304b3ce365e715bfe846b4965b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6149,6 +6304,7 @@
       ],
       "sourceChecksum": "5f96a635d9d0e8925efb0ab2e4c4ec5e3882d0304b3ce365e715bfe846b4965b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6176,7 +6332,7 @@
       "gallery": [
         "/centro/images/outerwear/57d4eb1e2b65bb14.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6184,7 +6340,7 @@
         "sku": "CENTRO-57D4EB1E2B65BB14-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 115,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6204,6 +6360,7 @@
             ],
             "sourceChecksum": "eb96d215eb02c6260daf6eed00b65c2e206068d5c005f187af3302ad64c2a28d",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6230,6 +6387,7 @@
       ],
       "sourceChecksum": "eb96d215eb02c6260daf6eed00b65c2e206068d5c005f187af3302ad64c2a28d",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6257,7 +6415,7 @@
       "gallery": [
         "/centro/images/outerwear/57eeee156307e6d0.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6265,7 +6423,7 @@
         "sku": "CENTRO-57EEEE156307E6D0-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 134,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6285,6 +6443,7 @@
             ],
             "sourceChecksum": "fe31d98c409623e256b9596d6af23fd6cbdeb0af382d8e2d87a4a621ea727f7a",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6311,6 +6470,7 @@
       ],
       "sourceChecksum": "fe31d98c409623e256b9596d6af23fd6cbdeb0af382d8e2d87a4a621ea727f7a",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6338,7 +6498,7 @@
       "gallery": [
         "/centro/images/outerwear/58e99ed3cb7aab15.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6346,7 +6506,7 @@
         "sku": "CENTRO-58E99ED3CB7AAB15-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 107,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6366,6 +6526,7 @@
             ],
             "sourceChecksum": "8946eea1a19b03352dc7af2440d19684cde2d42d1148bb718da36d1022996b0c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6392,6 +6553,7 @@
       ],
       "sourceChecksum": "8946eea1a19b03352dc7af2440d19684cde2d42d1148bb718da36d1022996b0c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6419,7 +6581,7 @@
       "gallery": [
         "/centro/images/outerwear/5e275997a3ad2000.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6427,7 +6589,7 @@
         "sku": "CENTRO-5E275997A3AD2000-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 181,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6447,6 +6609,7 @@
             ],
             "sourceChecksum": "6bd4535c5c5afcf30306ab2b79255824a5df99b350cfdef5b8007ff07471f617",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6473,6 +6636,7 @@
       ],
       "sourceChecksum": "6bd4535c5c5afcf30306ab2b79255824a5df99b350cfdef5b8007ff07471f617",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6500,7 +6664,7 @@
       "gallery": [
         "/centro/images/outerwear/65c720270995afa8.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6508,7 +6672,7 @@
         "sku": "CENTRO-65C720270995AFA8-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 161,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6528,6 +6692,7 @@
             ],
             "sourceChecksum": "8668178ea62d46c7e80e5acd2f3010ce75b7ae86788ccaf5fa8783cbb790a377",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6554,6 +6719,7 @@
       ],
       "sourceChecksum": "8668178ea62d46c7e80e5acd2f3010ce75b7ae86788ccaf5fa8783cbb790a377",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6581,7 +6747,7 @@
       "gallery": [
         "/centro/images/outerwear/683a6a619c844632.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6589,7 +6755,7 @@
         "sku": "CENTRO-683A6A619C844632-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 133,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6609,6 +6775,7 @@
             ],
             "sourceChecksum": "953fa80eee8ae690da0447bcaafd0e8c6647f3e9aa1a93f770303b81a7effd04",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6635,6 +6802,7 @@
       ],
       "sourceChecksum": "953fa80eee8ae690da0447bcaafd0e8c6647f3e9aa1a93f770303b81a7effd04",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6662,7 +6830,7 @@
       "gallery": [
         "/centro/images/outerwear/694d7a4a1e699008.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6670,7 +6838,7 @@
         "sku": "CENTRO-694D7A4A1E699008-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 152,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6691,6 +6859,7 @@
             ],
             "sourceChecksum": "cd9edabd1f5841ea77d8fd59cb28f47f1947b5a95d4f641c6947fd5d6ab08023",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6718,6 +6887,7 @@
       ],
       "sourceChecksum": "cd9edabd1f5841ea77d8fd59cb28f47f1947b5a95d4f641c6947fd5d6ab08023",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6745,7 +6915,7 @@
       "gallery": [
         "/centro/images/outerwear/70eace0a396ed79c.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6753,7 +6923,7 @@
         "sku": "CENTRO-70EACE0A396ED79C-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 98,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6774,6 +6944,7 @@
             ],
             "sourceChecksum": "499c12f6dda07580cd1977bef042bb5f61874b0a560903179380296b63d3aa9d",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6801,6 +6972,7 @@
       ],
       "sourceChecksum": "499c12f6dda07580cd1977bef042bb5f61874b0a560903179380296b63d3aa9d",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6828,7 +7000,7 @@
       "gallery": [
         "/centro/images/outerwear/7525cab2015d251f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6836,7 +7008,7 @@
         "sku": "CENTRO-7525CAB2015D251F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 185,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6858,6 +7030,7 @@
             ],
             "sourceChecksum": "78a905001ac7a7fca917c6cc333f219aa2facea22631d9c0272cf484a134c831",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6886,6 +7059,7 @@
       ],
       "sourceChecksum": "78a905001ac7a7fca917c6cc333f219aa2facea22631d9c0272cf484a134c831",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6913,7 +7087,7 @@
       "gallery": [
         "/centro/images/outerwear/77977c2405fd13cc.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -6921,7 +7095,7 @@
         "sku": "CENTRO-77977C2405FD13CC-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 130,
         "active": true,
         "isDefault": true,
         "options": {
@@ -6942,6 +7116,7 @@
             ],
             "sourceChecksum": "3738cc7653fee3767c48dda9c680816429ab3ff1d494a65b06d89e1e2b826f5b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -6969,6 +7144,7 @@
       ],
       "sourceChecksum": "3738cc7653fee3767c48dda9c680816429ab3ff1d494a65b06d89e1e2b826f5b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -6996,7 +7172,7 @@
       "gallery": [
         "/centro/images/outerwear/7ba730c5e5bdecd7.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7004,7 +7180,7 @@
         "sku": "CENTRO-7BA730C5E5BDECD7-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 171,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7024,6 +7200,7 @@
             ],
             "sourceChecksum": "454f7ae5b284b4864510cb4396d42bdd5467b36336af2f710b2b773713cb3822",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7050,6 +7227,7 @@
       ],
       "sourceChecksum": "454f7ae5b284b4864510cb4396d42bdd5467b36336af2f710b2b773713cb3822",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7077,7 +7255,7 @@
       "gallery": [
         "/centro/images/outerwear/7bc49be980ab1540.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7085,7 +7263,7 @@
         "sku": "CENTRO-7BC49BE980AB1540-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 109,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7105,6 +7283,7 @@
             ],
             "sourceChecksum": "edb82c8319e371ab7426bd2aaaa084667386e3c98481e7c2748b1220e93cb516",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7131,6 +7310,7 @@
       ],
       "sourceChecksum": "edb82c8319e371ab7426bd2aaaa084667386e3c98481e7c2748b1220e93cb516",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7158,7 +7338,7 @@
       "gallery": [
         "/centro/images/outerwear/7cdd69dac7d156d8.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7166,7 +7346,7 @@
         "sku": "CENTRO-7CDD69DAC7D156D8-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 83,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7188,6 +7368,7 @@
             ],
             "sourceChecksum": "4d4716ef2c5f76b8755f1d6b614210cffa326711a8b3641319893bda7438429f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7216,6 +7397,7 @@
       ],
       "sourceChecksum": "4d4716ef2c5f76b8755f1d6b614210cffa326711a8b3641319893bda7438429f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7243,7 +7425,7 @@
       "gallery": [
         "/centro/images/outerwear/7e5c052f6e1e61a3.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7251,7 +7433,7 @@
         "sku": "CENTRO-7E5C052F6E1E61A3-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 174,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7271,6 +7453,7 @@
             ],
             "sourceChecksum": "228665f57d9a4fb0b8978b6bd2068d53791d0fe561d916a16e5cd30f2b35caf4",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7297,6 +7480,7 @@
       ],
       "sourceChecksum": "228665f57d9a4fb0b8978b6bd2068d53791d0fe561d916a16e5cd30f2b35caf4",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7324,7 +7508,7 @@
       "gallery": [
         "/centro/images/outerwear/7efa4d70e23b8c58.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7332,7 +7516,7 @@
         "sku": "CENTRO-7EFA4D70E23B8C58-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 139,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7352,6 +7536,7 @@
             ],
             "sourceChecksum": "031962ba5538ce3950815184b43ec65123aa0b4b24cc22da53c8581beeb2a2cb",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7378,6 +7563,7 @@
       ],
       "sourceChecksum": "031962ba5538ce3950815184b43ec65123aa0b4b24cc22da53c8581beeb2a2cb",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7405,7 +7591,7 @@
       "gallery": [
         "/centro/images/outerwear/8564c6329d328345.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7413,7 +7599,7 @@
         "sku": "CENTRO-8564C6329D328345-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 140,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7433,6 +7619,7 @@
             ],
             "sourceChecksum": "051b84df099ef7ae46debf75b92a1e70dedd8d95d4f48965735a725e09663603",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7459,6 +7646,7 @@
       ],
       "sourceChecksum": "051b84df099ef7ae46debf75b92a1e70dedd8d95d4f48965735a725e09663603",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7486,7 +7674,7 @@
       "gallery": [
         "/centro/images/outerwear/8757bb04dd8eb002.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7494,7 +7682,7 @@
         "sku": "CENTRO-8757BB04DD8EB002-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 125,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7514,6 +7702,7 @@
             ],
             "sourceChecksum": "768420fdc2e6a17b3528a04f5163e8421eda31bff1c99c99a6145b31d2618856",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7540,6 +7729,7 @@
       ],
       "sourceChecksum": "768420fdc2e6a17b3528a04f5163e8421eda31bff1c99c99a6145b31d2618856",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7567,7 +7757,7 @@
       "gallery": [
         "/centro/images/outerwear/882ccb3f84de92a6.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7575,7 +7765,7 @@
         "sku": "CENTRO-882CCB3F84DE92A6-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 97,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7595,6 +7785,7 @@
             ],
             "sourceChecksum": "9a94e691bec15ea5412e14ab95c29152b45cb6832b977c1a4ba2821d9aba5be0",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7621,6 +7812,7 @@
       ],
       "sourceChecksum": "9a94e691bec15ea5412e14ab95c29152b45cb6832b977c1a4ba2821d9aba5be0",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7648,7 +7840,7 @@
       "gallery": [
         "/centro/images/outerwear/88ae0fadd242c3e4.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7656,7 +7848,7 @@
         "sku": "CENTRO-88AE0FADD242C3E4-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 141,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7676,6 +7868,7 @@
             ],
             "sourceChecksum": "20a9371b93c8df37ce0fcf380a4cf23822863213c441911d3a5ffe69ce1e8ce4",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7702,6 +7895,7 @@
       ],
       "sourceChecksum": "20a9371b93c8df37ce0fcf380a4cf23822863213c441911d3a5ffe69ce1e8ce4",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7729,7 +7923,7 @@
       "gallery": [
         "/centro/images/outerwear/88ea9b0957782ea6.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7737,7 +7931,7 @@
         "sku": "CENTRO-88EA9B0957782EA6-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 182,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7759,6 +7953,7 @@
             ],
             "sourceChecksum": "7fc74a701eb4d4a9930120f48d81fd02b5320f2b5c59260898737a53110cfb23",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7787,6 +7982,7 @@
       ],
       "sourceChecksum": "7fc74a701eb4d4a9930120f48d81fd02b5320f2b5c59260898737a53110cfb23",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7814,7 +8010,7 @@
       "gallery": [
         "/centro/images/outerwear/8a87b96d84c25209.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7822,7 +8018,7 @@
         "sku": "CENTRO-8A87B96D84C25209-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 182,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7842,6 +8038,7 @@
             ],
             "sourceChecksum": "b23cdbe88525123f692c3c1a65577bdc6b35329fe54c441d97ba7176fd15edd2",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7868,6 +8065,7 @@
       ],
       "sourceChecksum": "b23cdbe88525123f692c3c1a65577bdc6b35329fe54c441d97ba7176fd15edd2",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7895,7 +8093,7 @@
       "gallery": [
         "/centro/images/outerwear/8acc86c34b4ce96f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7903,7 +8101,7 @@
         "sku": "CENTRO-8ACC86C34B4CE96F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 153,
         "active": true,
         "isDefault": true,
         "options": {
@@ -7923,6 +8121,7 @@
             ],
             "sourceChecksum": "4df0b16acaa86d5745f4ea0620e70aa5f65a5e4cebbc37e187ad18b884cc2c16",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -7949,6 +8148,7 @@
       ],
       "sourceChecksum": "4df0b16acaa86d5745f4ea0620e70aa5f65a5e4cebbc37e187ad18b884cc2c16",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -7976,7 +8176,7 @@
       "gallery": [
         "/centro/images/outerwear/8e631fc02ea4b5c1.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -7984,7 +8184,7 @@
         "sku": "CENTRO-8E631FC02EA4B5C1-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 185,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8004,6 +8204,7 @@
             ],
             "sourceChecksum": "f2bd4a4fe899950586711babb290a1be1a5d1a68a69e62bc2d5e51e94094ab32",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8030,6 +8231,7 @@
       ],
       "sourceChecksum": "f2bd4a4fe899950586711babb290a1be1a5d1a68a69e62bc2d5e51e94094ab32",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8057,7 +8259,7 @@
       "gallery": [
         "/centro/images/outerwear/8ea1a8c847d2c972.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8065,7 +8267,7 @@
         "sku": "CENTRO-8EA1A8C847D2C972-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 110,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8085,6 +8287,7 @@
             ],
             "sourceChecksum": "df373611d0a376fe9f01b74698bf76a44fca7975d1a4b33fd409dc9587555823",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8111,6 +8314,7 @@
       ],
       "sourceChecksum": "df373611d0a376fe9f01b74698bf76a44fca7975d1a4b33fd409dc9587555823",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8138,7 +8342,7 @@
       "gallery": [
         "/centro/images/outerwear/929aceef6ea1232f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8146,7 +8350,7 @@
         "sku": "CENTRO-929ACEEF6EA1232F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 118,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8168,6 +8372,7 @@
             ],
             "sourceChecksum": "88b381effa3dc27fc507ebcdbc954b8c8ae8f9dcfab50ef1094b5f99ac63d337",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8196,6 +8401,7 @@
       ],
       "sourceChecksum": "88b381effa3dc27fc507ebcdbc954b8c8ae8f9dcfab50ef1094b5f99ac63d337",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8223,7 +8429,7 @@
       "gallery": [
         "/centro/images/outerwear/974e200a966515d3.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8231,7 +8437,7 @@
         "sku": "CENTRO-974E200A966515D3-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 133,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8253,6 +8459,7 @@
             ],
             "sourceChecksum": "b121ccff72bcf32e7c8e1ade5bd7f5919d07609a15212ebcbe7d4bd52c60f7bc",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8281,6 +8488,7 @@
       ],
       "sourceChecksum": "b121ccff72bcf32e7c8e1ade5bd7f5919d07609a15212ebcbe7d4bd52c60f7bc",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8308,7 +8516,7 @@
       "gallery": [
         "/centro/images/outerwear/98247b5137d63832.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8316,7 +8524,7 @@
         "sku": "CENTRO-98247B5137D63832-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 154,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8336,6 +8544,7 @@
             ],
             "sourceChecksum": "c701331a4f18ea7762aa76e916a6c7cb4e458a75a78bb9df05433ff38163b5fa",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8362,6 +8571,7 @@
       ],
       "sourceChecksum": "c701331a4f18ea7762aa76e916a6c7cb4e458a75a78bb9df05433ff38163b5fa",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8389,7 +8599,7 @@
       "gallery": [
         "/centro/images/outerwear/98cb1692977e2e69.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8397,7 +8607,7 @@
         "sku": "CENTRO-98CB1692977E2E69-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 128,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8417,6 +8627,7 @@
             ],
             "sourceChecksum": "7c5bb49ca5906b2ab683c97f6f8934624f2e824185a0a0ed7d7284b301b034cc",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8443,6 +8654,7 @@
       ],
       "sourceChecksum": "7c5bb49ca5906b2ab683c97f6f8934624f2e824185a0a0ed7d7284b301b034cc",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8470,7 +8682,7 @@
       "gallery": [
         "/centro/images/outerwear/99a05414cd8f4067.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8478,7 +8690,7 @@
         "sku": "CENTRO-99A05414CD8F4067-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 87,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8498,6 +8710,7 @@
             ],
             "sourceChecksum": "e4c670e245f3357cbea9d306da0bc68a4a3335b3f26d86516d50329b244ed3ec",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8524,6 +8737,7 @@
       ],
       "sourceChecksum": "e4c670e245f3357cbea9d306da0bc68a4a3335b3f26d86516d50329b244ed3ec",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8551,7 +8765,7 @@
       "gallery": [
         "/centro/images/outerwear/a18b3a6ef90c3baf.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8559,7 +8773,7 @@
         "sku": "CENTRO-A18B3A6EF90C3BAF-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 126,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8579,6 +8793,7 @@
             ],
             "sourceChecksum": "67f340f8bd64fcc5da7c5bc5ee2c921865ac6174945f8117719105a94a681d3e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8605,6 +8820,7 @@
       ],
       "sourceChecksum": "67f340f8bd64fcc5da7c5bc5ee2c921865ac6174945f8117719105a94a681d3e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8632,7 +8848,7 @@
       "gallery": [
         "/centro/images/outerwear/a1e2139b2dd3e1a2.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8640,7 +8856,7 @@
         "sku": "CENTRO-A1E2139B2DD3E1A2-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 177,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8660,6 +8876,7 @@
             ],
             "sourceChecksum": "0e1c732c09d669806322505128500828b85e464a8a95d00d27d6c7ca9abecbee",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8686,6 +8903,7 @@
       ],
       "sourceChecksum": "0e1c732c09d669806322505128500828b85e464a8a95d00d27d6c7ca9abecbee",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8713,7 +8931,7 @@
       "gallery": [
         "/centro/images/outerwear/a6d3da8cd298eba0.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8721,7 +8939,7 @@
         "sku": "CENTRO-A6D3DA8CD298EBA0-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 142,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8741,6 +8959,7 @@
             ],
             "sourceChecksum": "9451902ba509a53ff87302f2ac7025a9bcca4bdd9dcfecee4f5b8aebe679ccb7",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8767,6 +8986,7 @@
       ],
       "sourceChecksum": "9451902ba509a53ff87302f2ac7025a9bcca4bdd9dcfecee4f5b8aebe679ccb7",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8794,7 +9014,7 @@
       "gallery": [
         "/centro/images/outerwear/a8cf2108f4f0ed77.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8802,7 +9022,7 @@
         "sku": "CENTRO-A8CF2108F4F0ED77-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 90,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8822,6 +9042,7 @@
             ],
             "sourceChecksum": "65adc4382afc7a248ba2dcf0bef430b11c0f40a1d32903d8f9d9258ac730ec0e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8848,6 +9069,7 @@
       ],
       "sourceChecksum": "65adc4382afc7a248ba2dcf0bef430b11c0f40a1d32903d8f9d9258ac730ec0e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8875,7 +9097,7 @@
       "gallery": [
         "/centro/images/outerwear/a9edd92a4b64c4e9.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8883,7 +9105,7 @@
         "sku": "CENTRO-A9EDD92A4B64C4E9-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 86,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8903,6 +9125,7 @@
             ],
             "sourceChecksum": "047c7e7dfeb60a5ffd797dbedc235b80012daf702d87ef777c75fbecf90f329e",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -8929,6 +9152,7 @@
       ],
       "sourceChecksum": "047c7e7dfeb60a5ffd797dbedc235b80012daf702d87ef777c75fbecf90f329e",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -8956,7 +9180,7 @@
       "gallery": [
         "/centro/images/outerwear/aa101a69b076e6c7.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -8964,7 +9188,7 @@
         "sku": "CENTRO-AA101A69B076E6C7-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 185,
         "active": true,
         "isDefault": true,
         "options": {
@@ -8984,6 +9208,7 @@
             ],
             "sourceChecksum": "b65b196abf5f2533cbf96eb1ba5b2be34ab35b2959aa27cc5b1ee060b819c489",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9010,6 +9235,7 @@
       ],
       "sourceChecksum": "b65b196abf5f2533cbf96eb1ba5b2be34ab35b2959aa27cc5b1ee060b819c489",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9037,7 +9263,7 @@
       "gallery": [
         "/centro/images/outerwear/b2bdf2c06a99eaef.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9045,7 +9271,7 @@
         "sku": "CENTRO-B2BDF2C06A99EAEF-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 94,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9065,6 +9291,7 @@
             ],
             "sourceChecksum": "665ea343f6fb56f07d8ee3ec2f31bb6e108b79761c5ff8092e0586140a8efea6",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9091,6 +9318,7 @@
       ],
       "sourceChecksum": "665ea343f6fb56f07d8ee3ec2f31bb6e108b79761c5ff8092e0586140a8efea6",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9118,7 +9346,7 @@
       "gallery": [
         "/centro/images/outerwear/b4f5e2e5285a280a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9126,7 +9354,7 @@
         "sku": "CENTRO-B4F5E2E5285A280A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 102,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9146,6 +9374,7 @@
             ],
             "sourceChecksum": "7e0703e817168d5bef778caa8e33fdd3a31d6df51704a02eb7ae937dec13da2f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9172,6 +9401,7 @@
       ],
       "sourceChecksum": "7e0703e817168d5bef778caa8e33fdd3a31d6df51704a02eb7ae937dec13da2f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9199,7 +9429,7 @@
       "gallery": [
         "/centro/images/outerwear/c6bf7e4a10ec411a.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9207,7 +9437,7 @@
         "sku": "CENTRO-C6BF7E4A10EC411A-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 117,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9227,6 +9457,7 @@
             ],
             "sourceChecksum": "862521ac492e998cfcbb0ee99175cfffd12b0d0421c28321cc62c9c1e53e1ab7",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9253,6 +9484,7 @@
       ],
       "sourceChecksum": "862521ac492e998cfcbb0ee99175cfffd12b0d0421c28321cc62c9c1e53e1ab7",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9280,7 +9512,7 @@
       "gallery": [
         "/centro/images/outerwear/cc13d2f4af9cac52.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9288,7 +9520,7 @@
         "sku": "CENTRO-CC13D2F4AF9CAC52-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 160,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9308,6 +9540,7 @@
             ],
             "sourceChecksum": "4c0ec3e3e38db0a98e08a15483bf63794b0920c17bdb08639d75302bbe531fc5",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9334,6 +9567,7 @@
       ],
       "sourceChecksum": "4c0ec3e3e38db0a98e08a15483bf63794b0920c17bdb08639d75302bbe531fc5",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9361,7 +9595,7 @@
       "gallery": [
         "/centro/images/outerwear/cc35f6ebdaa11d8d.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9369,7 +9603,7 @@
         "sku": "CENTRO-CC35F6EBDAA11D8D-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 135,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9389,6 +9623,7 @@
             ],
             "sourceChecksum": "5c48a6701f175a0bdcaf4923962499aac7ef22ef836b612dbfefe9281efbfebf",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9415,6 +9650,7 @@
       ],
       "sourceChecksum": "5c48a6701f175a0bdcaf4923962499aac7ef22ef836b612dbfefe9281efbfebf",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9442,7 +9678,7 @@
       "gallery": [
         "/centro/images/outerwear/cfa46632f47637ae.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9450,7 +9686,7 @@
         "sku": "CENTRO-CFA46632F47637AE-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 81,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9471,6 +9707,7 @@
             ],
             "sourceChecksum": "f1b210613430b69e3827e4d6d197a5bd145180a92b45af88619b5125c8d5b8a0",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9498,6 +9735,7 @@
       ],
       "sourceChecksum": "f1b210613430b69e3827e4d6d197a5bd145180a92b45af88619b5125c8d5b8a0",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9525,7 +9763,7 @@
       "gallery": [
         "/centro/images/outerwear/d42f4dd6fb1607d2.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9533,7 +9771,7 @@
         "sku": "CENTRO-D42F4DD6FB1607D2-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 188,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9553,6 +9791,7 @@
             ],
             "sourceChecksum": "a20cebd62a67ca9c838b5f628ccbce1870e1c99ab003ec1d7657c686ff03e3f6",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9579,6 +9818,7 @@
       ],
       "sourceChecksum": "a20cebd62a67ca9c838b5f628ccbce1870e1c99ab003ec1d7657c686ff03e3f6",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9606,7 +9846,7 @@
       "gallery": [
         "/centro/images/outerwear/d5b086d886ff7062.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9614,7 +9854,7 @@
         "sku": "CENTRO-D5B086D886FF7062-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 177,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9634,6 +9874,7 @@
             ],
             "sourceChecksum": "f200e8663b44d07b2cf0238a891349d6ee55cb1f82be5b0decee2d1abe14ec9f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9660,6 +9901,7 @@
       ],
       "sourceChecksum": "f200e8663b44d07b2cf0238a891349d6ee55cb1f82be5b0decee2d1abe14ec9f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9687,7 +9929,7 @@
       "gallery": [
         "/centro/images/outerwear/d62014e5626600f1.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9695,7 +9937,7 @@
         "sku": "CENTRO-D62014E5626600F1-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 136,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9715,6 +9957,7 @@
             ],
             "sourceChecksum": "b5f37187da366d7047f87df44fd8d210477302e1c08b902054661221ca44efa0",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9741,6 +9984,7 @@
       ],
       "sourceChecksum": "b5f37187da366d7047f87df44fd8d210477302e1c08b902054661221ca44efa0",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9768,7 +10012,7 @@
       "gallery": [
         "/centro/images/outerwear/da55189a4e262bab.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9776,7 +10020,7 @@
         "sku": "CENTRO-DA55189A4E262BAB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 71,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9796,6 +10040,7 @@
             ],
             "sourceChecksum": "304fed1a9ed0adf7b0926970d79383e988aaab0768fc51413519bf0c680c6e9b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9822,6 +10067,7 @@
       ],
       "sourceChecksum": "304fed1a9ed0adf7b0926970d79383e988aaab0768fc51413519bf0c680c6e9b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9849,7 +10095,7 @@
       "gallery": [
         "/centro/images/outerwear/dc15aa36807b08ab.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9857,7 +10103,7 @@
         "sku": "CENTRO-DC15AA36807B08AB-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 191,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9877,6 +10123,7 @@
             ],
             "sourceChecksum": "74cb74d9419d42848438e61b184b998eb2dbf8fe4af80198551ffaa1d1a17754",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9903,6 +10150,7 @@
       ],
       "sourceChecksum": "74cb74d9419d42848438e61b184b998eb2dbf8fe4af80198551ffaa1d1a17754",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -9930,7 +10178,7 @@
       "gallery": [
         "/centro/images/outerwear/e053d048d3b48fdf.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -9938,7 +10186,7 @@
         "sku": "CENTRO-E053D048D3B48FDF-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 190,
         "active": true,
         "isDefault": true,
         "options": {
@@ -9958,6 +10206,7 @@
             ],
             "sourceChecksum": "a81673eec01f1aab434446c070d2c29721bde339ea5de324d928713103f9a3f7",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -9984,6 +10233,7 @@
       ],
       "sourceChecksum": "a81673eec01f1aab434446c070d2c29721bde339ea5de324d928713103f9a3f7",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10011,7 +10261,7 @@
       "gallery": [
         "/centro/images/outerwear/ed8ad5963190146f.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10019,7 +10269,7 @@
         "sku": "CENTRO-ED8AD5963190146F-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 117,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10039,6 +10289,7 @@
             ],
             "sourceChecksum": "a5559219d22c5fa34c034efcb23490d430df624439fc26041df4703e228e2be2",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10065,6 +10316,7 @@
       ],
       "sourceChecksum": "a5559219d22c5fa34c034efcb23490d430df624439fc26041df4703e228e2be2",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10092,7 +10344,7 @@
       "gallery": [
         "/centro/images/outerwear/f164faef89c18502.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10100,7 +10352,7 @@
         "sku": "CENTRO-F164FAEF89C18502-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 151,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10121,6 +10373,7 @@
             ],
             "sourceChecksum": "a3453d96d1a1e4987aa6913d2c9e407162d6baf4a262455e31d1233ab173227f",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10148,6 +10401,7 @@
       ],
       "sourceChecksum": "a3453d96d1a1e4987aa6913d2c9e407162d6baf4a262455e31d1233ab173227f",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10175,7 +10429,7 @@
       "gallery": [
         "/centro/images/outerwear/f26d0f3ec95eb5c7.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10183,7 +10437,7 @@
         "sku": "CENTRO-F26D0F3EC95EB5C7-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 144,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10203,6 +10457,7 @@
             ],
             "sourceChecksum": "611cc3f87e4a9929433dd85fde372ac812eaa0c88d986fb4c434210603154321",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10229,6 +10484,7 @@
       ],
       "sourceChecksum": "611cc3f87e4a9929433dd85fde372ac812eaa0c88d986fb4c434210603154321",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10256,7 +10512,7 @@
       "gallery": [
         "/centro/images/outerwear/fd1ff5121808d114.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10264,7 +10520,7 @@
         "sku": "CENTRO-FD1FF5121808D114-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 193,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10284,6 +10540,7 @@
             ],
             "sourceChecksum": "00357ae57e09a49a224ac29bf579d408752d015e5cef7154c87cd3ce12fb3cdb",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10310,6 +10567,7 @@
       ],
       "sourceChecksum": "00357ae57e09a49a224ac29bf579d408752d015e5cef7154c87cd3ce12fb3cdb",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10337,7 +10595,7 @@
       "gallery": [
         "/centro/images/womenswear/481aa184e1247bfa.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10345,7 +10603,7 @@
         "sku": "CENTRO-481AA184E1247BFA-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 137,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10365,6 +10623,7 @@
             ],
             "sourceChecksum": "98d195456d42046956cec6c46c35a7706933f5c8a57618ad8e86a1c423e1de00",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10391,6 +10650,7 @@
       ],
       "sourceChecksum": "98d195456d42046956cec6c46c35a7706933f5c8a57618ad8e86a1c423e1de00",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10418,7 +10678,7 @@
       "gallery": [
         "/centro/images/womenswear/533c694a4822e011.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10426,7 +10686,7 @@
         "sku": "CENTRO-533C694A4822E011-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 128,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10446,6 +10706,7 @@
             ],
             "sourceChecksum": "c70d37e7cb25d8e2edc8dc1695e2146b365ec770fcc388297ae34e93bc2a2395",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10472,6 +10733,7 @@
       ],
       "sourceChecksum": "c70d37e7cb25d8e2edc8dc1695e2146b365ec770fcc388297ae34e93bc2a2395",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10499,7 +10761,7 @@
       "gallery": [
         "/centro/images/womenswear/9d9640391830b963.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10507,7 +10769,7 @@
         "sku": "CENTRO-9D9640391830B963-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 98,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10527,6 +10789,7 @@
             ],
             "sourceChecksum": "5bf15dac6b0fd7d29e0b7e1bfa72ee0db893caa11367482d59b30c7b3c016a5c",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10553,6 +10816,7 @@
       ],
       "sourceChecksum": "5bf15dac6b0fd7d29e0b7e1bfa72ee0db893caa11367482d59b30c7b3c016a5c",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10580,7 +10844,7 @@
       "gallery": [
         "/centro/images/womenswear/9f21f9dfe1d74116.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10588,7 +10852,7 @@
         "sku": "CENTRO-9F21F9DFE1D74116-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 188,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10608,6 +10872,7 @@
             ],
             "sourceChecksum": "b41516ba2673f1a0135b1f028cfcfea94d8675f009377ff51c75a91a203435d1",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10634,6 +10899,7 @@
       ],
       "sourceChecksum": "b41516ba2673f1a0135b1f028cfcfea94d8675f009377ff51c75a91a203435d1",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10661,7 +10927,7 @@
       "gallery": [
         "/centro/images/womenswear/b4fdefa45a3adb66.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10669,7 +10935,7 @@
         "sku": "CENTRO-B4FDEFA45A3ADB66-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 116,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10689,6 +10955,7 @@
             ],
             "sourceChecksum": "8bbeaff5bab76d3cd809369394b0729596b00912f487d74771e6f028a5f24a72",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10715,6 +10982,7 @@
       ],
       "sourceChecksum": "8bbeaff5bab76d3cd809369394b0729596b00912f487d74771e6f028a5f24a72",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10742,7 +11010,7 @@
       "gallery": [
         "/centro/images/womenswear/e9b519d47e93b290.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10750,7 +11018,7 @@
         "sku": "CENTRO-E9B519D47E93B290-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 102,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10770,6 +11038,7 @@
             ],
             "sourceChecksum": "411ca38e94d2c481d5345d7deb00e3ee15d06deff6451bbf1872f74aacd89e7b",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10796,6 +11065,7 @@
       ],
       "sourceChecksum": "411ca38e94d2c481d5345d7deb00e3ee15d06deff6451bbf1872f74aacd89e7b",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,
@@ -10823,7 +11093,7 @@
       "gallery": [
         "/centro/images/womenswear/ef1c9a87b13cc75b.png"
       ],
-      "available": false,
+      "available": true,
       "featured": false
     },
     "variants": [
@@ -10831,7 +11101,7 @@
         "sku": "CENTRO-EF1C9A87B13CC75B-1",
         "price": 0,
         "currency": "BDT",
-        "stock": 0,
+        "stock": 129,
         "active": true,
         "isDefault": true,
         "options": {
@@ -10851,6 +11121,7 @@
             ],
             "sourceChecksum": "abcea55ec21208d48046fd1f433e99bfde992607c536676e97e46fe6ead5c024",
             "needsReview": true,
+            "stockSource": "user-requested-random-70-200",
             "requiresNameVerification": true,
             "requiresPriceVerification": true,
             "requiresStockVerification": true,
@@ -10877,6 +11148,7 @@
       ],
       "sourceChecksum": "abcea55ec21208d48046fd1f433e99bfde992607c536676e97e46fe6ead5c024",
       "needsReview": true,
+      "stockSource": "user-requested-random-70-200",
       "requiresNameVerification": true,
       "requiresPriceVerification": true,
       "requiresStockVerification": true,

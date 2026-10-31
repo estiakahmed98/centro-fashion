@@ -1,13 +1,14 @@
 import { redirect, notFound } from "next/navigation";
+import { getStorefrontCatalogFacets } from "@/lib/storefront-catalog";
 
-const collections: Record<string, string> = {
-  clothing: "clothing", suits: "suits", jackets: "jackets", shirts: "shirts", trousers: "trousers",
-  knitwear: "knitwear", shoes: "shoes", accessories: "accessories", gifts: "accessories",
-  "ladies-wear": "ladies-wear", summer: "swimwear",
-  all: "", "new-arrivals": "",
-};
+const legacyAliases: Record<string, string> = { gifts: "accessories", summer: "swimwear" };
 export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!(slug in collections)) notFound();
-  redirect(`/ecommerce/products?${slug === "new-arrivals" ? "sort=newest" : `category=${collections[slug]}`}`);
+  if (slug === "all") redirect("/ecommerce/products");
+  if (slug === "new-arrivals") redirect("/ecommerce/products?sort=newest");
+  const { categories } = await getStorefrontCatalogFacets();
+  const category = categories.find(item => item.slug === slug)
+    ?? categories.find(item => item.slug === legacyAliases[slug]);
+  if (!category) notFound();
+  redirect(`/ecommerce/products?${new URLSearchParams({ category: category.slug })}`);
 }

@@ -41,12 +41,12 @@ export async function importCentroCatalog(
       ...item.product, type: "PHYSICAL", categoryId,
       variants: { create: item.variants.map(variant => ({
         ...variant,
-        stockLevels: { create: { warehouseId: warehouse.id, quantity: 0, reserved: 0 } },
+        stockLevels: { create: { warehouseId: warehouse.id, quantity: variant.stock, reserved: 0 } },
       })) },
     } });
     created++;
   }
-  // Archive the previous import only after every Centro draft was inserted.
+  // Archive the previous import only after every Centro product was inserted.
   // Keep product, variant, order and inventory history intact.
   const archived = await db.product.updateMany({
     where: { sku: { startsWith: "BOED-" }, deleted: false },
@@ -60,14 +60,15 @@ export async function seedCentro(options: { apply?: boolean; export?: boolean } 
   console.log(JSON.stringify({
     products: catalog.length,
     categories: new Set(catalog.flatMap(item => item.categories.map(category => category.slug))).size,
-    assets: catalog.length, reviewRequired: catalog.length, sellableStock: 0,
+    assets: catalog.length, reviewRequired: catalog.length,
+    sellableStock: catalog.reduce((total, item) => total + item.variants.reduce((sum, variant) => sum + variant.stock, 0), 0),
   }, null, 2));
   if (options.export) {
     await writeFile(path.join(process.cwd(), "data/centro-normalized-catalog.json"), JSON.stringify(catalog, null, 2) + "\n");
     console.log("Exported data/centro-normalized-catalog.json");
   }
   if (!options.apply) {
-    console.log("Validation only. Use --apply to import Centro drafts and archive BOED products.");
+    console.log("Validation only. Use --apply to import Centro products and archive BOED products.");
     return;
   }
   loadEnvConfig(process.cwd());

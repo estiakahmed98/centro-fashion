@@ -8,16 +8,20 @@ import Form from "next/form";
 export function EditorialCatalog({ data }: { data: StorefrontCatalogData }) {
   const { products, filters, facets, pagination } = data;
   const selected = facets.categories.find(category => category.slug === filters.category);
+  const collections = facets.categories.filter(category => category.showInHeader || category.id === selected?.id);
   const title = filters.q ? `Results for “${filters.q}”` : selected?.name || "The collection";
   return <main className="editorial-catalog">
     <div className="editorial-catalog-heading"><span className="editorial-kicker">THE AURA BOED WARDROBE</span><h1>{title}</h1><p>Considered pieces. Distinctive details. Find your everyday refinement.</p>
-      <nav className="editorial-category-tabs" aria-label="Collections"><Link href="/ecommerce/products" aria-current={!filters.category ? "page" : undefined}>ALL PIECES</Link>{["Suits", "Jackets", "Shirts", "Trousers", "Knitwear", "Shoes", "Accessories", "Ladies Wear"].map(name => <Link key={name} aria-current={filters.category === name.toLowerCase().replaceAll(" ", "-") ? "page" : undefined} href={`/ecommerce/collections/${name.toLowerCase().replaceAll(" ", "-")}`}>{name.toUpperCase()}</Link>)}</nav>
+      <nav className="editorial-category-tabs" aria-label="Collections">
+        <Link href="/ecommerce/products" aria-current={!filters.category ? "page" : undefined}>ALL PIECES</Link>
+        {collections.map(category => <Link key={category.id} aria-current={selected?.id === category.id ? "page" : undefined} href={`/ecommerce/collections/${category.slug}`}>{category.name.toUpperCase()}</Link>)}
+      </nav>
     </div>
     <div className="editorial-catalog-body">
       <CatalogFilterDrawer>
       <Form action="/ecommerce/products" className="editorial-filters">
         <label>SEARCH<input name="q" type="search" defaultValue={filters.q} placeholder="Search pieces" /></label>
-        <label>COLLECTION<select name="category" defaultValue={filters.category}><option value="">All collections</option>{facets.categories.filter(category => category.productCount > 0).map(category => <option key={category.id} value={category.slug}>{category.name}</option>)}</select></label>
+        <label>COLLECTION<select name="category" defaultValue={filters.category}><option value="">All collections</option>{facets.categories.map(category => <option key={category.id} value={category.slug}>{category.name}</option>)}</select></label>
         {facets.brands.length ? <label>BRANDS<select name="brand" multiple defaultValue={filters.brands}>{facets.brands.map(brand => <option key={brand.id} value={brand.slug}>{brand.name}</option>)}</select></label> : null}
         <label>PRODUCT TYPE<select name="type" defaultValue={filters.type}><option value="">All types</option><option value="PHYSICAL">Physical</option><option value="DIGITAL">Digital</option><option value="SERVICE">Service</option><option value="BUNDLE">Bundle</option></select></label>
         <label>SORT BY<select name="sort" defaultValue={filters.sort}><option value="relevance">Recommended</option><option value="newest">New arrivals</option><option value="popular">Popular</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="name-asc">Name</option></select></label>

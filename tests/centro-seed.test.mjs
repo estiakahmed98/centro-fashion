@@ -23,12 +23,12 @@ function fixture({ existing = [], failure = false } = {}) {
   return { db, writes };
 }
 
-test("import drafts with zero warehouse stock; archive only BOED after all inserts", async () => {
+test("import available products with matching warehouse stock; archive only BOED after all inserts", async () => {
   const f = fixture();
   assert.deepEqual(await importCentroCatalog(f.db, catalog), { created: 2, skipped: 0, archivedBoed: 4 });
   const [created] = f.writes;
-  assert.equal(created.data.available, false);
-  assert.deepEqual(created.data.variants.create[0].stockLevels.create, { warehouseId: 10, quantity: 0, reserved: 0 });
+  assert.equal(created.data.available, true);
+  assert.deepEqual(created.data.variants.create[0].stockLevels.create, { warehouseId: 10, quantity: catalog[0].variants[0].stock, reserved: 0 });
   const archived = f.writes.at(-1);
   assert.deepEqual(archived.where, { sku: { startsWith: "BOED-" }, deleted: false });
   assert.equal(archived.data.deleted, true);

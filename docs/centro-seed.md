@@ -11,6 +11,7 @@ npm run seed:centro                 # validate assets without database writes
 npm run seed:centro -- --export      # also export data/centro-normalized-catalog.json
 npx prisma generate
 npm run seed:centro -- --apply       # import into the configured DATABASE_URL
+npm run seed:centro-stock -- --apply # publish existing Centro products and randomize stock
 npm run test:centro
 ```
 
@@ -28,25 +29,26 @@ source image IDs provide stable product slugs and `CENTRO-` SKUs. Categories
 use `centro-` slugs so existing BOED category hierarchies cannot collide.
 
 The crawl provides no verified product names, descriptions, prices, sizes or
-inventory. Each image therefore creates an **unavailable review draft**, with
-a generated name, blank description, zero placeholder price and zero stock.
-Images may represent multiple views of the same product; review and merge
-them before publishing. The original URLs, categories, checksum and review
-flags are retained in the default variant's `options.__meta`. Ambiguous source
-subcategories remain metadata instead of being turned into guessed hierarchies.
+inventory. Per the user's explicit request, new products are available and each
+default variant receives a random integer stock quantity from 70 through 200
+inclusive. Its initial warehouse quantity matches the variant stock. Generated
+names, blank descriptions and zero placeholder prices remain; price and size
+review flags are preserved. Stock metadata identifies the requested random
+quantity rather than claiming the quantity came from the source website.
 
-Each new product, default variant and zero warehouse balance is created with
-one atomic nested write. Repeat runs skip existing Centro products, preserving
-admin edits, publication state, prices and stock. Slug/SKU collisions stop the
-import before inserts. Partial imports can be rerun to insert remaining drafts.
-Only after all drafts exist does the importer soft-delete products whose SKU
-starts with `BOED-`, clearing availability and featured status. Orders, product
-IDs, variants and inventory history are retained. Other products are untouched.
+Each new product, default variant and warehouse balance is created with one
+atomic nested write. Normal repeat imports skip existing Centro products,
+preserving operator edits and stock after purchases. Slug/SKU collisions stop
+inserts. After all products exist, the importer soft-deletes the previous BOED
+products while retaining their orders and inventory history.
 
-Before publishing drafts, enter verified names, prices, sizes and warehouse
-stock in admin, combine gallery views as appropriate, then enable availability.
-Until then the storefront will not list the Centro drafts.
+The explicit `seed:centro-stock -- --apply` command publishes existing Centro
+products and assigns fresh random stock to their active variants. It uses the
+inventory service inside a transaction for each product, retaining reservations,
+checking expected stock, and updating warehouse quantities, inventory logs,
+snapshots and the variant's derived stock. Rerunning this explicit command
+randomizes stock again; normal default seeds do not replenish existing products.
 
-This checkout has no configured `DATABASE_URL`. The asset validation, export,
-and offline importer tests can run here; actual database application requires
-the target database environment.
+Images may show multiple views of one product; review galleries, names, prices
+and sizes in admin. Source URLs, categories, checksums and review flags remain
+in variant `options.__meta`. No product price is changed by the stock command.
