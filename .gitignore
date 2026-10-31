@@ -1,0 +1,57 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+*.tsbuildinfo
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuild.info
+next-env.d.ts
+
+# Uploads
+/.private-upload/
+/public/uploads/
+/public/pdf.worker.min.mjs
+
+# Prisma generated client
+/generated/
+
+# Recovery copy of retired storefront assets; never publish with the site.
+/backups/retired-boed-assets/
+
+# Local OAuth credentials (use environment variables or a secret manager)
+/utility/credentials.json

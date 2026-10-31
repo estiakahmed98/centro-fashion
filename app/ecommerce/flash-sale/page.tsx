@@ -1,0 +1,57 @@
+import ProductPagination from "@/components/ecommarce/catalog/ProductPagination";
+import { storefrontPage } from "@/lib/storefront-pagination";
+import Link from "next/link";
+import { ArrowLeft, Flame } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { FlashSaleCard } from "@/components/ecommarce/FlashSale";
+import { getActiveFlashSaleProducts } from "@/lib/storefront-flash-sale";
+import PromotionTracker from "@/components/analytics/PromotionTracker";
+import { toGA4Item } from "@/lib/analytics/ecommerce";
+import { getSiteSettingsForSeo } from "@/lib/seo";
+
+export async function generateMetadata() {
+  const t = await getTranslations("Landing.FlashSale.page");
+  return {
+    alternates: { canonical: "/ecommerce/flash-sale" },
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function FlashSalePage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const [{ products, page, total }, settings, t] = await Promise.all([
+    getActiveFlashSaleProducts(storefrontPage((await searchParams).page)),
+    getSiteSettingsForSeo(),
+    getTranslations("Landing.FlashSale.page"),
+  ]);
+  return (
+    <main className="min-h-[70vh] bg-background px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-[1600px]">
+        <Link href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition hover:text-orange-600"><ArrowLeft className="h-4 w-4" /> {t("backToHome")}</Link>
+        <div className="mb-8 flex items-center gap-3">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-orange-500/20"><Flame className="h-7 w-7 fill-current" /></span>
+          <div><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("title")}</h1><p className="text-muted-foreground">{t("subtitle")}</p></div>
+        </div>
+        {products.length > 0 ? (
+          <PromotionTracker
+            promotionId="flash_sale"
+            promotionName="Flash sale"
+            currency={settings.currency}
+            items={products.map((product, index) => toGA4Item({
+              id: product.id,
+              name: product.name,
+              price: product.basePrice,
+              originalPrice: product.flashSale?.regularPrice,
+              quantity: 1,
+            }, index))}
+          >
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">{products.map((product) => <FlashSaleCard key={product.id} product={product} />)}</div>
+          </PromotionTracker>
+        ) : (
+          <div className="rounded-3xl border border-dashed border-border bg-card px-6 py-20 text-center"><h2 className="text-xl font-bold">{t("noDeals")}</h2><p className="mt-2 text-muted-foreground">{t("noDealsDescription")}</p><Link href="/ecommerce/products" className="mt-6 inline-flex rounded-lg bg-orange-600 px-5 py-3 font-bold text-white hover:bg-orange-700">{t("browseProducts")}</Link></div>
+        )}
+        <ProductPagination page={page} total={total} basePath="/ecommerce/flash-sale" />
+      </div>
+    </main>
+  );
+}

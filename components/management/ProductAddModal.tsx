@@ -1,0 +1,2286 @@
+"use client";
+
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
+import Image from "next/image";
+import { Plus, X, Zap } from "lucide-react";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  getVariantMediaMeta,
+  normalizeVariantOptions,
+  normalizeVariantMediaMeta,
+} from "@/lib/product-variants";
+import { type CatalogAttributeType } from "@/lib/attribute-schema";
+import { computeVariantAvailableStock } from "@/lib/warehouse-stock";
+import {
+  parseSpecificationGroupsInput,
+  type SpecificationGroupInput,
+} from "@/lib/product-specifications";
+import TinymceEditor from "../tinymceEditor";
+import ProductSpecificationBuilder from "./ProductSpecificationBuilder";
+
+type ProductType = "PHYSICAL" | "DIGITAL" | "SERVICE";
+
+interface Entity {
+  id: number;
+  name: string;
+}
+interface CategoryEntity extends Entity {
+  parentId: number | null;
+}
+interface VatClass {
+  id: number;
+  name: string;
+  code: string;
+}
+interface DigitalAsset {
+  id: number;
+  title: string;
+}
+interface AttributeValue {
+  id: number;
+  value: string;
+  attributeId: number;
+}
+interface Attribute {
+  id: number;
+  name: string;
+  type: CatalogAttributeType;
+  unit: string | null;
+  values: AttributeValue[];
+  categoryAttributes: Array<{
+    categoryId: number;
+    isRequired: boolean;
+    isFilterable: boolean;
+    isVariant: boolean;
+    sortOrder: number;
+    category: { id: number; name: string; slug: string };
+  }>;
+}
+
+interface ProductForm {
+  id?: number;
+  name: string;
+  description: string;
+  shortDesc: string;
+  type: ProductType;
+  sku: string;
+  model: string;
+  warranty: string;
+  basePrice: string;
+  baseCostPrice: string;
+  originalPrice: string;
+  currency: string;
+  weight: string;
+  stockQty: string;
+  lowStockThreshold: string;
+  dimLength: string;
+  dimWidth: string;
+  dimHeight: string;
+  dimUnit: string;
+  VatClassId: string;
+  digitalAssetId: string;
+  serviceDurationMinutes: string;
+  serviceLocation: string;
+  serviceOnlineLink: string;
+  categoryId: string;
+  brandId: string;
+  available: boolean;
+  featured: boolean;
+  bestSelling: boolean;
+  cartReminderHours: string;
+  cartReminderMinutes: string;
+  image: string;
+  gallery: string[];
+  videoUrl: string;
+}
+
+interface VariantOptionForm {
+  attributeId?: string;
+  name: string;
+  values: string[];
+  valueInput: string;
+}
+
+interface VariantRowForm {
+  id?: number;
+  key: string;
+  optionSummary: string;
+  options: Record<string, any>;
+  colorImage?: string;
+  gallery: string[];
+  sku: string;
+  price: string;
+  costPrice: string;
+  stock: string;
+  lowStockThreshold: string;
+  active: boolean;
+}
+
+interface SpecificationRowInput {
+  name?: unknown;
+  items?: unknown;
+}
+
+// Products arrive from the API with ordered groups/items; seed the builder with
+// that shape and drop anything the server would reject so edit never 400s.
+function normalizeSpecificationGroups(editing: any): SpecificationGroupInput[] {
+  const rawGroups = Array.isArray(editing?.specificationGroups)
+    ? editing.specificationGroups
+    : [];
+  if (rawGroups.length === 0) return [];
+
+  const shaped = rawGroups.map((group: SpecificationRowInput) => ({
+    name: typeof group?.name === "string" ? group.name : "",
+    items: Array.isArray(group?.items)
+      ? group.items.map((item: any) => ({
+          label: typeof item?.label === "string" ? item.label : "",
+          value: typeof item?.value === "string" ? item.value : "",
+        }))
+      : [],
+  }));
+
+  const parsed = parseSpecificationGroupsInput(shaped);
+  if (!parsed.ok) return [];
+
+  // Drop empty groups/items that the parser keeps but the UI treats as noise.
+  return parsed.value
+    .map((group) => ({
+      name: group.name,
+      items: group.items.filter((item) => item.label),
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (idOrData: any, data?: any) => Promise<void>;
+  editing?: any;
+  categories: CategoryEntity[];
+  brands: Entity[];
+  vatClasses?: VatClass[];
+  digitalAssets?: DigitalAsset[];
+  features?: {
+    DIGITAL_PRODUCTS: boolean;
+    SERVICE_PRODUCTS: boolean;
+  };
+}
+
+const emptyForm: ProductForm = {
+  name: "",
+  description: "",
+  shortDesc: "",
+  type: "PHYSICAL",
+  sku: "",
+  model: "",
+  warranty: "",
+  basePrice: "",
+  baseCostPrice: "",
+  originalPrice: "",
+  currency: "BDT",
+  weight: "",
+  stockQty: "0",
+  lowStockThreshold: "10",
+  dimLength: "",
+  dimWidth: "",
+  dimHeight: "",
+  dimUnit: "cm",
+  VatClassId: "",
+  digitalAssetId: "",
+  serviceDurationMinutes: "",
+  serviceLocation: "",
+  serviceOnlineLink: "",
+  categoryId: "",
+  brandId: "",
+  available: true,
+  featured: false,
+  bestSelling: false,
+  cartReminderHours: "",
+  cartReminderMinutes: "",
+  image: "",
+  gallery: [],
+  videoUrl: "",
+};
+
+const emptyVariantOption = (): VariantOptionForm => ({
+  attributeId: "",
+  name: "",
+  values: [],
+  valueInput: "",
+});
+const clean = (value: string) => value.trim();
+
+function editingVariantAvailableStock(editing: any, variantId?: number) {
+  const variants = Array.isArray(editing?.variants) ? editing.variants : [];
+  if (variantId !== undefined) {
+    const variant = variants.find((item: any) => Number(item?.id) === variantId);
+    return variant ? computeVariantAvailableStock(variant) : null;
+  }
+  return variants.reduce(
+    (sum: number, variant: any) =>
+      sum + computeVariantAvailableStock(variant),
+    0,
+  );
+}
+
+const COMPUTER_VARIANT_OPTION_NAMES = [
+  "Capacity",
+  "Type",
+  "Frequency",
+  "Operating Voltage",
+  "Latency",
+  "PMIC",
+  "Performance Profile",
+  "Memory Compatibility",
+  "Memory Detail Compatibility",
+  "Heat Sink Color",
+  "Pin",
+] as const;
+
+const isColorOptionName = (name: string) => /colou?r/i.test(clean(name));
+const stripVariantMeta = (options: Record<string, any>) =>
+  Object.fromEntries(
+    Object.entries(options ?? {}).filter(([key]) => key !== "__meta"),
+  );
+const buildVariantOptionsPayload = (row: VariantRowForm) => {
+  const baseOptions = stripVariantMeta(row.options);
+  const mediaMeta = normalizeVariantMediaMeta({
+    image: row.colorImage,
+    gallery: row.gallery,
+  });
+
+  return mediaMeta ? { ...baseOptions, __meta: mediaMeta } : baseOptions;
+};
+
+const getColorValueFromOptions = (
+  options: Record<string, any>,
+  colorOptionName?: string | null,
+) => {
+  const colorKey =
+    colorOptionName && options?.[colorOptionName] !== undefined
+      ? colorOptionName
+      : Object.keys(options ?? {}).find((key) => isColorOptionName(key));
+  const value = colorKey ? options?.[colorKey] : "";
+  return typeof value === "string" ? clean(value) : "";
+};
+
+function buildVariantKey(
+  optionNames: string[],
+  options: Record<string, string>,
+) {
+  return optionNames.map((name) => `${name}:${options[name] ?? ""}`).join("|");
+}
+
+function buildVariantSummary(
+  optionNames: string[],
+  options: Record<string, string>,
+) {
+  return optionNames.map((name) => `${name}: ${options[name]}`).join(" / ");
+}
+
+function buildCombinations(optionForms: VariantOptionForm[]) {
+  const options = normalizeVariantOptions(optionForms);
+
+  if (options.length === 0) return [];
+
+  return options.reduce<Record<string, string>[]>(
+    (acc, option) =>
+      acc.flatMap((current) =>
+        option.values.map((value) => ({
+          ...current,
+          [option.name]: value,
+        })),
+      ),
+    [{}],
+  );
+}
+
+function inferOptionForms(editing: any, variants: any[]): VariantOptionForm[] {
+  if (
+    Array.isArray(editing?.variantOptions) &&
+    editing.variantOptions.length > 0
+  ) {
+    return editing.variantOptions.map((option: any) => ({
+      attributeId: "",
+      name: String(option?.name || ""),
+      values: Array.isArray(option?.values)
+        ? option.values
+            .map((value: any) => String(value?.value || "").trim())
+            .filter(Boolean)
+        : [],
+      valueInput: "",
+    }));
+  }
+
+  const optionMap = new Map<string, Set<string>>();
+  variants.forEach((variant) => {
+    const options =
+      variant?.options && typeof variant.options === "object"
+        ? (variant.options as Record<string, unknown>)
+        : {};
+
+    Object.entries(options).forEach(([name, value]) => {
+      if (name === "__meta") return;
+
+      const optionName = clean(name);
+      const optionValue = clean(String(value || ""));
+      if (!optionName || !optionValue) return;
+      if (!optionMap.has(optionName))
+        optionMap.set(optionName, new Set<string>());
+      optionMap.get(optionName)?.add(optionValue);
+    });
+  });
+
+  return Array.from(optionMap.entries()).map(([name, values]) => ({
+    attributeId: "",
+    name,
+    values: Array.from(values),
+    valueInput: "",
+  }));
+}
+
+function buildDimensions(form: ProductForm) {
+  const length = form.dimLength.trim() ? Number(form.dimLength) : null;
+  const width = form.dimWidth.trim() ? Number(form.dimWidth) : null;
+  const height = form.dimHeight.trim() ? Number(form.dimHeight) : null;
+
+  if (length === null && width === null && height === null) return null;
+  if (
+    (length !== null && Number.isNaN(length)) ||
+    (width !== null && Number.isNaN(width)) ||
+    (height !== null && Number.isNaN(height))
+  ) {
+    return undefined;
+  }
+
+  return { length, width, height, unit: form.dimUnit || "cm" };
+}
+
+export default function ProductAddModal({
+  open,
+  onClose,
+  onSubmit,
+  editing,
+  categories,
+  brands,
+  vatClasses = [],
+  digitalAssets = [],
+  features = { DIGITAL_PRODUCTS: true, SERVICE_PRODUCTS: true },
+}: Props) {
+  const t = useTranslations("AdminProductModal");
+
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState<ProductForm>(emptyForm);
+  const [hasVariants, setHasVariants] = useState(false);
+  const [attributes, setAttributes] = useState<Attribute[]>([]);
+  const [variantOptions, setVariantOptions] = useState<VariantOptionForm[]>([]);
+  const [variantRows, setVariantRows] = useState<VariantRowForm[]>([]);
+  const [colorVariantImages, setColorVariantImages] = useState<
+    Record<string, string>
+  >({});
+  const [variantOptionSearches, setVariantOptionSearches] = useState<
+    Record<number, string>
+  >({});
+  const [specificationsEnabled, setSpecificationsEnabled] = useState(false);
+  const [specificationGroups, setSpecificationGroups] = useState<
+    SpecificationGroupInput[]
+  >([]);
+
+  const categoryOptions = useMemo(() => {
+    const childrenByParent = new Map<number | null, CategoryEntity[]>();
+    categories.forEach((category) => {
+      const key = category.parentId ?? null;
+      childrenByParent.set(key, [
+        ...(childrenByParent.get(key) ?? []),
+        category,
+      ]);
+    });
+    childrenByParent.forEach((list) =>
+      list.sort((a, b) => a.name.localeCompare(b.name)),
+    );
+    const ordered: { id: number; label: string; name: string }[] = [];
+    const visited = new Set<number>();
+    const visit = (parentId: number | null, ancestors: string[]) => {
+      const children = childrenByParent.get(parentId) ?? [];
+      children.forEach((child) => {
+        if (visited.has(child.id)) return;
+        visited.add(child.id);
+        ordered.push({
+          id: child.id,
+          name: child.name,
+          label:
+            ancestors.length > 0
+              ? `${child.name} — ${[...ancestors].reverse().join(" / ")}`
+              : child.name,
+        });
+        visit(child.id, [...ancestors, child.name]);
+      });
+    };
+    visit(null, []);
+
+    categories.forEach((category) => {
+      if (!visited.has(category.id)) {
+        ordered.push({
+          id: category.id,
+          name: category.name,
+          label: category.name,
+        });
+      }
+    });
+
+    return ordered.sort(
+      (left, right) =>
+        left.name.localeCompare(right.name) ||
+        left.label.localeCompare(right.label),
+    );
+  }, [categories]);
+
+  const normalizedVariantOptions = useMemo(
+    () => normalizeVariantOptions(variantOptions),
+    [variantOptions],
+  );
+  const optionNames = useMemo(
+    () => normalizedVariantOptions.map((option) => option.name),
+    [normalizedVariantOptions],
+  );
+  const colorOptionName = useMemo(
+    () => optionNames.find((name) => isColorOptionName(name)) ?? null,
+    [optionNames],
+  );
+  const generatedCombinations = useMemo(
+    () => (hasVariants ? buildCombinations(variantOptions) : []),
+    [hasVariants, variantOptions],
+  );
+  const totalVariantStock = useMemo(
+    () => variantRows.reduce((sum, row) => sum + (Number(row.stock) || 0), 0),
+    [variantRows],
+  );
+  const categoryAttributeMappings = useMemo(() => {
+    const categoryId = Number(form.categoryId);
+    if (!categoryId) return [];
+    return attributes
+      .flatMap((attribute) => {
+        const mapping = attribute.categoryAttributes?.find(
+          (item) =>
+            item.categoryId === categoryId || item.category.id === categoryId,
+        );
+        return mapping
+          ? [{ ...mapping, attributeId: attribute.id, attribute }]
+          : [];
+      })
+      .sort(
+        (a, b) =>
+          a.sortOrder - b.sortOrder ||
+          a.attribute.name.localeCompare(b.attribute.name),
+      );
+  }, [attributes, form.categoryId]);
+  const variantAttributeOptions = useMemo(() => {
+    if (categoryAttributeMappings.length === 0) {
+      return [...attributes].sort((left, right) =>
+        left.name.localeCompare(right.name),
+      );
+    }
+    const variantIds = new Set(
+      categoryAttributeMappings
+        .filter((mapping) => mapping.isVariant)
+        .map((mapping) => mapping.attributeId),
+    );
+    return attributes
+      .filter((attribute) => variantIds.has(attribute.id))
+      .sort((left, right) => left.name.localeCompare(right.name));
+  }, [attributes, categoryAttributeMappings]);
+  const selectableVariantOptions = useMemo(() => {
+    const managedNames = new Set(
+      variantAttributeOptions.map((attribute) =>
+        attribute.name.toLocaleLowerCase(),
+      ),
+    );
+
+    return [
+      ...variantAttributeOptions.map((attribute) => ({
+        label: attribute.name,
+        value: String(attribute.id),
+      })),
+      ...COMPUTER_VARIANT_OPTION_NAMES.filter(
+        (name) => !managedNames.has(name.toLocaleLowerCase()),
+      ).map((name) => ({ label: name, value: `preset:${name}` })),
+    ].sort((left, right) => left.label.localeCompare(right.label));
+  }, [variantAttributeOptions]);
+
+  useEffect(() => {
+    if (!editing) {
+      setForm(emptyForm);
+      setHasVariants(false);
+      setVariantOptions([]);
+      setVariantRows([]);
+      setColorVariantImages({});
+      setVariantOptionSearches({});
+      setSpecificationsEnabled(false);
+      setSpecificationGroups([]);
+      return;
+    }
+
+    const variants = Array.isArray(editing.variants) ? editing.variants : [];
+    const seededColorImages: Record<string, string> = {};
+    const seededColorGalleries: Record<string, string[]> = {};
+    variants.forEach((variant: any) => {
+      const options =
+        variant?.options && typeof variant.options === "object"
+          ? (variant.options as Record<string, unknown>)
+          : {};
+      const meta = getVariantMediaMeta(options);
+      const image =
+        typeof variant?.colorImage === "string" && variant.colorImage.trim()
+          ? variant.colorImage.trim()
+          : typeof meta?.image === "string"
+            ? meta.image
+            : "";
+      const colorKey = Object.keys(options).find((key) =>
+        isColorOptionName(key),
+      );
+      const colorValueRaw = colorKey ? options[colorKey] : null;
+      const colorValue =
+        typeof colorValueRaw === "string" ? colorValueRaw.trim() : "";
+      if (!colorValue) return;
+      if (image && !seededColorImages[colorValue])
+        seededColorImages[colorValue] = image;
+      if (Array.isArray(meta?.gallery) && meta.gallery.length > 0) {
+        seededColorGalleries[colorValue] = Array.from(
+          new Set([
+            ...(seededColorGalleries[colorValue] ?? []),
+            ...meta.gallery,
+          ]),
+        );
+      }
+    });
+    setColorVariantImages(seededColorImages);
+    const optionForms = inferOptionForms(editing, variants);
+    const optionFormsWithAttributeIds = optionForms.map((option) => {
+      const matchedAttribute = attributes.find(
+        (attribute) =>
+          attribute.name.toLowerCase() === clean(option.name).toLowerCase(),
+      );
+      return {
+        ...option,
+        attributeId: matchedAttribute ? String(matchedAttribute.id) : "",
+      };
+    });
+    const optionNameOrder = optionFormsWithAttributeIds
+      .map((option) => clean(option.name))
+      .filter(Boolean);
+    const isVariantProduct = variants.some(
+      (variant: any) => Object.keys(variant?.options ?? {}).length > 0,
+    );
+    const dimensions = editing.dimensions ?? null;
+    const cartReminderMinutes = Number(editing.cartReminderMinutes ?? 0);
+    const mappedRows = variants
+      .filter((variant: any) =>
+        isVariantProduct
+          ? Object.keys(variant?.options ?? {}).length > 0
+          : true,
+      )
+      .map((variant: any, index: number) => {
+        const options =
+          variant?.options && typeof variant.options === "object"
+            ? stripVariantMeta(variant.options)
+            : {};
+        const meta = getVariantMediaMeta(variant?.options);
+        const colorValue = getColorValueFromOptions(options);
+        return {
+          id: variant?.id ? Number(variant.id) : undefined,
+          key: isVariantProduct
+            ? buildVariantKey(optionNameOrder, options)
+            : `simple-${variant.id ?? index}`,
+          optionSummary: isVariantProduct
+            ? buildVariantSummary(optionNameOrder, options)
+            : t("variants.defaultVariant"),
+          options,
+          colorImage:
+            typeof variant?.colorImage === "string" && variant.colorImage.trim()
+              ? variant.colorImage.trim()
+              : "",
+          gallery:
+            colorValue && seededColorGalleries[colorValue]
+              ? seededColorGalleries[colorValue]
+              : (meta?.gallery ?? []),
+          sku: String(variant?.sku || ""),
+          price: String(variant?.price ?? ""),
+          costPrice:
+            variant?.costPrice != null ? String(variant.costPrice) : "",
+          stock: String(computeVariantAvailableStock(variant)),
+          lowStockThreshold: String(Number(variant?.lowStockThreshold) || 10),
+          active:
+            variant?.active !== undefined ? Boolean(variant.active) : true,
+        };
+      });
+
+    setForm({
+      id: editing.id,
+      name: editing.name ?? "",
+      description: editing.description ?? "",
+      shortDesc: editing.shortDesc ?? "",
+      type: (editing.type as ProductType) ?? "PHYSICAL",
+      sku: editing.sku ?? "",
+      model: editing.model ?? "",
+      warranty: editing.warranty ?? "",
+      basePrice: editing.basePrice?.toString?.() ?? "",
+      baseCostPrice:
+        mappedRows[0]?.costPrice ??
+        variants
+          .find((variant: any) => variant?.isDefault)
+          ?.costPrice?.toString?.() ??
+        "",
+      originalPrice: editing.originalPrice?.toString?.() ?? "",
+      currency: editing.currency ?? "BDT",
+      weight: editing.weight?.toString?.() ?? "",
+      stockQty: String(
+        mappedRows.reduce(
+          (sum: number, row: VariantRowForm) => sum + (Number(row.stock) || 0),
+          0,
+        ),
+      ),
+      lowStockThreshold: editing.lowStockThreshold?.toString?.() ?? "10",
+      dimLength: dimensions?.length != null ? String(dimensions.length) : "",
+      dimWidth: dimensions?.width != null ? String(dimensions.width) : "",
+      dimHeight: dimensions?.height != null ? String(dimensions.height) : "",
+      dimUnit: typeof dimensions?.unit === "string" ? dimensions.unit : "cm",
+      VatClassId: editing.VatClassId?.toString?.() ?? "",
+      digitalAssetId: editing.digitalAssetId?.toString?.() ?? "",
+      serviceDurationMinutes:
+        editing.serviceDurationMinutes?.toString?.() ?? "",
+      serviceLocation: editing.serviceLocation ?? "",
+      serviceOnlineLink: editing.serviceOnlineLink ?? "",
+      categoryId: editing.categoryId?.toString?.() ?? "",
+      brandId: editing.brandId?.toString?.() ?? "",
+      available: editing.available ?? true,
+      featured: editing.featured ?? false,
+      bestSelling: editing.bestSelling ?? false,
+      cartReminderHours:
+        cartReminderMinutes > 0
+          ? String(Math.floor(cartReminderMinutes / 60))
+          : "",
+      cartReminderMinutes:
+        cartReminderMinutes > 0 ? String(cartReminderMinutes % 60) : "",
+      image: editing.image ?? "",
+      gallery: editing.gallery ?? [],
+      videoUrl: editing.videoUrl ?? "",
+    });
+    const seededSpecifications = normalizeSpecificationGroups(editing);
+    setSpecificationsEnabled(seededSpecifications.length > 0);
+    setSpecificationGroups(seededSpecifications);
+
+    setHasVariants(isVariantProduct);
+    setVariantOptions(isVariantProduct ? optionFormsWithAttributeIds : []);
+    setVariantRows(isVariantProduct ? mappedRows : []);
+  }, [attributes, editing, t]);
+
+  useEffect(() => {
+    if (!hasVariants || !colorOptionName) return;
+    if (!Object.keys(colorVariantImages).length) return;
+
+    setVariantRows((prev) =>
+      prev.map((row) => {
+        const colorValue =
+          typeof row.options?.[colorOptionName] === "string"
+            ? String(row.options[colorOptionName]).trim()
+            : "";
+        if (!colorValue) return row;
+        const image = colorVariantImages[colorValue];
+        if (!image) return row;
+
+        return { ...row, colorImage: image };
+      }),
+    );
+  }, [colorOptionName, colorVariantImages, hasVariants]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const loadAttributes = async () => {
+      try {
+        const res = await fetch("/api/attributes", { cache: "no-store" });
+        const data = await res.json();
+        setAttributes(Array.isArray(data) ? data : []);
+      } catch {
+        setAttributes([]);
+      }
+    };
+
+    void loadAttributes();
+  }, [open]);
+
+  useEffect(() => {
+    if (!hasVariants) {
+      setVariantRows((prev) => (prev.length === 0 ? prev : []));
+      return;
+    }
+
+    if (generatedCombinations.length === 0) {
+      setVariantRows((prev) => (prev.length === 0 ? prev : []));
+      return;
+    }
+
+    setVariantRows((prev) => {
+      const previousByKey = new Map(prev.map((row) => [row.key, row]));
+      const previousGalleryByColor = new Map<string, string[]>();
+      prev.forEach((row) => {
+        const colorValue = getColorValueFromOptions(
+          row.options,
+          colorOptionName,
+        );
+        if (!colorValue || previousGalleryByColor.has(colorValue)) return;
+        if (row.gallery.length > 0)
+          previousGalleryByColor.set(colorValue, row.gallery);
+      });
+      return generatedCombinations.map((combination) => {
+        const key = buildVariantKey(optionNames, combination);
+        const previous = previousByKey.get(key);
+        const colorValue = getColorValueFromOptions(
+          combination,
+          colorOptionName,
+        );
+        return {
+          id: previous?.id,
+          key,
+          optionSummary: buildVariantSummary(optionNames, combination),
+          options: combination,
+          colorImage:
+            colorOptionName &&
+            typeof combination[colorOptionName] === "string" &&
+            colorVariantImages[clean(String(combination[colorOptionName]))]
+              ? colorVariantImages[clean(String(combination[colorOptionName]))]
+              : (previous?.colorImage ?? ""),
+          gallery:
+            colorValue && previousGalleryByColor.has(colorValue)
+              ? (previousGalleryByColor.get(colorValue) ?? [])
+              : (previous?.gallery ?? []),
+          sku: form.sku.trim() || previous?.sku || "",
+          price: previous?.price ?? form.basePrice ?? "",
+          costPrice: previous?.costPrice ?? form.baseCostPrice ?? "",
+          stock: previous?.stock ?? "0",
+          lowStockThreshold:
+            previous?.lowStockThreshold ?? form.lowStockThreshold ?? "10",
+          active: previous?.active ?? true,
+        };
+      });
+    });
+  }, [
+    colorOptionName,
+    colorVariantImages,
+    form.baseCostPrice,
+    form.lowStockThreshold,
+    form.basePrice,
+    form.sku,
+    generatedCombinations,
+    hasVariants,
+    optionNames,
+  ]);
+
+  if (!open) return null;
+
+  const uploadFile = async (file: File, folder: string) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`/api/upload/${folder}`, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data?.url)
+      throw new Error(data?.message || t("errors.uploadFailed"));
+    return data.url as string;
+  };
+
+  const handleColorVariantImageUpload = async (
+    colorValue: string,
+    file: File,
+  ) => {
+    const value = clean(colorValue);
+    if (!value) return;
+    try {
+      const url = await uploadFile(file, "color-variant");
+      setColorVariantImages((prev) => ({ ...prev, [value]: url }));
+    } catch (err: any) {
+      toast.error(err?.message || t("errors.imageUploadFailed"));
+    }
+  };
+
+  const handleMainImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const url = await uploadFile(file, "products");
+      setForm((prev) => ({ ...prev, image: url }));
+    } catch (err: any) {
+      toast.error(err?.message || t("errors.imageUploadFailed"));
+    }
+  };
+
+  const handleGalleryUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.length) return;
+    try {
+      const urls = await Promise.all(
+        Array.from(e.target.files).map((file) =>
+          uploadFile(file, "products/gallery"),
+        ),
+      );
+      setForm((prev) => ({ ...prev, gallery: [...prev.gallery, ...urls] }));
+    } catch (err: any) {
+      toast.error(err?.message || t("errors.galleryUploadFailed"));
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      gallery: prev.gallery.filter((_, i) => i !== index),
+    }));
+  };
+
+  const syncVariantGalleryByColor = (rowIndex: number, gallery: string[]) => {
+    setVariantRows((prev) => {
+      const sourceRow = prev[rowIndex];
+      if (!sourceRow) return prev;
+      const colorValue = getColorValueFromOptions(
+        sourceRow.options,
+        colorOptionName,
+      );
+      if (!colorValue) {
+        return prev.map((row, currentIndex) =>
+          currentIndex === rowIndex ? { ...row, gallery } : row,
+        );
+      }
+
+      return prev.map((row) =>
+        getColorValueFromOptions(row.options, colorOptionName) === colorValue
+          ? { ...row, gallery }
+          : row,
+      );
+    });
+  };
+
+  const handleVariantGalleryUpload = async (
+    index: number,
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (!e.target.files?.length) return;
+
+    try {
+      const urls = await Promise.all(
+        Array.from(e.target.files).map((file) =>
+          uploadFile(file, "products/variants/gallery"),
+        ),
+      );
+      syncVariantGalleryByColor(
+        index,
+        Array.from(new Set([...(variantRows[index]?.gallery ?? []), ...urls])),
+      );
+    } catch (err: any) {
+      toast.error(err?.message || t("errors.variantGalleryUploadFailed"));
+    } finally {
+      e.target.value = "";
+    }
+  };
+
+  const removeVariantGalleryImage = (rowIndex: number, imageIndex: number) => {
+    const nextGallery = (variantRows[rowIndex]?.gallery ?? []).filter(
+      (_, currentIndex) => currentIndex !== imageIndex,
+    );
+    syncVariantGalleryByColor(rowIndex, nextGallery);
+  };
+
+  const updateVariantOption = (
+    index: number,
+    patch: Partial<VariantOptionForm>,
+  ) => {
+    setVariantOptions((prev) =>
+      prev.map((option, optionIndex) =>
+        optionIndex === index ? { ...option, ...patch } : option,
+      ),
+    );
+  };
+
+  const applyManagedAttribute = (index: number, attributeId: string) => {
+    const selectedAttribute = attributes.find(
+      (attribute) => String(attribute.id) === attributeId,
+    );
+    if (!selectedAttribute) {
+      updateVariantOption(index, { attributeId: "", name: "", values: [] });
+      return;
+    }
+
+    updateVariantOption(index, {
+      attributeId,
+      name: selectedAttribute.name,
+      values: selectedAttribute.values.map((value) => value.value),
+      valueInput: "",
+    });
+  };
+
+  const applyVariantOptionSelection = (index: number, selection: string) => {
+    setVariantOptionSearches((previous) => ({ ...previous, [index]: "" }));
+    if (selection.startsWith("preset:")) {
+      const selectedName = selection.slice("preset:".length);
+      const duplicate = variantOptions.some(
+        (option, optionIndex) =>
+          optionIndex !== index &&
+          clean(option.name).toLocaleLowerCase() ===
+            selectedName.toLocaleLowerCase(),
+      );
+      if (duplicate) {
+        toast.error(t("errors.duplicateOption", { name: selectedName }));
+        return;
+      }
+      updateVariantOption(index, {
+        attributeId: "",
+        name: selectedName,
+        values: [],
+        valueInput: "",
+      });
+      return;
+    }
+
+    const selectedAttribute = attributes.find(
+      (attribute) => String(attribute.id) === selection,
+    );
+    const duplicate = selectedAttribute
+      ? variantOptions.some(
+          (option, optionIndex) =>
+            optionIndex !== index &&
+            clean(option.name).toLocaleLowerCase() ===
+              selectedAttribute.name.toLocaleLowerCase(),
+        )
+      : false;
+    if (duplicate && selectedAttribute) {
+      toast.error(
+        t("errors.duplicateOption", { name: selectedAttribute.name }),
+      );
+      return;
+    }
+
+    applyManagedAttribute(index, selection);
+  };
+
+  const addOptionValue = (index: number) => {
+    const nextValue = clean(variantOptions[index]?.valueInput || "");
+    if (!nextValue) return;
+    updateVariantOption(index, {
+      values: variantOptions[index].values.includes(nextValue)
+        ? variantOptions[index].values
+        : [...variantOptions[index].values, nextValue],
+      valueInput: "",
+    });
+  };
+
+  const removeOptionValue = (optionIndex: number, value: string) => {
+    updateVariantOption(optionIndex, {
+      values: variantOptions[optionIndex].values.filter(
+        (item) => item !== value,
+      ),
+    });
+  };
+
+  const updateVariantRow = (index: number, patch: Partial<VariantRowForm>) => {
+    setVariantRows((prev) =>
+      prev.map((row, rowIndex) =>
+        rowIndex === index ? { ...row, ...patch } : row,
+      ),
+    );
+  };
+
+  const handleProductSkuChange = (value: string) => {
+    setForm((prev) => ({ ...prev, sku: value }));
+    setVariantRows((prev) => prev.map((row) => ({ ...row, sku: value })));
+  };
+
+  const handleBasePriceChange = (value: string) => {
+    const previousBasePrice = form.basePrice;
+    setForm((prev) => ({ ...prev, basePrice: value }));
+    setVariantRows((rows) =>
+      rows.map((row) =>
+        !row.price || row.price === previousBasePrice
+          ? { ...row, price: value }
+          : row,
+      ),
+    );
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!form.name || !form.basePrice || !form.categoryId) {
+      toast.error(t("errors.nameCategoryPriceRequired"));
+      return;
+    }
+
+    const dimensions = buildDimensions(form);
+    if (dimensions === undefined) {
+      toast.error(t("errors.invalidDimensions"));
+      return;
+    }
+
+    const basePrice = Number(form.basePrice);
+    if (!Number.isFinite(basePrice) || basePrice < 0) {
+      toast.error(t("errors.invalidBasePrice"));
+      return;
+    }
+    const baseCostPrice = form.baseCostPrice.trim()
+      ? Number(form.baseCostPrice)
+      : null;
+    if (
+      baseCostPrice !== null &&
+      (!Number.isFinite(baseCostPrice) || baseCostPrice < 0)
+    ) {
+      toast.error(t("errors.invalidBaseCostPrice"));
+      return;
+    }
+    if (hasVariants && !form.sku.trim()) {
+      toast.error(t("errors.skuRequiredForVariants"));
+      return;
+    }
+
+    const normalizedVariants = variantRows.map((row) => ({
+      id: row.id,
+      sku: hasVariants ? form.sku.trim() : row.sku.trim(),
+      price: row.price.trim() ? Number(row.price) : basePrice,
+      costPrice: row.costPrice.trim() ? Number(row.costPrice) : baseCostPrice,
+      stock: row.stock.trim() ? Number(row.stock) : 0,
+      lowStockThreshold: row.lowStockThreshold.trim()
+        ? Number(row.lowStockThreshold)
+        : Number(form.lowStockThreshold || "10"),
+      active: row.active,
+      colorImage: row.colorImage?.trim() || null,
+      gallery: row.gallery,
+      options: buildVariantOptionsPayload(row),
+    }));
+
+    const invalidVariant = normalizedVariants.find(
+      (variant) =>
+        !variant.sku ||
+        !Number.isFinite(variant.price) ||
+        variant.price < 0 ||
+        (variant.costPrice !== null &&
+          (!Number.isFinite(variant.costPrice) || variant.costPrice < 0)) ||
+        !Number.isSafeInteger(variant.stock) ||
+        variant.stock < 0 ||
+        !Number.isFinite(variant.lowStockThreshold) ||
+        variant.lowStockThreshold < 0,
+    );
+
+    if (hasVariants && normalizedVariantOptions.length === 0) {
+      toast.error(t("errors.addVariantOption"));
+      return;
+    }
+    if (hasVariants && normalizedVariants.length === 0) {
+      toast.error(t("errors.generatedVariantsRequired"));
+      return;
+    }
+    if (hasVariants && invalidVariant) {
+      toast.error(t("errors.invalidVariant"));
+      return;
+    }
+
+    const stock =
+      form.type === "PHYSICAL"
+        ? hasVariants
+          ? normalizedVariants.reduce((sum, variant) => sum + variant.stock, 0)
+          : form.stockQty.trim()
+            ? Number(form.stockQty)
+            : 0
+        : undefined;
+
+    if (stock !== undefined && (!Number.isSafeInteger(stock) || stock < 0)) {
+      toast.error(t("errors.invalidStock"));
+      return;
+    }
+
+    const lowStockThreshold = form.lowStockThreshold.trim()
+      ? Number(form.lowStockThreshold)
+      : 10;
+    if (!Number.isFinite(lowStockThreshold) || lowStockThreshold < 0) {
+      toast.error(t("errors.invalidLowStockThreshold"));
+      return;
+    }
+    const reminderHours = form.cartReminderHours.trim()
+      ? Number(form.cartReminderHours)
+      : 0;
+    const reminderMinutes = form.cartReminderMinutes.trim()
+      ? Number(form.cartReminderMinutes)
+      : 0;
+    if (
+      !Number.isInteger(reminderHours) ||
+      !Number.isInteger(reminderMinutes) ||
+      reminderHours < 0 ||
+      reminderMinutes < 0 ||
+      reminderMinutes > 59
+    ) {
+      toast.error(t("errors.invalidCartReminder"));
+      return;
+    }
+    const cartReminderMinutes =
+      reminderHours === 0 && reminderMinutes === 0
+        ? null
+        : reminderHours * 60 + reminderMinutes;
+
+    const specificationInput = specificationsEnabled
+      ? specificationGroups
+          .map((group) => ({
+            name: group.name.trim(),
+            items: group.items
+              .map((item) => ({
+                label: item.label.trim(),
+                value: item.value.trim(),
+              }))
+              .filter((item) => item.label || item.value),
+          }))
+          .filter((group) => group.name || group.items.length > 0)
+      : [];
+    const specificationValidation =
+      parseSpecificationGroupsInput(specificationInput);
+    if (!specificationValidation.ok) {
+      toast.error(specificationValidation.error);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload: any = {
+        name: form.name.trim(),
+        description: form.description || "",
+        shortDesc: form.shortDesc || null,
+        type: form.type,
+        sku: form.sku.trim() || null,
+        model: form.model.trim() || null,
+        warranty: form.warranty.trim() || null,
+        categoryId: Number(form.categoryId),
+        brandId: form.brandId ? Number(form.brandId) : null,
+        basePrice,
+        baseCostPrice,
+        originalPrice: form.originalPrice ? Number(form.originalPrice) : null,
+        currency: form.currency || "USD",
+        weight: form.weight ? Number(form.weight) : null,
+        lowStockThreshold,
+        dimensions,
+        VatClassId: form.VatClassId ? Number(form.VatClassId) : null,
+        digitalAssetId: form.digitalAssetId
+          ? Number(form.digitalAssetId)
+          : null,
+        serviceDurationMinutes: form.serviceDurationMinutes
+          ? Number(form.serviceDurationMinutes)
+          : null,
+        serviceLocation: form.serviceLocation || null,
+        serviceOnlineLink: form.serviceOnlineLink || null,
+        featured: form.featured,
+        bestSelling: form.bestSelling,
+        cartReminderMinutes,
+        image: form.image || null,
+        gallery: form.gallery || [],
+        videoUrl: form.videoUrl || null,
+        variantOptions: hasVariants ? normalizedVariantOptions : [],
+        specificationGroups: specificationValidation.value,
+      };
+
+      if (!editing) payload.available = form.available;
+
+      if (form.type === "PHYSICAL" && !hasVariants && stock !== undefined) {
+        const originalAvailable = editingVariantAvailableStock(editing);
+        if (!editing || stock !== originalAvailable) {
+          payload.stock = stock;
+          if (editing) payload.expectedAvailableStock = originalAvailable;
+        }
+      }
+      if (hasVariants) {
+        payload.variants = normalizedVariants.map((variant) => {
+          const originalAvailable = variant.id
+            ? editingVariantAvailableStock(editing, variant.id)
+            : null;
+          const stockChanged =
+            form.type === "PHYSICAL" &&
+            (!editing || !variant.id || originalAvailable !== variant.stock);
+
+          return {
+            id: variant.id,
+            sku: variant.sku,
+            price: variant.price,
+            costPrice: variant.costPrice,
+            currency: form.currency || "USD",
+            ...(stockChanged
+              ? {
+                  stock: variant.stock,
+                  ...(variant.id && originalAvailable !== null
+                    ? { expectedAvailableStock: originalAvailable }
+                    : {}),
+                }
+              : {}),
+            lowStockThreshold: variant.lowStockThreshold,
+            active: variant.active,
+            colorImage: variant.colorImage,
+            options: variant.options,
+          };
+        });
+      }
+
+      if (editing) await onSubmit(editing.id, payload);
+      else await onSubmit(payload);
+
+      onClose();
+    } catch (err: any) {
+      toast.error(err?.message || t("errors.saveFailed"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div className="relative max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-2xl border bg-background p-6 shadow-xl">
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-muted/50 text-muted-foreground transition-all hover:bg-destructive hover:text-destructive-foreground hover:border-destructive focus:outline-none focus:ring-2 focus:ring-destructive focus:ring-offset-2"
+          aria-label={t("closeModal")}
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <h2 className="mb-4 text-2xl font-bold">
+          {editing ? t("titleEdit") : t("titleAdd")}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <section className="space-y-4 rounded-xl border p-4">
+            <div>
+              <h3 className="font-semibold">{t("basic.title")}</h3>
+              <p className="text-sm text-muted-foreground">
+                {t("basic.subtitle")}
+              </p>
+            </div>
+            <div>
+              <Label>{t("basic.name")}</Label>
+              <Input
+                value={form.name}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, name: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <Label>{t("basic.description")}</Label>
+              <TinymceEditor
+                value={form.description}
+                onChange={(content) =>
+                  setForm((prev) => ({ ...prev, description: content }))
+                }
+                height={400}
+              />
+            </div>
+            <div>
+              <Label>{t("basic.shortDescription")}</Label>
+              <TinymceEditor
+                value={form.shortDesc}
+                onChange={(content) =>
+                  setForm((prev) => ({ ...prev, shortDesc: content }))
+                }
+                height={200}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div>
+                <Label>{t("basic.type")}</Label>
+                <select
+                  className="w-full rounded border border-border bg-background p-2"
+                  value={form.type}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      type: e.target.value as ProductType,
+                    }))
+                  }
+                >
+                  <option value="PHYSICAL">{t("productTypes.PHYSICAL")}</option>
+                  {features.DIGITAL_PRODUCTS ? (
+                    <option value="DIGITAL">{t("productTypes.DIGITAL")}</option>
+                  ) : null}
+                  {features.SERVICE_PRODUCTS ? (
+                    <option value="SERVICE">{t("productTypes.SERVICE")}</option>
+                  ) : null}
+                </select>
+              </div>
+              <div>
+                <Label>{t("basic.productSku")}</Label>
+                <Input
+                  value={form.sku}
+                  onChange={(e) => handleProductSkuChange(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Label>{t("basic.model")}</Label>
+                <Input
+                  value={form.model}
+                  onChange={(event) =>
+                    setForm((previous) => ({
+                      ...previous,
+                      model: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div>
+                <Label>{t("basic.warranty")}</Label>
+                <Input
+                  value={form.warranty}
+                  onChange={(event) =>
+                    setForm((previous) => ({
+                      ...previous,
+                      warranty: event.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <Label>{t("basic.baseSellPrice")}</Label>
+                <Input
+                  type="number"
+                  value={form.basePrice}
+                  onChange={(e) => handleBasePriceChange(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label>{t("basic.basePurchasePrice")}</Label>
+                <Input
+                  type="number"
+                  value={form.baseCostPrice}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      baseCostPrice: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <Label>{t("basic.originalPrice")}</Label>
+                <Input
+                  type="number"
+                  value={form.originalPrice}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      originalPrice: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div>
+                <Label>{t("basic.currency")}</Label>
+                <Input
+                  value={form.currency}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      currency: e.target.value.toUpperCase(),
+                    }))
+                  }
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <Label>{t("basic.category")}</Label>
+                <select
+                  className="w-full rounded border border-border bg-background p-2"
+                  value={form.categoryId}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, categoryId: e.target.value }))
+                  }
+                >
+                  <option value="">{t("basic.select")}</option>
+                  {categoryOptions.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>{t("basic.brand")}</Label>
+                <select
+                  className="w-full rounded border border-border bg-background p-2"
+                  value={form.brandId}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, brandId: e.target.value }))
+                  }
+                >
+                  <option value="">{t("basic.select")}</option>
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-4 rounded-xl border p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="font-semibold">{t("variants.title")}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t("variants.subtitle")}
+                </p>
+              </div>
+              <label className="flex items-center gap-2 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  checked={hasVariants}
+                  onChange={(e) => setHasVariants(e.target.checked)}
+                />
+                {t("variants.enable")}
+              </label>
+            </div>
+
+            {!hasVariants ? (
+              <div className="rounded-lg border border-dashed p-4">
+                <p className="text-sm text-muted-foreground">
+                  {t("variants.simpleProductNotice")}
+                </p>
+                {form.type === "PHYSICAL" && (
+                  <div className="mt-4 grid max-w-2xl grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <Label>{t("variants.simpleStock")}</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={form.stockQty}
+                        onChange={(e) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            stockQty: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label>{t("variants.emergencyStock")}</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        value={form.lowStockThreshold}
+                        onChange={(e) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            lowStockThreshold: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground md:col-span-2">
+                      {t("variants.stockSemantics")}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {variantOptions.map((option, index) => (
+                  <div
+                    key={`option-${index}`}
+                    className="rounded-lg border p-4"
+                  >
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_1.2fr_auto]">
+                      <div>
+                        <Label>{t("variants.option")}</Label>
+                        <Input
+                          className="mb-2"
+                          placeholder={t("variants.searchOptions")}
+                          aria-label={t("variants.searchOptionAria", {
+                            index: index + 1,
+                          })}
+                          value={variantOptionSearches[index] ?? ""}
+                          onChange={(event) =>
+                            setVariantOptionSearches((previous) => ({
+                              ...previous,
+                              [index]: event.target.value,
+                            }))
+                          }
+                        />
+                        <select
+                          className="w-full rounded border border-border bg-background p-2"
+                          value={
+                            option.attributeId ||
+                            (COMPUTER_VARIANT_OPTION_NAMES.includes(
+                              option.name as (typeof COMPUTER_VARIANT_OPTION_NAMES)[number],
+                            )
+                              ? `preset:${option.name}`
+                              : "")
+                          }
+                          onChange={(e) =>
+                            applyVariantOptionSelection(index, e.target.value)
+                          }
+                        >
+                          <option value="">
+                            {t("variants.selectManagedAttribute")}
+                          </option>
+                          {selectableVariantOptions
+                            .filter((item) =>
+                              item.label
+                                .toLocaleLowerCase()
+                                .includes(
+                                  (variantOptionSearches[index] ?? "")
+                                    .trim()
+                                    .toLocaleLowerCase(),
+                                ),
+                            )
+                            .map((item) => (
+                              <option key={item.value} value={item.value}>
+                                {item.label}
+                              </option>
+                            ))}
+                        </select>
+                        {!option.attributeId && (
+                          <Input
+                            className="mt-2"
+                            placeholder={t("variants.customOptionName")}
+                            value={option.name}
+                            onChange={(e) =>
+                              updateVariantOption(index, {
+                                name: e.target.value,
+                              })
+                            }
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <Label>{t("variants.addOptionValue")}</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="M"
+                            value={option.valueInput}
+                            onChange={(e) =>
+                              updateVariantOption(index, {
+                                valueInput: e.target.value,
+                              })
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                addOptionValue(index);
+                              }
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => addOptionValue(index)}
+                          >
+                            {t("variants.add")}
+                          </Button>
+                        </div>
+                        {option.attributeId && (
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {t("variants.attributeLoaded")}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-end justify-end">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="text-destructive"
+                          onClick={() =>
+                            setVariantOptions((prev) =>
+                              prev.filter(
+                                (_, optionIndex) => optionIndex !== index,
+                              ),
+                            )
+                          }
+                        >
+                          {t("variants.remove")}
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {option.values.length === 0 ? (
+                        <p className="text-sm text-muted-foreground">
+                          {t("variants.noValues")}
+                        </p>
+                      ) : (
+                        option.values.map((value) => (
+                          <span
+                            key={`${option.name}-${value}`}
+                            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm"
+                          >
+                            {value}
+                            {isColorOptionName(option.name) && (
+                              <span className="inline-flex items-center gap-2">
+                                {colorVariantImages[clean(value)] && (
+                                  <span className="relative h-6 w-6 overflow-hidden rounded border">
+                                    <Image
+                                      src={colorVariantImages[clean(value)]}
+                                      alt={value}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </span>
+                                )}
+                                <label className="cursor-pointer rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted">
+                                  {t("variants.upload")}
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0];
+                                      if (!file) return;
+                                      void handleColorVariantImageUpload(
+                                        value,
+                                        file,
+                                      );
+                                    }}
+                                  />
+                                </label>
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeOptionValue(index, value)}
+                              className="text-muted-foreground hover:text-foreground"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </span>
+                        ))
+                      )}
+                    </div>
+                    {option.attributeId &&
+                      (() => {
+                        const selectedAttribute = attributes.find(
+                          (attribute) =>
+                            String(attribute.id) === option.attributeId,
+                        );
+                        const missingValues = (selectedAttribute?.values ?? [])
+                          .map((value) => value.value)
+                          .filter((value) => !option.values.includes(value));
+
+                        if (missingValues.length === 0) return null;
+
+                        return (
+                          <div className="mt-3">
+                            <p className="mb-2 text-xs text-muted-foreground">
+                              {t("variants.managedValuesAvailable")}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {missingValues.map((value) => (
+                                <button
+                                  key={`${option.attributeId}-${value}`}
+                                  type="button"
+                                  className="rounded-full border px-3 py-1 text-xs hover:bg-muted"
+                                  onClick={() =>
+                                    updateVariantOption(index, {
+                                      values: [...option.values, value],
+                                    })
+                                  }
+                                >
+                                  {value}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                  </div>
+                ))}
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() =>
+                    setVariantOptions((prev) => [...prev, emptyVariantOption()])
+                  }
+                >
+                  <Plus className="mr-1 h-4 w-4" />
+                  {t("variants.addVariantOption")}
+                </Button>
+
+                <div className="rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">
+                        {t("variants.combinationsTitle")}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {t("variants.combinationsSubtitle")}
+                      </p>
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {t("variants.combinationsCount", {
+                        count: variantRows.length,
+                      })}
+                    </div>
+                  </div>
+                  {variantRows.length === 0 ? (
+                    <p className="mt-4 text-sm text-muted-foreground">
+                      {t("variants.noCombinations")}
+                    </p>
+                  ) : (
+                    <div className="mt-4 overflow-x-auto">
+                      <table className="w-full min-w-[1080px] border-collapse text-sm">
+                        <thead>
+                          <tr className="border-b text-left">
+                            <th className="px-2 py-2 font-medium">
+                              {t("variants.table.combination")}
+                            </th>
+                            <th className="px-2 py-2 font-medium">
+                              {t("variants.table.sku")}
+                            </th>
+                            <th className="px-2 py-2 font-medium">
+                              {t("variants.table.sellPrice")}
+                            </th>
+                            <th className="px-2 py-2 font-medium">
+                              {t("variants.table.purchasePrice")}
+                            </th>
+                            {form.type === "PHYSICAL" && (
+                              <th className="px-2 py-2 font-medium">
+                                {t("variants.table.stock")}
+                              </th>
+                            )}
+                            {form.type === "PHYSICAL" && (
+                              <th className="px-2 py-2 font-medium">
+                                {t("variants.table.emergencyStock")}
+                              </th>
+                            )}
+                            <th className="px-2 py-2 font-medium">
+                              {t("variants.table.status")}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {variantRows.map((row, index) => {
+                            const rowColorValue = getColorValueFromOptions(
+                              row.options,
+                              colorOptionName,
+                            );
+                            const isFirstGalleryRowForColor =
+                              !rowColorValue ||
+                              variantRows.findIndex(
+                                (candidate) =>
+                                  getColorValueFromOptions(
+                                    candidate.options,
+                                    colorOptionName,
+                                  ) === rowColorValue,
+                              ) === index;
+
+                            return (
+                              <tr key={row.key} className="border-b">
+                                <td className="px-2 py-3">
+                                  <div className="font-medium">
+                                    {row.optionSummary}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {t("variants.warehouseTarget")}
+                                  </div>
+                                  <div className="mt-3 space-y-2">
+                                    {isFirstGalleryRowForColor ? (
+                                      <div className="flex flex-wrap gap-2">
+                                        {row.gallery.map((img, imageIndex) => (
+                                          <div
+                                            key={`${row.key}-gallery-${imageIndex}`}
+                                            className="relative h-16 w-16 overflow-hidden rounded border border-border bg-muted/20"
+                                          >
+                                            <Image
+                                              src={img}
+                                              alt={`${row.optionSummary} gallery ${imageIndex + 1}`}
+                                              fill
+                                              className="object-cover"
+                                            />
+                                            <button
+                                              type="button"
+                                              className="absolute right-1 top-1 rounded-full bg-background/90 p-1 text-foreground shadow-sm transition hover:bg-destructive hover:text-destructive-foreground"
+                                              onClick={() =>
+                                                removeVariantGalleryImage(
+                                                  index,
+                                                  imageIndex,
+                                                )
+                                              }
+                                            >
+                                              <X className="h-3 w-3" />
+                                            </button>
+                                          </div>
+                                        ))}
+                                        <label className="inline-flex h-16 cursor-pointer items-center justify-center rounded border border-dashed border-border px-3 text-xs font-medium text-muted-foreground transition hover:border-primary hover:text-foreground">
+                                          {t("variants.uploadGallery")}
+                                          <input
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={(e) => {
+                                              void handleVariantGalleryUpload(
+                                                index,
+                                                e,
+                                              );
+                                            }}
+                                          />
+                                        </label>
+                                      </div>
+                                    ) : (
+                                      <p className="text-xs text-muted-foreground">
+                                        {t("variants.sameGalleryAsColor", {
+                                          color: rowColorValue,
+                                        })}
+                                      </p>
+                                    )}
+                                    {isFirstGalleryRowForColor &&
+                                      row.gallery.length === 0 && (
+                                        <p className="text-xs text-muted-foreground">
+                                          {t("variants.gallerySharedNotice")}
+                                        </p>
+                                      )}
+                                  </div>
+                                </td>
+                                <td className="px-2 py-3">
+                                  <Input
+                                    value={row.sku}
+                                    placeholder={t("variants.table.sku")}
+                                    disabled
+                                  />
+                                </td>
+                                <td className="px-2 py-3">
+                                  <Input
+                                    type="number"
+                                    value={row.price}
+                                    placeholder={
+                                      form.basePrice ||
+                                      t("variants.basePricePlaceholder")
+                                    }
+                                    onChange={(e) =>
+                                      updateVariantRow(index, {
+                                        price: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </td>
+                                <td className="px-2 py-3">
+                                  <Input
+                                    type="number"
+                                    value={row.costPrice}
+                                    placeholder={
+                                      form.baseCostPrice ||
+                                      t("variants.purchasePricePlaceholder")
+                                    }
+                                    onChange={(e) =>
+                                      updateVariantRow(index, {
+                                        costPrice: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </td>
+                                {form.type === "PHYSICAL" && (
+                                  <td className="px-2 py-3">
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      step="1"
+                                      value={row.stock}
+                                      onChange={(e) =>
+                                        updateVariantRow(index, {
+                                          stock: e.target.value,
+                                        })
+                                      }
+                                    />
+                                  </td>
+                                )}
+                                {form.type === "PHYSICAL" && (
+                                  <td className="px-2 py-3">
+                                    <Input
+                                      type="number"
+                                      min="0"
+                                      value={row.lowStockThreshold}
+                                      onChange={(e) =>
+                                        updateVariantRow(index, {
+                                          lowStockThreshold: e.target.value,
+                                        })
+                                      }
+                                    />
+                                  </td>
+                                )}
+                                <td className="px-2 py-3">
+                                  <label className="flex items-center gap-2 text-sm">
+                                    <input
+                                      type="checkbox"
+                                      checked={row.active}
+                                      onChange={(e) =>
+                                        updateVariantRow(index, {
+                                          active: e.target.checked,
+                                        })
+                                      }
+                                    />
+                                    {t("variants.active")}
+                                  </label>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  {form.type === "PHYSICAL" && variantRows.length > 0 && (
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      {t("variants.totalVariantStock", {
+                        count: totalVariantStock,
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </section>
+
+          <ProductSpecificationBuilder
+            enabled={specificationsEnabled}
+            groups={specificationGroups}
+            onEnabledChange={setSpecificationsEnabled}
+            onChange={setSpecificationGroups}
+          />
+
+          <section className="space-y-4 rounded-xl border p-4">
+            <h3 className="font-semibold">{t("additional.title")}</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <Label>{t("additional.weight")}</Label>
+                <Input
+                  type="number"
+                  value={form.weight}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, weight: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              <Label>{t("additional.dimensions")}</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  type="number"
+                  value={form.dimLength}
+                  placeholder={t("additional.length")}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, dimLength: e.target.value }))
+                  }
+                />
+                <Input
+                  type="number"
+                  value={form.dimWidth}
+                  placeholder={t("additional.width")}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, dimWidth: e.target.value }))
+                  }
+                />
+                <Input
+                  type="number"
+                  value={form.dimHeight}
+                  placeholder={t("additional.height")}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, dimHeight: e.target.value }))
+                  }
+                />
+                <select
+                  className="w-full rounded border border-border bg-background p-2"
+                  value={form.dimUnit}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, dimUnit: e.target.value }))
+                  }
+                >
+                  <option value="cm">cm</option>
+                  <option value="mm">mm</option>
+                  <option value="in">in</option>
+                  <option value="m">m</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <Label>{t("additional.vatClass")}</Label>
+                <select
+                  className="w-full rounded border border-border bg-background p-2"
+                  value={form.VatClassId}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, VatClassId: e.target.value }))
+                  }
+                >
+                  <option value="">{t("basic.select")}</option>
+                  {vatClasses.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name} ({item.code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label>{t("additional.videoUrl")}</Label>
+                <Input
+                  value={form.videoUrl}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, videoUrl: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
+            {form.type === "DIGITAL" && (
+              <select
+                className="w-full rounded border border-border bg-background p-2"
+                value={form.digitalAssetId}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    digitalAssetId: e.target.value,
+                  }))
+                }
+              >
+                <option value="">{t("additional.selectDigitalAsset")}</option>
+                {digitalAssets.map((asset) => (
+                  <option key={asset.id} value={asset.id}>
+                    {asset.title}
+                  </option>
+                ))}
+              </select>
+            )}
+            {form.type === "SERVICE" && (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  type="number"
+                  value={form.serviceDurationMinutes}
+                  placeholder={t("additional.serviceDuration")}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      serviceDurationMinutes: e.target.value,
+                    }))
+                  }
+                />
+                <Input
+                  value={form.serviceLocation}
+                  placeholder={t("additional.serviceLocation")}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      serviceLocation: e.target.value,
+                    }))
+                  }
+                />
+                <div className="md:col-span-2">
+                  <Input
+                    value={form.serviceOnlineLink}
+                    placeholder={t("additional.serviceOnlineLink")}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        serviceOnlineLink: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+            )}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {editing ? (
+                <div className="rounded-lg border bg-muted/40 px-3 py-2 text-sm">
+                  <span className="font-medium">{t("additional.status")} </span>
+                  <span>
+                    {form.available
+                      ? t("additional.available")
+                      : t("additional.unavailable")}
+                  </span>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t("additional.statusHint")}
+                  </p>
+                </div>
+              ) : (
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={form.available}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        available: e.target.checked,
+                      }))
+                    }
+                  />
+                  <Label>{t("additional.availableLabel")}</Label>
+                </label>
+              )}
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={form.featured}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, featured: e.target.checked }))
+                    }
+                  />
+                  <Label>{t("additional.featuredLabel")}</Label>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={form.bestSelling}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        bestSelling: e.target.checked,
+                      }))
+                    }
+                  />
+                  <Label>{t("additional.bestSellingLabel")}</Label>
+                </label>
+              </div>
+            </div>
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <h4 className="font-medium">{t("cartReminder.title")}</h4>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t("cartReminder.description")}
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                  <Label>{t("cartReminder.afterHours")}</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={form.cartReminderHours}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        cartReminderHours: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>{t("cartReminder.afterMinutes")}</Label>
+                  <Input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={form.cartReminderMinutes}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        cartReminderMinutes: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-4 rounded-xl border p-4">
+            <h3 className="font-semibold">{t("media.title")}</h3>
+            <div>
+              <Label>{t("media.mainImage")}</Label>
+              {form.image ? (
+                <div className="relative w-32">
+                  <Image
+                    src={form.image}
+                    alt={t("media.preview")}
+                    width={120}
+                    height={120}
+                    className="rounded border border-border"
+                  />
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="destructive"
+                    className="absolute -right-2 -top-2 h-6 w-6 rounded-full"
+                    onClick={() => setForm((prev) => ({ ...prev, image: "" }))}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
+              ) : (
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleMainImageUpload}
+                />
+              )}
+            </div>
+            <div>
+              <Label>{t("media.gallery")}</Label>
+              <div className="mb-3 flex flex-wrap gap-3">
+                {form.gallery.map((img, index) => (
+                  <div key={index} className="relative">
+                    <Image
+                      src={img}
+                      alt={t("media.galleryAlt")}
+                      width={100}
+                      height={100}
+                      className="rounded border border-border"
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="destructive"
+                      className="absolute -right-2 -top-2 h-6 w-6 rounded-full"
+                      onClick={() => removeGalleryImage(index)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <Input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleGalleryUpload}
+              />
+            </div>
+          </section>
+
+          <div className="flex justify-end gap-3">
+            <Button variant="outline" type="button" onClick={onClose}>
+              {t("actions.cancel")}
+            </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              <Zap className="mr-1 h-4 w-4" />
+              {editing ? t("actions.update") : t("actions.add")}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

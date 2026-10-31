@@ -1,0 +1,204 @@
+"use client";
+
+import { type ReactNode, useState } from "react";
+import dynamic from "next/dynamic";
+import ProductRichText from "@/components/ecommarce/product-detail/ProductRichText";
+import { useTranslations } from "next-intl";
+
+const ProductReviews = dynamic(() => import("@/components/ecommarce/ProductReviews"), {
+  loading: () => <div role="status" aria-label="Loading reviews" className="skeleton-block h-48" />,
+});
+
+type ProductAttribute = {
+  id: number;
+  value: string;
+  attribute: { name: string };
+};
+
+type ProductInformation = Array<{
+  label: string;
+  value: string;
+}>;
+
+type ProductVariantOption = {
+  id: number;
+  name: string;
+  values: Array<{ id: number; value: string }>;
+};
+
+type ProductSpecificationGroup = Array<{
+  id: number;
+  name: string;
+  items: Array<{ id: number; label: string; value: string }>;
+}>;
+
+const tabs = ["specifications", "description", "reviews"] as const;
+
+type TabId = (typeof tabs)[number];
+
+export default function ProductDetailTabs({
+  productId,
+  description,
+  descriptionContent,
+  attributes,
+  variantOptions,
+  specificationGroups,
+  information,
+  reviewCount,
+}: {
+  productId: number;
+  description: string;
+  descriptionContent?: ReactNode;
+  attributes: ProductAttribute[];
+  variantOptions: ProductVariantOption[];
+  specificationGroups: ProductSpecificationGroup;
+  information: ProductInformation;
+  reviewCount: number;
+}) {
+  const t = useTranslations("StorefrontProduct.tabs");
+  const [activeTab, setActiveTab] = useState<TabId>("specifications");
+
+  return (
+    <section className="overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-[0_1px_3px_rgba(15,23,42,0.08)]">
+      <div
+        role="tablist"
+        aria-label={t("label")}
+        className="flex overflow-x-auto border-b border-border px-3 sm:px-5"
+      >
+        {tabs.map((tab) => {
+          const selected = activeTab === tab;
+          return (
+            <button
+              key={tab}
+              id={`product-tab-${tab}`}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              aria-controls={`product-panel-${tab}`}
+              onClick={() => setActiveTab(tab)}
+              className={`relative h-12 shrink-0 px-4 text-[12px] font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#174a92] sm:px-6 ${
+                selected
+                  ? "text-[#174a92] after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-[#2563eb]"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {t(tab)}
+              {tab === "reviews" ? ` (${reviewCount})` : ""}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="p-4 sm:p-5">
+        <div
+            hidden={activeTab !== "specifications"}
+            id="product-panel-specifications"
+            role="tabpanel"
+            aria-labelledby="product-tab-specifications"
+          >
+            <h2 className="text-[16px] font-bold uppercase tracking-wide text-foreground">
+              {t("specificationsTitle")}
+            </h2>
+            <dl className="mt-4 overflow-hidden rounded-lg border border-border text-[12px] sm:text-[13px]">
+              {information.map((item, index) => (
+                <div
+                  key={item.label}
+                  className={`grid grid-cols-[minmax(110px,0.65fr)_minmax(0,1.35fr)] ${
+                    index > 0 ? "border-t border-border" : ""
+                  }`}
+                >
+                  <dt className="bg-muted px-3 py-3 font-medium text-muted-foreground sm:px-4">
+                    {item.label}
+                  </dt>
+                  <dd className="px-3 py-3 font-semibold text-foreground sm:px-4">
+                    {item.value}
+                  </dd>
+                </div>
+              ))}
+              {attributes.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={`grid grid-cols-[minmax(110px,0.65fr)_minmax(0,1.35fr)] ${
+                    information.length > 0 || index > 0
+                      ? "border-t border-border"
+                      : ""
+                  }`}
+                >
+                  <dt className="bg-muted px-3 py-3 font-medium text-muted-foreground sm:px-4">
+                    {item.attribute.name}
+                  </dt>
+                  <dd className="px-3 py-3 font-semibold text-foreground sm:px-4">
+                    {item.value}
+                  </dd>
+                </div>
+              ))}
+              {variantOptions.map((option, index) => (
+                <div
+                  key={option.id}
+                  className={`grid grid-cols-[minmax(110px,0.65fr)_minmax(0,1.35fr)] ${
+                    information.length > 0 ||
+                    attributes.length > 0 ||
+                    index > 0
+                      ? "border-t border-border"
+                      : ""
+                  }`}
+                >
+                  <dt className="bg-muted px-3 py-3 font-medium text-muted-foreground sm:px-4">
+                    {option.name}
+                  </dt>
+                  <dd className="px-3 py-3 font-semibold text-foreground sm:px-4">
+                    {option.values.map((item) => item.value).join(", ")}
+                  </dd>
+                </div>
+              ))}
+              {specificationGroups.flatMap((group) =>
+                group.items.filter((item) => item.value.trim()).map((item, index) => (
+                  <div key={item.id} className="border-t border-border first:border-t-0">
+                    {index === 0 ? (
+                      <div className="border-b border-border bg-muted/60 px-3 py-2 text-xs font-bold uppercase tracking-wide text-foreground sm:px-4">
+                        {group.name}
+                      </div>
+                    ) : null}
+                    <div className="grid grid-cols-[minmax(110px,0.65fr)_minmax(0,1.35fr)]">
+                      <dt className="bg-muted px-3 py-3 font-medium text-muted-foreground sm:px-4">{item.label}</dt>
+                      <dd className="px-3 py-3 font-semibold text-foreground sm:px-4">{item.value}</dd>
+                    </div>
+                  </div>
+                )),
+              )}
+            </dl>
+          </div>
+
+        <div
+            hidden={activeTab !== "description"}
+            id="product-panel-description"
+            role="tabpanel"
+            aria-labelledby="product-tab-description"
+          >
+            <h2 className="text-[16px] font-bold uppercase tracking-wide text-foreground">
+              {t("description")}
+            </h2>
+            {descriptionContent ?? <ProductRichText
+              content={description}
+              className="mt-4 text-[13px] leading-7 text-muted-foreground sm:text-[14px]"
+              fallback={(
+                <p className="mt-4 text-[13px] leading-7 text-muted-foreground sm:text-[14px]">
+                  {t("descriptionFallback")}
+                </p>
+              )}
+            />}
+          </div>
+
+        {activeTab === "reviews" ? (
+          <div
+            id="product-panel-reviews"
+            role="tabpanel"
+            aria-labelledby="product-tab-reviews"
+          >
+            <ProductReviews productId={productId} />
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,297 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { LabeledInput } from "@/components/ui/labeled-input";
+import { ArrowLeft } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+
+type PaymentGateway = {
+  id: number;
+  paymentGatewayData?: any;
+};
+
+type Props = {
+  aiblGuestOnly?: boolean;
+  aiblPendingOrderId?: number | null;
+  aiblBusy?: boolean;
+  onVerifyAiblPayment?: () => void;
+  epsPendingOrderId: number | null;
+  epsVerificationBusy: boolean;
+  onVerifyEpsPayment: () => void;
+  epsEmail: string;
+  onEpsEmailChange: (value: string) => void;
+  epsPostcode: string;
+  onEpsPostcodeChange: (value: string) => void;
+  paymentGateways: PaymentGateway[];
+  selectedMethod: string;
+  onMethodChange: (v: string) => void;
+
+  transactionId: string;
+  onTransactionIdChange: (v: string) => void;
+
+  paymentScreenshotUrl: string | null;
+  paymentScreenshotPreview: string | null;
+  onScreenshotChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isUploadingScreenshot: boolean;
+
+  onBack: () => void;
+  onNext: () => void;
+  legalConsentAccepted: boolean;
+  onLegalConsentChange: (accepted: boolean) => void;
+  total: number;
+};
+
+export default function PaymentMethodSelector({
+  aiblGuestOnly = false,
+  aiblPendingOrderId = null, aiblBusy = false, onVerifyAiblPayment,
+  epsEmail, onEpsEmailChange, epsPostcode, onEpsPostcodeChange,
+  epsPendingOrderId, epsVerificationBusy, onVerifyEpsPayment,
+  paymentGateways,
+  selectedMethod,
+  onMethodChange,
+  transactionId,
+  onTransactionIdChange,
+  paymentScreenshotUrl,
+  paymentScreenshotPreview,
+  onScreenshotChange,
+  isUploadingScreenshot,
+  onBack,
+  onNext,
+  legalConsentAccepted,
+  onLegalConsentChange,
+  total,
+}: Props) {
+  const t = useTranslations("StorefrontCommerce.payment");
+  const locale = useLocale();
+  // 1) /api/payment থেকে আসা গেটওয়েগুলোকে UI-friendly list বানানো
+  const apiMethods = (Array.isArray(paymentGateways) ? paymentGateways : [])
+    .map((p) => {
+      const pg = p?.paymentGatewayData || {};
+      const type = String(pg?.type || "").toUpperCase();
+      if (!type) return null;
+
+      // ইউনিক key বানাই, যাতে একাধিক manual channel আলাদা হয়
+      const key =
+        type === "MANUAL"
+          ? `MANUAL:${String(pg?.channel || "Manual")}:${p.id}`
+          : `${type}:${p.id}`;
+
+      const title =
+        type === "SSLCOMMERZ"
+          ? "SSLCOMMERZ"
+          : type === "MANUAL"
+            ? String(pg?.channel || t("manualPayment"))
+            : type === "AIBL_WALLET" ? "AIBL Islamic Wallet"
+            : type;
+
+      return {
+        key,
+        type,
+        title,
+        raw: p,
+        pg,
+      };
+    })
+    .filter(Boolean) as Array<{
+    key: string;
+    type: string;
+    title: string;
+    raw: PaymentGateway;
+    pg: any;
+  }>;
+
+  // 2) চাইলে Cash On Delivery সবসময় দেখাতে পারো (API-তে না থাকলেও)
+  const methods = [
+    ...(!aiblGuestOnly ? [{ key: "CashOnDelivery", type: "COD", title: t("cashOnDelivery"), pg: null as any }] : []),
+    ...apiMethods,
+  ];
+
+  const isCOD = selectedMethod === "CashOnDelivery";
+  const isSSL = selectedMethod?.startsWith("SSLCOMMERZ:");
+  const isEPS = selectedMethod?.startsWith("EPS:");
+  const isAibl = selectedMethod?.startsWith("AIBL_WALLET:");
+  const isManual = selectedMethod?.startsWith("MANUAL:");
+
+  const selectedManual = methods.find((m) => m.key === selectedMethod);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl sm:text-2xl font-bold">{t("title")}</h2>
+        <Button variant="ghost" onClick={onBack}>
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          {t("back")}
+        </Button>
+      </div>
+
+      <div className="rounded-xl border border-border p-4 space-y-3">
+        <p className="text-sm text-muted-foreground">
+          {t("totalPayable")}: <span className="font-semibold text-foreground">৳{total.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+        </p>
+
+        {/* ✅ সব মেথড দেখাবে */}
+        <div className="grid gap-3">
+          {methods.map((m) => (
+            <label
+              key={m.key}
+              className={[
+                "flex items-center justify-between gap-3 rounded-lg border p-3 cursor-pointer",
+                selectedMethod === m.key ? "border-primary ring-2 ring-primary/20" : "border-border",
+              ].join(" ")}
+            >
+              <div className="min-w-0">
+                <div className="font-medium text-foreground">{m.title}</div>
+
+                {/* SSL info */}
+                {m.type === "SSLCOMMERZ" && (
+                  <div className="text-xs text-muted-foreground">
+                    {t("sslDescription")}
+                  </div>
+                )}
+                {m.type === "EPS" && <div className="text-xs text-muted-foreground">{t("epsDescription")}</div>}
+                {m.type === "AIBL_WALLET" && <div className="text-xs text-muted-foreground">Continue securely on the AIBL Islamic Wallet payment page.</div>}
+
+                {/* Manual info */}
+                {m.type === "MANUAL" && (
+                  <div className="text-xs text-muted-foreground">
+                    {t("manualDescription")}
+                  </div>
+                )}
+
+                {/* COD info */}
+                {m.key === "CashOnDelivery" && (
+                  <div className="text-xs text-muted-foreground">{t("codDescription")}</div>
+                )}
+              </div>
+
+              <input
+                type="radio"
+                name="payment_method"
+                className="h-4 w-4"
+                checked={selectedMethod === m.key}
+                disabled={epsPendingOrderId !== null || aiblPendingOrderId !== null}
+                onChange={() => onMethodChange(m.key)}
+              />
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* ✅ Manual payment হলে extra fields দেখাবে */}
+      {isManual && (
+        <div className="rounded-xl border border-border p-4 space-y-4">
+          <div className="text-sm text-muted-foreground">
+            {t("selected")}: <span className="font-semibold text-foreground">{selectedManual?.title}</span>
+          </div>
+
+          {/* account numbers দেখাও (API থেকে) */}
+          {Array.isArray(selectedManual?.pg?.accountNumbers) && (
+            <div className="text-sm">
+              <div className="text-muted-foreground mb-1">{t("sendMoneyTo")}:</div>
+              <ul className="list-disc pl-5">
+                {selectedManual!.pg.accountNumbers.map((n: string) => (
+                  <li key={n} className="text-foreground font-medium">{n}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <LabeledInput
+            id="transactionId"
+            label={t("transactionId")}
+            placeholder={t("transactionPlaceholder")}
+            value={transactionId}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onTransactionIdChange(e.target.value)}
+          />
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">{t("screenshot")}</label>
+            <input type="file" accept="image/*" onChange={onScreenshotChange} />
+            {isUploadingScreenshot && (
+              <p className="text-xs text-muted-foreground">{t("uploading")}</p>
+            )}
+
+            {(paymentScreenshotUrl || paymentScreenshotPreview) && (
+              <div className="relative w-40 h-40 border border-border rounded-xl overflow-hidden bg-background">
+                <Image
+                  src={paymentScreenshotUrl || paymentScreenshotPreview!}
+                  alt={t("screenshotAlt")}
+                  fill
+                  unoptimized
+                  className="object-cover"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* SSL / COD হলে extra কিছু লাগবে না */}
+      {isEPS && (
+        <div className="rounded-xl border border-border p-4 space-y-4">
+          <p className="text-sm text-muted-foreground">{t("epsRedirect")}</p>
+          <LabeledInput id="eps-email" label={t("epsEmail")} type="email" required value={epsEmail}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => onEpsEmailChange(event.target.value)} />
+          <LabeledInput id="eps-postcode" label={t("epsPostcode")} required maxLength={20} value={epsPostcode}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => onEpsPostcodeChange(event.target.value)} />
+        </div>
+      )}
+      {(isSSL || isCOD) && (
+        <div className="text-sm text-muted-foreground">
+          {isSSL ? t("sslRedirect") : t("noPaymentNow")}
+        </div>
+      )}
+
+      <div className="rounded-xl border border-border bg-muted/30 p-4">
+        <div className="flex items-start gap-3">
+          <input
+            id="checkout-legal-consent"
+            type="checkbox"
+            checked={legalConsentAccepted}
+            onChange={(event) => onLegalConsentChange(event.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-primary"
+            required
+          />
+          <label htmlFor="checkout-legal-consent" className="text-sm leading-6 text-foreground">
+            {t("consent.prefix")} {""}
+            <Link
+              href="/ecommerce/terms"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-primary underline underline-offset-2"
+            >
+              {t("consent.terms")}
+            </Link>{" "}
+            {t("consent.and")} {""}
+            <Link
+              href="/ecommerce/privacy"
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-primary underline underline-offset-2"
+            >
+              {t("consent.privacy")}
+            </Link>
+            {t("consent.suffix")}
+          </label>
+        </div>
+      </div>
+
+      {isAibl && <p className="text-sm text-muted-foreground">You will enter your wallet details on the bank-hosted payment page.</p>}
+      <Button className="w-full" onClick={onNext} disabled={(!selectedMethod && aiblPendingOrderId === null) || (!legalConsentAccepted && aiblPendingOrderId === null) || epsVerificationBusy || aiblBusy}>
+        {aiblPendingOrderId !== null ? "Resume AIBL payment" : epsPendingOrderId !== null ? t("epsResume") : t("placeOrder")}
+      </Button>
+      {aiblPendingOrderId !== null && <div role="status" className="space-y-2 rounded border p-3">
+        <p>Pending AIBL payment for order #{aiblPendingOrderId}. This order will be reused.</p>
+        <Button variant="outline" onClick={onVerifyAiblPayment} disabled={aiblBusy}>Verify pending payment</Button>
+      </div>}
+      {epsPendingOrderId !== null && (
+        <div className="rounded border p-3 space-y-2" role="status">
+          <p className="text-sm">{t("epsPendingOrder", { id: epsPendingOrderId })}</p>
+          <Button variant="outline" onClick={onVerifyEpsPayment} disabled={epsVerificationBusy}>{t("epsVerify")}</Button>
+        </div>
+      )}
+    </div>
+  );
+}

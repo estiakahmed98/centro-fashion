@@ -1,0 +1,1206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.storefront-progress {
+  position: fixed;
+  top: var(--storefront-progress-top, 91px);
+  inset-inline: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+.storefront-progress[data-visible="false"] { opacity: 0; visibility: hidden; }
+.storefront-progress [role="progressbar"] { height: 3px; background: #dedbd680; }
+.storefront-progress-fill {
+  height: 100%; width: 100%; background: #626b4b;
+  box-shadow: 0 0 8px #626b4b55;
+  transform-origin: left;
+  transition: transform 180ms linear;
+}
+.storefront-progress-count {
+  position: absolute; right: 14px; top: 7px;
+  padding: 3px 7px; background: #faf9f6; color: #343a2b;
+  border: 1px solid #dedbd6; font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.skeleton-block { background: #e9e7e2; animation: storefront-pulse 1.6s ease-in-out infinite; }
+@keyframes storefront-pulse { 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block { animation: none; }
+  .storefront-progress, .storefront-progress-fill { transition: none; }
+}
+
+/* PC Builder quotation sheet: hidden on screen, the only thing printed. */
+#pc-builder-quotation {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+
+  /* Collapse the storefront entirely (not just hide it) so the printed
+     document is only as tall as the quotation itself. */
+  body:has(#pc-builder-quotation) > *,
+  body:has(#pc-builder-quotation) > [data-radix-popper-content-wrapper] {
+    display: none !important;
+  }
+
+  body:has(#pc-builder-quotation) {
+    background: #fff;
+  }
+
+  body:has(#pc-builder-quotation) #pc-builder-quotation {
+    display: block !important;
+    position: static;
+    width: 100%;
+    color: #000;
+    background: #fff;
+    color-scheme: light;
+    font-size: 11px;
+  }
+
+  #pc-builder-quotation .quotation-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding-bottom: 12px;
+  }
+
+  #pc-builder-quotation .quotation-brand img {
+    height: 54px;
+    width: auto;
+  }
+
+  #pc-builder-quotation .quotation-store {
+    font-size: 20px;
+    font-weight: 700;
+    color: #c1272d;
+    margin: 0;
+  }
+
+  #pc-builder-quotation .quotation-contact {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: #111;
+  }
+
+  #pc-builder-quotation .quotation-contact a {
+    color: #1a4fa0;
+    text-decoration: none;
+  }
+
+  #pc-builder-quotation table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  #pc-builder-quotation th,
+  #pc-builder-quotation td {
+    border: 1px solid #e0663a;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
+
+  #pc-builder-quotation th {
+    font-weight: 700;
+    font-style: italic;
+    color: #6b7280;
+    font-size: 10px;
+  }
+
+  #pc-builder-quotation td.quotation-component {
+    color: #c1272d;
+  }
+
+  #pc-builder-quotation td.quotation-name {
+    color: #1a4fa0;
+  }
+
+  #pc-builder-quotation .quotation-strike {
+    text-decoration: line-through;
+    display: block;
+    color: #6b7280;
+  }
+
+  #pc-builder-quotation .quotation-total-label {
+    text-align: right;
+    font-weight: 700;
+    border: none;
+  }
+
+  #pc-builder-quotation .quotation-total-spacer {
+    border: none;
+  }
+}
+
+body {
+  font-family: var(--font-geist-sans), "Noto Sans Bengali", Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+.storefront-type {
+  font-family: var(--font-geist-sans), "Noto Sans Bengali", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+.storefront-type :where(button, input, select, textarea) {
+  font-family: inherit;
+}
+
+.storefront-type :where(h1, h2, h3, h4) {
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    /* ========================
+   ECOMMERCE COLOR PALETTE - LIGHT MODE
+   Palette: Blue Scale
+   50  #eff6ff
+   100 #dbeafe
+   200 #bfdbfe
+   300 #93c5fd
+   400 #60a5fa
+   500 #3b82f6
+   600 #2563eb
+   700 #1d4ed8
+   800 #1e40af
+   900 #1e3a8a
+   950 #172554
+  ======================== */
+
+    /* Core Colors */
+    --background: 214 100% 97%; /* #eff6ff */
+    --foreground: 226 71% 14%; /* #172554 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 226 71% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 226 71% 14%;
+
+    /* Primary — Blue #2563eb */
+    --primary: 221 83% 53%; /* #2563eb */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary — Deep Blue #1e40af */
+    --secondary: 224 64% 33%; /* #1e40af */
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted Colors */
+    --muted: 214 100% 97%; /* #eff6ff */
+    --muted-foreground: 217 33% 35%;
+
+    /* Accent — Bright Blue #3b82f6 */
+    --accent: 217 91% 60%; /* #3b82f6 */
+    --accent-foreground: 226 71% 14%;
+
+    /* Destructive */
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI Elements */
+    --border: 213 97% 87%; /* #bfdbfe */
+    --input: 213 97% 87%; /* #bfdbfe */
+    --ring: 221 83% 53%; /* #2563eb */
+
+    --radius: 0.5rem;
+
+    /* Charts */
+    --chart-1: 221 83% 53%; /* #2563eb */
+    --chart-2: 217 91% 60%; /* #3b82f6 */
+    --chart-3: 224 64% 33%; /* #1e40af */
+    --chart-4: 213 94% 68%; /* #60a5fa */
+    --chart-5: 212 96% 78%; /* #93c5fd */
+
+    /* Scrollbar */
+    --scrollbar-thumb: 221 83% 53%; /* #2563eb */
+    --scrollbar-track: 214 100% 97%; /* #eff6ff */
+    --scrollbar-thumb-hover: 224 64% 33%; /* #1e40af */
+
+    /* Analytics */
+    --analytics-primary: 221 83% 53%; /* #2563eb */
+    --analytics-secondary: 214 100% 97%; /* #eff6ff */
+    --analytics-accent: 217 91% 60%; /* #3b82f6 */
+    --analytics-chart-1: 221 83% 53%; /* #2563eb */
+    --analytics-chart-2: 217 91% 60%; /* #3b82f6 */
+    --analytics-chart-3: 224 64% 33%; /* #1e40af */
+    --analytics-chart-4: 213 94% 68%; /* #60a5fa */
+    --analytics-chart-5: 212 96% 78%; /* #93c5fd */
+
+    /* Best Seller & Sold Badge */
+    --best-seller-bg: 221 83% 53%; /* #2563eb */
+    --best-seller-text: 0 0% 100%;
+    --sold-count-bg: 217 91% 60%; /* #3b82f6 */
+    --sold-count-text: 226 71% 14%;
+    --badge-shadow: 0 4px 6px -1px rgb(37 99 235 / 0.25);
+
+    /* Delivery Proof */
+    --delivery-proof-bg: 221 83% 53%; /* #2563eb */
+    --delivery-proof-text: 0 0% 100%;
+    --delivery-pin-bg: 214 100% 97%; /* #eff6ff */
+    --delivery-pin-text: 226 71% 14%;
+    --delivery-pin-value: 226 71% 14%;
+    --delivery-link-bg: 214 100% 97%; /* #eff6ff */
+    --delivery-link-text: 224 64% 33%; /* #1e40af */
+    --delivery-status-bg: 0 0% 100%;
+    --delivery-status-text: 217 33% 25%;
+
+    /* Custom Gradients */
+    --gradient-primary: linear-gradient(135deg, #1e40af, #2563eb);
+    --gradient-soft: linear-gradient(135deg, #eff6ff, #dbeafe);
+    --gradient-premium: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    --gradient-amber: linear-gradient(135deg, #60a5fa, #2563eb);
+
+    /* Delivery Summary Card Colors */
+    --delivery-card-assigned: 214 100% 97%; /* #eff6ff */
+    --delivery-card-accepted: 214 95% 93%; /* #dbeafe */
+    --delivery-card-rejected: 213 97% 87%; /* #bfdbfe */
+    --delivery-card-picked: 212 96% 78%; /* #93c5fd */
+    --delivery-card-in-transit: 213 94% 68%; /* #60a5fa */
+    --delivery-card-delivered: 217 91% 60%; /* #3b82f6 */
+
+    /* Stock Management Card Colors */
+    --stock-card-physical-products: 214 100% 97%; /* #eff6ff */
+    --stock-card-variants: 214 95% 93%; /* #dbeafe */
+    --stock-card-total-stock: 213 97% 87%; /* #bfdbfe */
+    --stock-card-low-stock: 212 96% 78%; /* #93c5fd */
+    --stock-card-out-of-stock: 213 94% 68%; /* #60a5fa */
+  }
+  /* ========================
+     DARK MODE
+  ======================== */
+
+  .dark {
+    color-scheme: dark;
+    /* ========================
+     ECOMMERCE COLOR PALETTE - DARK MODE (Matte Finish)
+     Palette: Blue Scale
+     50  #eff6ff
+     100 #dbeafe
+     200 #bfdbfe
+     300 #93c5fd
+     400 #60a5fa
+     500 #3b82f6
+     600 #2563eb
+     700 #1d4ed8
+     800 #1e40af
+     900 #1e3a8a
+     950 #172554
+  ======================== */
+
+    /* Core Colors - Matte Dark */
+    --background: 222 47% 8%; /* matte dark background */
+    --foreground: 214 100% 97%; /* #eff6ff */
+
+    --card: 222 47% 10%; /* matte card background */
+    --card-foreground: 214 100% 97%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 214 100% 97%;
+
+    /* Primary — Vibrant Blue for dark mode */
+    --primary: 213 94% 68%; /* #60a5fa */
+    --primary-foreground: 222 47% 8%; /* matte dark background */
+
+    /* Secondary — Muted Blue */
+    --secondary: 222 35% 16%; /* desaturated for matte feel */
+    --secondary-foreground: 214 100% 97%;
+
+    /* Muted Colors */
+    --muted: 222 30% 18%;
+    --muted-foreground: 213 97% 87%; /* #bfdbfe */
+
+    /* Accent — Strong Blue */
+    --accent: 217 91% 60%; /* #3b82f6 */
+    --accent-foreground: 214 100% 97%;
+
+    /* Destructive */
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* UI Elements - Matte Borders */
+    --border: 222 30% 20%;
+    --input: 222 30% 20%;
+    --ring: 213 94% 68%; /* #60a5fa */
+
+    --radius: 0.5rem;
+
+    /* Charts */
+    --chart-1: 213 94% 68%; /* #60a5fa */
+    --chart-2: 217 91% 60%; /* #3b82f6 */
+    --chart-3: 212 96% 78%; /* #93c5fd */
+    --chart-4: 221 83% 53%; /* #2563eb */
+    --chart-5: 213 97% 87%; /* #bfdbfe */
+
+    /* Scrollbar */
+    --scrollbar-thumb: 217 91% 60%; /* #3b82f6 */
+    --scrollbar-track: 222 47% 10%;
+    --scrollbar-thumb-hover: 213 94% 68%; /* #60a5fa */
+
+    /* Analytics */
+    --analytics-primary: 213 94% 68%; /* #60a5fa */
+    --analytics-secondary: 222 35% 16%;
+    --analytics-accent: 217 91% 60%; /* #3b82f6 */
+    --analytics-chart-1: 213 94% 68%; /* #60a5fa */
+    --analytics-chart-2: 217 91% 60%; /* #3b82f6 */
+    --analytics-chart-3: 212 96% 78%; /* #93c5fd */
+    --analytics-chart-4: 221 83% 53%; /* #2563eb */
+    --analytics-chart-5: 213 97% 87%; /* #bfdbfe */
+
+    /* Best Seller & Sold Badge */
+    --best-seller-bg: 213 94% 68%; /* #60a5fa */
+    --best-seller-text: 222 47% 8%;
+    --sold-count-bg: 217 91% 60%; /* #3b82f6 */
+    --sold-count-text: 214 100% 97%;
+    --badge-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.35);
+
+    /* Delivery Proof */
+    --delivery-proof-bg: 213 94% 68%; /* #60a5fa */
+    --delivery-proof-text: 222 47% 8%;
+
+    --delivery-pin-bg: 222 35% 16%;
+    --delivery-pin-text: 214 100% 97%;
+    --delivery-pin-value: 214 100% 97%;
+
+    --delivery-link-bg: 222 35% 16%;
+    --delivery-link-text: 213 94% 68%; /* #60a5fa */
+
+    --delivery-status-bg: 222 47% 10%;
+    --delivery-status-text: 213 97% 87%; /* #bfdbfe */
+
+    /* Custom Gradients - Muted for matte finish */
+    --gradient-primary: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    --gradient-soft: linear-gradient(135deg, #0f172a, #1e293b);
+    --gradient-premium: linear-gradient(135deg, #1e40af, #2563eb);
+    --gradient-amber: linear-gradient(135deg, #2563eb, #60a5fa);
+
+    /* Delivery Summary Card Colors - Matte variants */
+    --delivery-card-assigned: 222 35% 16%;
+    --delivery-card-accepted: 221 45% 16%;
+    --delivery-card-rejected: 0 60% 16%;
+    --delivery-card-picked: 217 45% 16%;
+    --delivery-card-in-transit: 222 35% 18%;
+    --delivery-card-delivered: 213 50% 18%;
+
+    /* Stock Management Card Colors - Matte variants */
+    --stock-card-physical-products: 222 35% 16%;
+    --stock-card-variants: 221 45% 16%;
+    --stock-card-total-stock: 213 50% 18%;
+    --stock-card-low-stock: 217 45% 16%;
+    --stock-card-out-of-stock: 0 60% 16%;
+  }
+
+}
+
+/* ========================
+   GLOBAL APPLY
+======================== */
+
+@layer base {
+  * {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply border-border;
+  }
+
+  body {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ========================
+   THEME UTILITIES
+======================== */
+
+@layer utilities {
+  .btn-primary {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition;
+  }
+
+  .btn-secondary {
+    @apply text-white transition-all duration-200 ease-in-out;
+    background-color: #f2b50b;
+  }
+
+  .btn-secondary:hover {
+    @apply scale-105 shadow-lg;
+    background-color: #d99f08;
+  }
+
+  .btn-accent {
+    @apply text-white transition-all duration-200 ease-in-out;
+    background-color: #25671e;
+  }
+
+  .btn-outline {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply border border-border bg-background text-foreground hover:bg-primary/80 hover:text-primary-foreground transition;
+  }
+
+  .btn-danger {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90 transition;
+  }
+
+  .input-theme {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply bg-background text-foreground border-border;
+  }
+
+  .card-theme {
+    /* eslint-disable-next-line at-rule-no-unknown */
+    @apply bg-card text-card-foreground border-border;
+  }
+
+  .product-card {
+    @apply transition duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .slider-nav-btn {
+    @apply rounded-xl border border-border bg-primary text-primary-foreground shadow-sm;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .slider-nav-btn:hover {
+    @apply bg-primary/90;
+  }
+
+  /* Best Seller & Sold Badge Utilities */
+  .best-seller-badge {
+    background: hsl(var(--best-seller-bg));
+    color: hsl(var(--best-seller-text));
+    box-shadow: var(--badge-shadow);
+  }
+
+  .sold-count-badge {
+    background: hsl(var(--sold-count-bg));
+    color: hsl(var(--sold-count-text));
+    box-shadow: var(--badge-shadow);
+  }
+
+  /* Delivery Proof Utilities */
+  .delivery-proof-header {
+    background: hsl(var(--delivery-proof-bg));
+    color: hsl(var(--delivery-proof-text));
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .delivery-pin-container {
+    background: hsl(var(--delivery-pin-bg));
+  }
+
+  .delivery-pin-label {
+    color: hsl(var(--delivery-pin-text));
+  }
+
+  .delivery-pin-value {
+    color: hsl(var(--delivery-pin-text));
+  }
+
+  .delivery-link-container {
+    background: hsl(var(--delivery-link-bg));
+  }
+
+  .delivery-link-label {
+    color: hsl(var(--delivery-link-text));
+  }
+
+  .delivery-link-value {
+    color: hsl(var(--delivery-link-text));
+  }
+
+  .delivery-status-container {
+    background: hsl(var(--delivery-status-bg));
+  }
+
+  .delivery-status-label {
+    color: hsl(var(--delivery-status-text));
+  }
+
+  /* Delivery Summary Card Classes */
+  .delivery-summary-card {
+    background-color: hsl(var(--card));
+  }
+
+  .delivery-summary-card-assigned {
+    background-color: hsl(var(--delivery-card-assigned));
+  }
+
+  .delivery-summary-card-accepted {
+    background-color: hsl(var(--delivery-card-accepted));
+  }
+
+  .delivery-summary-card-rejected {
+    background-color: hsl(var(--delivery-card-rejected));
+  }
+
+  .delivery-summary-card-picked-from-warehouse {
+    background-color: hsl(var(--delivery-card-picked));
+  }
+
+  .delivery-summary-card-in-transit {
+    background-color: hsl(var(--delivery-card-in-transit));
+  }
+
+  .delivery-summary-card-delivered {
+    background-color: hsl(var(--delivery-card-delivered));
+  }
+
+  /* Stock Management Card Classes */
+  .stock-summary-card-physical-products {
+    background-color: hsl(var(--stock-card-physical-products));
+  }
+
+  .stock-summary-card-variants {
+    background-color: hsl(var(--stock-card-variants));
+  }
+
+  .stock-summary-card-total-stock {
+    background-color: hsl(var(--stock-card-total-stock));
+  }
+
+  .stock-summary-card-low-stock {
+    background-color: hsl(var(--stock-card-low-stock));
+  }
+
+  .font-lexend {
+  font-family: var(--font-lexend), sans-serif;
+}
+
+  .stock-summary-card-out-of-stock {
+    background-color: hsl(var(--stock-card-out-of-stock));
+  }
+
+  /* Global Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--scrollbar-track));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--scrollbar-thumb));
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--scrollbar-thumb-hover));
+  }
+
+  /* Firefox scrollbar styles */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
+  }
+}
+
+/* ========================
+   PREMIUM FONT UTILITIES
+======================== */
+
+@layer utilities {
+  /* Syne font family - Unique and Premium */
+  .syne-regular {
+    font-family: var(--font-syne);
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .syne-medium {
+    font-family: var(--font-syne);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .syne-semibold {
+    font-family: var(--font-syne);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .syne-bold {
+    font-family: var(--font-syne);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .syne-extrabold {
+    font-family: var(--font-syne);
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  /* Lexend font family - Modern and Comfortable */
+  .lexend-thin {
+    font-family: var(--font-lexend);
+    font-weight: 100;
+    font-style: normal;
+  }
+
+  .lexend-extralight {
+    font-family: var(--font-lexend);
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  .lexend-light {
+    font-family: var(--font-lexend);
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .lexend-regular {
+    font-family: var(--font-lexend);
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .lexend-medium {
+    font-family: var(--font-lexend);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .lexend-semibold {
+    font-family: var(--font-lexend);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .lexend-bold {
+    font-family: var(--font-lexend);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .lexend-extrabold {
+    font-family: var(--font-lexend);
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .lexend-black {
+    font-family: var(--font-lexend);
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  /* Generic font classes */
+  .syne {
+    font-family: var(--font-syne);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .lexend {
+    font-family: var(--font-lexend);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  /* ========================
+   RUBIK FONT UTILITIES
+======================== */
+
+  /* Rubik font family with different weights */
+  .rubik-light {
+    font-family: var(--font-rubik);
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .rubik-regular {
+    font-family: var(--font-rubik);
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .rubik-medium {
+    font-family: var(--font-rubik);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .rubik-semibold {
+    font-family: var(--font-rubik);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .rubik-bold {
+    font-family: var(--font-rubik);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .rubik-extrabold {
+    font-family: var(--font-rubik);
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .rubik-black {
+    font-family: var(--font-rubik);
+    font-weight: 900;
+    font-style: normal;
+  }
+
+  /* Rubik italic variants */
+  .rubik-light-italic {
+    font-family: var(--font-rubik);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .rubik-italic {
+    font-family: var(--font-rubik);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .rubik-medium-italic {
+    font-family: var(--font-rubik);
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  .rubik-semibold-italic {
+    font-family: var(--font-rubik);
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .rubik-bold-italic {
+    font-family: var(--font-rubik);
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .rubik-extrabold-italic {
+    font-family: var(--font-rubik);
+    font-weight: 800;
+    font-style: italic;
+  }
+
+  .rubik-black-italic {
+    font-family: var(--font-rubik);
+    font-weight: 900;
+    font-style: italic;
+  }
+
+  /* Generic rubik class (defaults to regular weight) */
+  .rubik {
+    font-family: var(--font-rubik);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* No scrollbar utility */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* eCommerce Gradient Utilities */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-soft {
+    background: var(--gradient-soft);
+  }
+
+  .gradient-premium {
+    background: var(--gradient-premium);
+  }
+
+  .gradient-amber {
+    background: var(--gradient-amber);
+  }
+
+  .gradient-primary-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* eCommerce Button Gradients */
+  .btn-gradient-primary {
+    background: var(--gradient-primary);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(72, 161, 17, 0.35);
+  }
+
+  .btn-gradient-premium {
+    background: var(--gradient-premium);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient-premium:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(37, 103, 30, 0.35);
+  }
+
+  .btn-gradient-amber {
+    background: var(--gradient-amber);
+    color: hsl(120 48% 10%);
+    transition: all 0.3s ease;
+  }
+
+  .btn-gradient-amber:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(242, 181, 11, 0.4);
+  }
+
+  .status-pill {
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsl(var(--border));
+    background: hsl(var(--muted) / 0.9);
+    color: hsl(var(--muted-foreground));
+    box-shadow: 0 1px 2px hsl(var(--foreground) / 0.06);
+  }
+
+  .status-pill-default {
+    border-color: hsl(var(--border));
+    background: hsl(var(--muted) / 0.95);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .status-pill-good {
+    border-color: hsl(var(--primary) / 0.26);
+    background: hsl(var(--primary) / 0.14);
+    color: hsl(var(--primary));
+  }
+
+  .status-pill-warn {
+    border-color: hsl(var(--accent) / 0.24);
+    background: hsl(var(--accent) / 0.12);
+    color: hsl(var(--accent));
+  }
+
+  .status-pill-danger {
+    border-color: hsl(var(--destructive) / 0.24);
+    background: hsl(var(--destructive) / 0.12);
+    color: hsl(var(--destructive));
+  }
+}
+
+/* ========================
+   GRADIENT BORDER ANIMATIONS
+======================== */
+
+@supports (property(--border-angle)) {
+  @property --border-angle {
+    inherits: false;
+    initial-value: 0deg;
+    syntax: "<angle>";
+  }
+}
+
+/* ========================
+   SCROLLBAR HIDE ON IDLE
+======================== */
+
+.scrollbar-hide-on-idle {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  -ms-overflow-style: auto;
+}
+
+.scrollbar-hide-on-idle::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: transparent;
+}
+
+.scrollbar-hide-on-idle::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-hide-on-idle::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.scrollbar-hide-on-idle:hover::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+}
+
+.scrollbar-hide-on-idle:hover::-webkit-scrollbar-track {
+  background: hsl(var(--muted) / 0.1);
+}
+
+.scrollbar-hide-on-idle:hover {
+  scrollbar-color: hsl(var(--border)) hsl(var(--muted) / 0.1);
+}
+
+/* ========================
+   CART BUTTON ANIMATION
+======================== */
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.15);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 1s ease-in-out;
+}
+
+/* ========================
+   FLYING BIRD ANIMATION
+======================== */
+
+@keyframes flap-left {
+  0%,
+  100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(60deg);
+  }
+}
+
+@keyframes flap-right {
+  0%,
+  100% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(-60deg);
+  }
+}
+
+.animate-flap-left {
+  animation: flap-left 1.25s ease-in-out infinite;
+}
+
+.animate-flap-right {
+  animation: flap-right 1.25s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px rgba(251, 191, 36, 0.6);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.9);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1.2s ease-in-out infinite;
+}
+
+/* Product descriptions are authored as rich text in the admin TinyMCE editor. */
+.product-rich-description {
+  overflow-wrap: anywhere;
+}
+
+.product-rich-description > :first-child {
+  margin-top: 0;
+}
+
+.product-rich-description > :last-child {
+  margin-bottom: 0;
+}
+
+.product-rich-description p,
+.product-rich-description ul,
+.product-rich-description ol,
+.product-rich-description blockquote,
+.product-rich-description pre,
+.product-rich-description table,
+.product-rich-description figure {
+  margin-block: 0.75rem;
+}
+
+.product-rich-description h1,
+.product-rich-description h2,
+.product-rich-description h3,
+.product-rich-description h4,
+.product-rich-description h5,
+.product-rich-description h6 {
+  margin-block: 1.25rem 0.5rem;
+  color: hsl(var(--foreground));
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.product-rich-description h1 { font-size: 1.75rem; }
+.product-rich-description h2 { font-size: 1.5rem; }
+.product-rich-description h3 { font-size: 1.25rem; }
+.product-rich-description h4 { font-size: 1.125rem; }
+.product-rich-description h5 { font-size: 1rem; }
+.product-rich-description h6 { font-size: 0.875rem; }
+
+.product-rich-description ul,
+.product-rich-description ol {
+  padding-inline-start: 1.5rem;
+}
+
+.product-rich-description ul { list-style: disc; }
+.product-rich-description ol { list-style: decimal; }
+.product-rich-description li { margin-block: 0.25rem; }
+.product-rich-description li > ul { list-style: circle; }
+.product-rich-description li > ol { list-style: lower-alpha; }
+
+.product-rich-description a {
+  color: hsl(var(--primary));
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.product-rich-description blockquote {
+  border-inline-start: 4px solid hsl(var(--border));
+  padding-inline-start: 1rem;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+.product-rich-description img,
+.product-rich-description video,
+.product-rich-description iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+.product-rich-description img {
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.product-rich-description table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.product-rich-description th,
+.product-rich-description td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+}
+
+.product-rich-description th {
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font-weight: 700;
+}
+
+.product-rich-description pre,
+.product-rich-description code {
+  border-radius: calc(var(--radius) - 2px);
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.product-rich-description pre {
+  overflow-x: auto;
+  padding: 0.75rem 1rem;
+  white-space: pre;
+}
+
+.product-rich-description code {
+  padding: 0.125rem 0.3rem;
+}
+
+.product-rich-description pre code {
+  padding: 0;
+}
+
+.product-rich-description--compact p,
+.product-rich-description--compact ul,
+.product-rich-description--compact ol,
+.product-rich-description--compact blockquote,
+.product-rich-description--compact pre,
+.product-rich-description--compact table,
+.product-rich-description--compact figure {
+  margin-block: 0.35rem;
+}
+
+.product-rich-description--compact h1,
+.product-rich-description--compact h2,
+.product-rich-description--compact h3,
+.product-rich-description--compact h4,
+.product-rich-description--compact h5,
+.product-rich-description--compact h6 {
+  margin-block: 0.65rem 0.25rem;
+  font-size: 0.875rem;
+}
+
+.product-rich-description--compact ul,
+.product-rich-description--compact ol {
+  padding-inline-start: 1.25rem;
+}

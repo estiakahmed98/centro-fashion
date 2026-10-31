@@ -1,0 +1,1375 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { DEFAULT_SITE_TITLE } from "@/lib/site-defaults";
+import { useSession } from "next-auth/react";
+import {
+  LayoutDashboard,
+  Users,
+  ShoppingBag,
+  FileText,
+  Settings,
+  BookOpen,
+  ChevronDown,
+  ChevronRight,
+  ClipboardList,
+  Mail,
+  Tag,
+  Truck,
+  MessageCircle,
+  BarChart3,
+  Warehouse,
+  Forklift,
+  Landmark,
+  Package,
+  Users2,
+  DollarSign,
+  Search,
+  X,
+  ArrowLeft,
+  ShieldCheck,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useLocale, useMessages } from "next-intl";
+import { getLocaleDirection } from "@/i18n/config";
+import { useOrderNotifications } from "@/components/admin/use-order-notifications";
+
+type TranslateLabel = (label: string) => string;
+
+type MenuItem = {
+  name: string;
+  href?: string;
+  icon?: LucideIcon;
+  requiredPermissions?: string[];
+  requiredGlobalPermissions?: string[];
+  requiredFeature?: string;
+  subSections?: Array<{
+    label: string;
+    items: Array<{
+      name: string;
+      href: string;
+      icon?: LucideIcon;
+      requiredPermissions?: string[];
+      requiredGlobalPermissions?: string[];
+      requiredFeature?: string;
+    }>;
+  }>;
+  items?: Array<{
+    name: string;
+    href: string;
+    icon?: LucideIcon;
+    requiredPermissions?: string[];
+    requiredGlobalPermissions?: string[];
+    requiredFeature?: string;
+  }>;
+  subItems?: Array<{
+    name: string;
+    href: string;
+    requiredPermissions?: string[];
+    requiredGlobalPermissions?: string[];
+    requiredFeature?: string;
+  }>;
+};
+
+const menuItems: MenuItem[] = [
+  {
+    name: "Overview",
+    items: [
+      {
+        name: "Payment Control Center",
+        href: "/admin/payment-control",
+        icon: Landmark,
+        requiredGlobalPermissions: ["settings.payment.manage", "settings.manage"],
+      },
+      {
+        name: "Dashboard",
+        href: "/admin",
+        icon: LayoutDashboard,
+        requiredPermissions: ["dashboard.read", "admin.panel.access"],
+      },
+      {
+        name: "Analytics",
+        href: "/admin/analytics",
+        icon: BarChart3,
+        requiredPermissions: ["dashboard.read", "admin.panel.access"],
+      },
+      {
+        name: "Reports",
+        href: "/admin/reports",
+        icon: FileText,
+        requiredPermissions: ["reports.read"],
+      },
+    ],
+  },
+  {
+    name: "Operations",
+    icon: ClipboardList,
+    subItems: [
+      {
+        name: "Users",
+        href: "/admin/operations/users",
+        requiredPermissions: ["users.read", "users.manage"],
+      },
+      {
+        name: "Products",
+        href: "/admin/operations/products",
+        requiredPermissions: ["products.manage"],
+      },
+      {
+        name: "Flash Sales",
+        href: "/admin/management/flash-sales",
+        requiredPermissions: ["products.manage"],
+      },
+      {
+        name: "Reviews",
+        href: "/admin/operations/review",
+        requiredPermissions: ["reviews.manage"],
+      },
+      {
+        name: "Orders",
+        href: "/admin/operations/orders",
+        requiredPermissions: ["orders.read_all"],
+      },
+      {
+        name: "Shipments",
+        href: "/admin/operations/shipments",
+        requiredPermissions: ["shipments.manage", "orders.read_all"],
+      },
+      {
+        name: "Delivery",
+        href: "/admin/operations/delivery",
+        requiredPermissions: ["delivery.dashboard.access"],
+      },
+    ],
+  },
+  {
+    name: "Warehouse",
+    icon: Warehouse,
+    subItems: [
+      {
+        name: "Warehouse Dashboard",
+        href: "/admin/warehouse",
+        requiredPermissions: [
+          "dashboard.read",
+          "inventory.manage",
+          "orders.read_all",
+          "shipments.manage",
+        ],
+      },
+      {
+        name: "Logistics",
+        href: "/admin/warehouse/logistics",
+        requiredPermissions: ["logistics.manage"],
+      },
+      {
+        name: "Stock Management",
+        href: "/admin/warehouse/stock",
+        requiredPermissions: ["inventory.manage"],
+      },
+      {
+        name: "Shipping Rates",
+        href: "/admin/warehouse/shipping-rates",
+        requiredPermissions: ["settings.shipping.manage", "settings.manage"],
+      },
+      {
+        name: "Deliveryman",
+        href: "/admin/warehouse/delivery-men",
+        requiredPermissions: ["delivery-men.manage", "logistics.manage"],
+      },
+      {
+        name: "Payroll",
+        href: "/admin/warehouse/payroll",
+        requiredPermissions: ["payroll.manage"],
+      },
+    ],
+  },
+  {
+    name: "SCM",
+    icon: BookOpen,
+    subSections: [
+      {
+        label: "Workspace",
+        items: [
+          {
+            name: "SCM Home",
+            href: "/admin/scm",
+            requiredPermissions: ["scm.access"],
+          },
+          {
+            name: "My Tasks",
+            href: "/admin/scm/my-tasks",
+            requiredPermissions: ["scm.access"],
+          },
+          {
+            name: "Notifications",
+            href: "/admin/scm/notifications",
+            requiredPermissions: ["scm.access", "orders.read_all"],
+          },
+          {
+            name: "Exceptions",
+            href: "/admin/scm/exceptions",
+            requiredPermissions: ["scm.access"],
+          },
+        ],
+      },
+      {
+        label: "Procurement",
+        items: [
+          {
+            name: "Purchase Requisitions",
+            href: "/admin/scm/purchase-requisitions",
+            requiredPermissions: [
+              "purchase_requisitions.read",
+              "purchase_requisitions.manage",
+              "purchase_requisitions.approve",
+            ],
+          },
+          {
+            name: "RFQs",
+            href: "/admin/scm/rfqs",
+            requiredPermissions: ["rfq.read", "rfq.manage", "rfq.approve"],
+          },
+          {
+            name: "Comparative Statements",
+            href: "/admin/scm/comparative-statements",
+            requiredPermissions: [
+              "comparative_statements.read",
+              "comparative_statements.manage",
+              "comparative_statements.approve_manager",
+              "comparative_statements.approve_committee",
+              "comparative_statements.approve_final",
+            ],
+          },
+          {
+            name: "Purchase Orders",
+            href: "/admin/scm/purchase-orders",
+            requiredPermissions: [
+              "purchase_orders.read",
+              "purchase_orders.manage",
+              "purchase_orders.approve",
+              "purchase_orders.approve_manager",
+              "purchase_orders.approve_committee",
+              "purchase_orders.approve_final",
+              "goods_receipts.manage",
+            ],
+          },
+          {
+            name: "Landed Costs",
+            href: "/admin/scm/landed-costs",
+            requiredPermissions: ["landed_costs.read", "landed_costs.manage"],
+          },
+        ],
+      },
+      {
+        label: "Warehouse",
+        items: [
+          {
+            name: "Goods Receipts",
+            href: "/admin/scm/goods-receipts",
+            requiredPermissions: [
+              "goods_receipts.read",
+              "goods_receipts.manage",
+              "purchase_orders.manage",
+              "purchase_requisitions.manage",
+              "supplier.feedback.manage",
+            ],
+          },
+          {
+            name: "Material Requests",
+            href: "/admin/scm/material-requests",
+            requiredPermissions: [
+              "material_requests.read",
+              "material_requests.manage",
+              "material_requests.endorse_supervisor",
+              "material_requests.endorse_project_manager",
+              "material_requests.approve_admin",
+              "material_releases.read",
+              "material_releases.manage",
+            ],
+          },
+          {
+            name: "Material Releases",
+            href: "/admin/scm/material-releases",
+            requiredPermissions: [
+              "material_releases.read",
+              "material_releases.manage",
+              "material_requests.read",
+              "material_requests.approve_admin",
+            ],
+          },
+          {
+            name: "Release Report",
+            href: "/admin/scm/material-releases/report",
+            requiredPermissions: [
+              "material_releases.read",
+              "material_releases.manage",
+              "material_requests.read",
+              "material_requests.approve_admin",
+            ],
+          },
+          {
+            name: "Warehouse Transfers",
+            href: "/admin/scm/warehouse-transfers",
+            requiredPermissions: [
+              "warehouse_transfers.read",
+              "warehouse_transfers.manage",
+              "warehouse_transfers.approve",
+            ],
+          },
+          {
+            name: "Replenishment",
+            href: "/admin/scm/replenishment",
+            requiredPermissions: ["replenishment.read", "replenishment.manage"],
+          },
+          {
+            name: "Reorder Alerts",
+            href: "/admin/scm/reorder-alerts",
+            requiredPermissions: ["stock_alerts.read", "stock_alerts.manage"],
+          },
+          {
+            name: "Warehouse Locations",
+            href: "/admin/scm/warehouse-locations",
+            requiredPermissions: [
+              "warehouse_locations.read",
+              "warehouse_locations.manage",
+            ],
+          },
+          {
+            name: "Stock Reports",
+            href: "/admin/scm/stock-reports",
+            requiredPermissions: ["stock_reports.read"],
+          },
+          {
+            name: "Stock Cards",
+            href: "/admin/scm/stock-cards",
+            requiredPermissions: [
+              "inventory.manage",
+              "material_releases.read",
+              "material_releases.manage",
+              "material_requests.approve_admin",
+            ],
+          },
+          {
+            name: "Physical Verifications",
+            href: "/admin/scm/physical-verifications",
+            requiredPermissions: [
+              "physical_verifications.read",
+              "physical_verifications.manage",
+              "physical_verifications.approve",
+            ],
+          },
+          {
+            name: "Asset Lifecycle",
+            href: "/admin/scm/assets",
+            requiredPermissions: ["asset_register.read", "asset_register.manage"],
+          },
+        ],
+      },
+      {
+        label: "Supplier",
+        items: [
+          {
+            name: "Suppliers",
+            href: "/admin/scm/suppliers",
+            requiredGlobalPermissions: ["suppliers.read", "suppliers.manage"],
+          },
+          {
+            name: "Supplier Portal Access",
+            href: "/admin/scm/supplier-portal-access",
+            requiredGlobalPermissions: ["suppliers.manage", "users.manage"],
+          },
+          {
+            name: "Vendor Approvals",
+            href: "/admin/scm/vendor-approvals",
+            requiredGlobalPermissions: [
+              "supplier.profile_requests.read",
+              "supplier.profile_requests.review",
+            ],
+          },
+          {
+            name: "Vendor Feedback",
+            href: "/admin/scm/vendor-feedback",
+            requiredGlobalPermissions: ["supplier.feedback.manage"],
+          },
+          {
+            name: "Supplier Intelligence",
+            href: "/admin/scm/supplier-intelligence",
+            requiredGlobalPermissions: ["supplier_performance.read"],
+          },
+          {
+            name: "SLA Policies",
+            href: "/admin/scm/sla",
+            requiredGlobalPermissions: ["sla.read", "sla.manage"],
+          },
+          {
+            name: "Supplier Returns",
+            href: "/admin/scm/supplier-returns",
+            requiredPermissions: [
+              "supplier_returns.read",
+              "supplier_returns.manage",
+              "supplier_returns.approve",
+            ],
+          },
+        ],
+      },
+      {
+        label: "Finance",
+        items: [
+          {
+            name: "Payment Requests",
+            href: "/admin/scm/payment-requests",
+            requiredPermissions: [
+              "payment_requests.read",
+              "payment_requests.manage",
+              "payment_requests.approve_admin",
+              "payment_requests.approve_finance",
+              "payment_requests.treasury",
+            ],
+          },
+          {
+            name: "Payment Reports",
+            href: "/admin/scm/payment-reports",
+            requiredPermissions: [
+              "payment_reports.read",
+              "supplier_payments.read",
+              "supplier_payments.manage",
+            ],
+          },
+          {
+            name: "Supplier Invoices",
+            href: "/admin/scm/supplier-invoices",
+            requiredPermissions: [
+              "supplier_invoices.read",
+              "supplier_invoices.manage",
+              "supplier_ledger.read",
+            ],
+            requiredGlobalPermissions: [
+              "supplier_invoices.read",
+              "supplier_invoices.manage",
+              "supplier_ledger.read",
+            ],
+          },
+          {
+            name: "Supplier Ledger",
+            href: "/admin/scm/supplier-ledger",
+            requiredPermissions: [
+              "supplier_ledger.read",
+              "supplier_invoices.read",
+              "supplier_payments.read",
+            ],
+            requiredGlobalPermissions: [
+              "supplier_ledger.read",
+              "supplier_invoices.read",
+              "supplier_payments.read",
+            ],
+          },
+          {
+            name: "3-Way Match",
+            href: "/admin/scm/three-way-match",
+            requiredPermissions: [
+              "three_way_match.read",
+              "supplier_invoices.read",
+              "supplier_invoices.manage",
+            ],
+            requiredGlobalPermissions: [
+              "three_way_match.read",
+              "supplier_invoices.read",
+              "supplier_invoices.manage",
+            ],
+          },
+        ],
+      },
+      {
+        label: "Governance",
+        items: [
+          {
+            name: "SCM Dashboard",
+            href: "/admin/scm/dashboard",
+            requiredPermissions: [
+              "dashboard.read",
+              "purchase_requisitions.read",
+              "rfq.read",
+              "comparative_statements.read",
+              "purchase_orders.read",
+              "goods_receipts.read",
+              "payment_requests.read",
+              "payment_reports.read",
+              "stock_reports.read",
+              "supplier_performance.read",
+              "supplier.feedback.manage",
+              "sla.read",
+              "supplier_ledger.read",
+              "three_way_match.read",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Business Network",
+    icon: Users2,
+    subSections: [
+      {
+        label: "Workspace",
+        items: [
+          { name: "Business Home", href: "/admin/business-network", requiredPermissions: ["business.account.view", "partner.profile.view"] },
+          { name: "Organizations", href: "/admin/business-network/organizations", requiredPermissions: ["business.account.view", "business.account.manage"] },
+          { name: "Business Accounts", href: "/admin/business-network/accounts", requiredPermissions: ["business.account.view", "business.account.manage"] },
+          { name: "Business Orders", href: "/admin/business-network/orders", requiredPermissions: ["business.customer_po.view"] },
+        ],
+      },
+      {
+        label: "Corporate Sales",
+        items: [
+          { name: "Sales RFQs", href: "/admin/business-network/rfqs", requiredPermissions: ["business.rfq.view", "business.rfq.manage"] },
+          { name: "Quotations", href: "/admin/business-network/quotations", requiredPermissions: ["business.quotation.view", "business.quotation.create"] },
+          { name: "Customer POs", href: "/admin/business-network/customer-pos", requiredPermissions: ["business.customer_po.view", "business.customer_po.verify"] },
+          { name: "Corporate Credit", href: "/admin/business-network/credit", requiredPermissions: ["business.credit.view", "business.credit.manage"] },
+        ],
+      },
+      {
+        label: "Pricing",
+        items: [
+          { name: "Pricing Tiers", href: "/admin/business-network/pricing/tiers", requiredPermissions: ["business.pricing.view", "business.pricing.manage"] },
+          { name: "Contract Prices", href: "/admin/business-network/pricing/contracts", requiredPermissions: ["business.pricing.view", "business.pricing.manage"] },
+        ],
+      },
+      {
+        label: "Partners",
+        items: [
+          { name: "Partner Profiles", href: "/admin/business-network/partners", requiredPermissions: ["partner.profile.view", "partner.profile.manage"] },
+          { name: "Agreements", href: "/admin/business-network/agreements", requiredPermissions: ["partner.agreement.view", "partner.agreement.manage"] },
+          { name: "Registered Leads", href: "/admin/business-network/leads", requiredPermissions: ["partner.lead.view", "partner.lead.manage"] },
+        ],
+      },
+      {
+        label: "Finance",
+        items: [
+          { name: "Commission Plans", href: "/admin/business-network/commission/plans", requiredPermissions: ["partner.commission.view", "partner.commission.calculate"] },
+          { name: "Commission Ledger", href: "/admin/business-network/commission/ledger", requiredPermissions: ["partner.commission.view"] },
+          { name: "Settlements", href: "/admin/business-network/settlements", requiredPermissions: ["partner.settlement.view", "partner.settlement.create"] },
+          { name: "Payout Accounts", href: "/admin/business-network/payout-accounts", requiredPermissions: ["partner.payout_account.view", "partner.payout_account.verify"] },
+        ],
+      },
+      {
+        label: "Governance",
+        items: [
+          { name: "Risk Review", href: "/admin/business-network/risk", requiredPermissions: ["business.audit.view"] },
+          { name: "Dispute Evidence", href: "/admin/business-network/disputes", requiredPermissions: ["business.audit.view"] },
+          { name: "Audit Log", href: "/admin/business-network/audit", requiredPermissions: ["business.audit.view"] },
+          { name: "Business Reports", href: "/admin/business-network/reports", requiredPermissions: ["business.report.view"] },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Investors",
+    icon: Landmark,
+    requiredGlobalPermissions: [
+      "investors.read",
+      "investors.manage",
+      "investor_ledger.read",
+      "investor_ledger.manage",
+      "investor_allocations.read",
+      "investor_allocations.manage",
+      "investor_profit.read",
+      "investor_profit.manage",
+      "investor_profit.approve",
+      "investor_profit.post",
+      "investor_payout.read",
+      "investor_payout.manage",
+      "investor_payout.approve",
+      "investor_payout.pay",
+      "investor_payout.void",
+      "investor_statement.read",
+    ],
+    subSections: [
+      {
+        label: "Workspace",
+        items: [
+          {
+            name: "Investor Home",
+            href: "/admin/investors",
+            requiredGlobalPermissions: [
+              "investors.read",
+              "investors.manage",
+              "investor_ledger.read",
+              "investor_ledger.manage",
+              "investor_allocations.read",
+              "investor_allocations.manage",
+              "investor_profit.read",
+              "investor_profit.manage",
+              "investor_profit.approve",
+              "investor_profit.post",
+              "investor_payout.read",
+              "investor_payout.manage",
+              "investor_payout.approve",
+              "investor_payout.pay",
+              "investor_payout.void",
+              "investor_statement.read",
+            ],
+          },
+          {
+            name: "My Tasks",
+            href: "/admin/investors/my-tasks",
+            requiredGlobalPermissions: [
+              "investors.manage",
+              "investor_profit.approve",
+              "investor_profit.post",
+              "investor_payout.approve",
+              "investor_payout.pay",
+            ],
+          },
+          {
+            name: "Exceptions",
+            href: "/admin/investors/exceptions",
+            requiredGlobalPermissions: [
+              "investors.read",
+              "investors.manage",
+              "investor_profit.read",
+              "investor_profit.manage",
+              "investor_payout.read",
+              "investor_payout.manage",
+            ],
+          },
+          {
+            name: "Notifications",
+            href: "/admin/investors/notifications",
+            requiredGlobalPermissions: ["investor.notifications.read"],
+          },
+        ],
+      },
+      {
+        label: "Operations",
+        items: [
+          {
+            name: "Investor Registry",
+            href: "/admin/investors/registry",
+            requiredGlobalPermissions: ["investors.read", "investors.manage"],
+          },
+          {
+            name: "Documents",
+            href: "/admin/investors/documents",
+            requiredGlobalPermissions: [
+              "investor_documents.read",
+              "investor_documents.manage",
+              "investor_documents.review",
+              "investors.manage",
+            ],
+          },
+          {
+            name: "Capital Ledger",
+            href: "/admin/investors/ledger",
+            requiredGlobalPermissions: [
+              "investor_ledger.read",
+              "investor_ledger.manage",
+            ],
+          },
+          {
+            name: "Allocations",
+            href: "/admin/investors/allocations",
+            requiredGlobalPermissions: [
+              "investor_allocations.read",
+              "investor_allocations.manage",
+            ],
+          },
+          {
+            name: "Profit Runs",
+            href: "/admin/investors/profit-runs",
+            requiredGlobalPermissions: [
+              "investor_profit.read",
+              "investor_profit.manage",
+              "investor_profit.approve",
+              "investor_profit.post",
+            ],
+          },
+          {
+            name: "Payouts",
+            href: "/admin/investors/payouts",
+            requiredGlobalPermissions: [
+              "investor_payout.read",
+              "investor_payout.manage",
+              "investor_payout.approve",
+              "investor_payout.pay",
+              "investor_payout.void",
+            ],
+          },
+          {
+            name: "Withdrawals",
+            href: "/admin/investors/withdrawals",
+            requiredGlobalPermissions: [
+              "investor_withdrawals.read",
+              "investor_withdrawals.review",
+              "investor_withdrawals.settle",
+              "investors.manage",
+            ],
+          },
+          {
+            name: "Retained Profit",
+            href: "/admin/investors/retained-profit",
+            requiredGlobalPermissions: [
+              "investor_profit.read",
+              "investor_profit.manage",
+              "investor_profit.approve",
+              "investor_profit.post",
+              "investor_statement.read",
+            ],
+          },
+          {
+            name: "Statements",
+            href: "/admin/investors/statements",
+            requiredGlobalPermissions: ["investor_statement.read"],
+          },
+          {
+            name: "Statement Schedules",
+            href: "/admin/investors/statement-schedules",
+            requiredGlobalPermissions: ["investor_statement.read", "investors.manage"],
+          },
+        ],
+      },
+      {
+        label: "Governance",
+        items: [
+          {
+            name: "Profile Requests",
+            href: "/admin/investors/profile-requests",
+            requiredGlobalPermissions: [
+              "investor_profile_requests.read",
+              "investor_profile_requests.review",
+              "investors.manage",
+            ],
+          },
+          {
+            name: "Activity Log",
+            href: "/admin/investors/activity-log",
+            requiredGlobalPermissions: ["investor.activity_log.read"],
+          },
+          {
+            name: "Portal Access",
+            href: "/admin/investors/portal-access",
+            requiredGlobalPermissions: ["investors.manage", "users.manage"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Management",
+    icon: ClipboardList,
+    requiredPermissions: ["products.manage", "inventory.manage"],
+    subItems: [
+      {
+        name: "Couriers",
+        href: "/admin/management/couriers",
+        requiredPermissions: ["settings.courier.manage", "settings.manage"],
+      },
+      {
+        name: "VAT Management",
+        href: "/admin/management/vatmanagent",
+        requiredPermissions: ["settings.vat.manage", "settings.manage"],
+      },
+      {
+        name: "Blogs Management",
+        href: "/admin/management/blogs",
+        requiredPermissions: ["blogs.manage"],
+      },
+      {
+        name: "Categories",
+        href: "/admin/management/categories",
+        requiredPermissions: ["products.manage"],
+      },
+      {
+        name: "Brands",
+        href: "/admin/management/brands",
+        requiredPermissions: ["products.manage"],
+      },
+      {
+        name: "Search Management",
+        href: "/admin/management/search",
+        requiredPermissions: ["products.manage", "settings.manage"],
+      },
+
+      {
+        name: "Newsletter",
+        href: "/admin/management/newsletter",
+        requiredPermissions: ["newsletter.manage"],
+      },
+      {
+        name: "Coupons",
+        href: "/admin/management/coupons",
+        requiredPermissions: ["coupons.manage"],
+      },
+    ],
+  },
+  {
+    name: "Communication",
+    items: [
+      {
+        name: "Chats",
+        href: "/admin/chats",
+        icon: MessageCircle,
+        requiredPermissions: ["chats.manage"],
+      },
+    ],
+  },
+  {
+    name: "Settings",
+    icon: Settings,
+    requiredPermissions: ["settings.manage"],
+    subItems: [
+      {
+        name: "General Settings",
+        href: "/admin/settings",
+        requiredPermissions: ["settings.manage"],
+      },
+      {
+        name: "Policy Management",
+        href: "/admin/settings/policies",
+        requiredPermissions: ["settings.manage"],
+      },
+      {
+        name: "Writers",
+        href: "/admin/management/writers",
+        requiredPermissions: ["products.manage"],
+        requiredFeature: "BOOKS",
+      },
+      {
+        name: "Publishers",
+        href: "/admin/management/publishers",
+        requiredPermissions: ["products.manage"],
+        requiredFeature: "BOOKS",
+      },
+      {
+        name: "Store Features",
+        href: "/admin/settings/features",
+        requiredPermissions: ["settings.manage"],
+      },
+      {
+        name: "Gallery Management",
+        href: "/admin/settings/gallery",
+        requiredPermissions: ["settings.manage", "gallery.manage"],
+      },
+      {
+        name: "RBAC",
+        href: "/admin/settings/rbac",
+        requiredPermissions: ["roles.manage"],
+      },
+      {
+        name: "Activity Log",
+        href: "/admin/settings/activitylog",
+        requiredPermissions: ["settings.activitylog.read", "settings.manage"],
+      },
+    ],
+  },
+];
+
+interface MenuItemProps {
+  newOrderCount?: number;
+  onOrdersClick?: () => void;
+  item: MenuItem;
+  pathname: string;
+  compactSubSections?: boolean;
+  translateLabel: TranslateLabel;
+}
+
+const MenuItem = ({
+  newOrderCount = 0,
+  onOrdersClick,
+  item,
+  pathname,
+  compactSubSections = false,
+  translateLabel,
+}: MenuItemProps) => {
+  const flattenedSubItems = item.subSections
+    ? item.subSections.flatMap((section) => section.items)
+    : item.subItems ?? [];
+  const hasActiveSubItem = Boolean(
+    flattenedSubItems.some(
+      (subItem) =>
+        pathname === subItem.href ||
+        (subItem.href !== "/admin" && pathname.startsWith(`${subItem.href}/`)),
+    ),
+  );
+  const initialOpenState = hasActiveSubItem;
+
+  const [isOpen, setIsOpen] = useState(initialOpenState);
+  const hasSubItems = flattenedSubItems.length > 0;
+  const hasItems = item.items && item.items.length > 0;
+
+  // Determine active state for parent links
+  const isActive = item.href
+    ? pathname === item.href ||
+      (item.href !== "/admin" && pathname.startsWith(item.href))
+    : hasActiveSubItem;
+
+  useEffect(() => {
+    if (hasActiveSubItem) {
+      setIsOpen(true);
+    }
+  }, [hasActiveSubItem]);
+
+  return (
+    <div>
+      {hasSubItems ? (
+        <>
+          <button
+            aria-expanded={isOpen}
+            onClick={() => setIsOpen(!isOpen)}
+            className={cn(
+              "w-full flex items-center justify-between px-4 py-2.5 transition-all duration-150 group",
+              isOpen
+                ? "text-primary bg-primary/8 border-l-2 border-primary"
+                : "text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-l-2 hover:border-primary/50 border-l-2 border-transparent",
+            )}
+          >
+            <div className="flex items-center gap-3">
+              {item.icon && (
+                <item.icon
+                  className={cn(
+                    "h-4 w-4 transition-all duration-150",
+                    isOpen
+                      ? "text-primary"
+                      : "text-muted-foreground/60 group-hover:text-muted-foreground",
+                  )}
+                />
+              )}
+              <span className="text-sm font-medium">{translateLabel(item.name)}</span>
+              {item.name === "Operations" && !isOpen && newOrderCount > 0 && (
+                <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">{newOrderCount}</span>
+              )}
+            </div>
+            {isOpen ? (
+              <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+            ) : (
+              <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </button>
+          {isOpen && (
+            <div className="relative">
+              <div className="absolute left-6 top-0 bottom-0 w-px border-l border-border" />
+              <div className="ml-6 py-1 space-y-0.5">
+                {item.subSections
+                  ? item.subSections.map((section) => {
+                      const isSectionActive = section.items.some(
+                        (subItem) =>
+                          pathname === subItem.href ||
+                          (subItem.href !== "/admin" &&
+                            pathname.startsWith(`${subItem.href}/`)),
+                      );
+                      return (
+                        <div key={section.label} className="space-y-1 py-1.5">
+                          {compactSubSections ? (
+                            <details
+                              open={isSectionActive}
+                              className="group rounded-md border border-border/60 bg-muted/20"
+                            >
+                              <summary className="cursor-pointer list-none px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/70">
+                                {translateLabel(section.label)}
+                              </summary>
+                              <div className="space-y-0.5 pb-1">
+                                {section.items.map((subItem) => {
+                                  const isSubItemActive = pathname === subItem.href;
+                                  return (
+                                    <Link
+                                      key={subItem.name}
+                                      href={subItem.href}
+                                      className={cn(
+                                        "relative pl-4 pr-4 py-2 text-xs transition-all duration-150 flex items-center gap-2",
+                                        isSubItemActive
+                                          ? "text-primary font-medium bg-primary/20 border-l-2 border-primary"
+                                          : "text-muted-foreground/70 hover:text-foreground hover:bg-primary/10",
+                                      )}
+                                    >
+                                      <div
+                                        className={cn(
+                                          "w-1.5 h-1.5 rounded-full transition-all duration-150",
+                                          isSubItemActive
+                                            ? "bg-primary"
+                                            : "bg-muted-foreground/40",
+                                        )}
+                                      />
+                                      {translateLabel(subItem.name)}
+                                      {isSubItemActive && (
+                                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
+                                      )}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </details>
+                          ) : (
+                            <>
+                              <div className="px-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/60">
+                                {translateLabel(section.label)}
+                              </div>
+                              {section.items.map((subItem) => {
+                                const isSubItemActive = pathname === subItem.href;
+                                return (
+                                  <Link
+                                    key={subItem.name}
+                                    href={subItem.href}
+                                    className={cn(
+                                      "relative pl-4 pr-4 py-2 text-xs transition-all duration-150 flex items-center gap-2",
+                                      isSubItemActive
+                                        ? "text-primary font-medium bg-primary/20 border-l-2 border-primary"
+                                        : "text-muted-foreground/70 hover:text-foreground hover:bg-primary/10",
+                                    )}
+                                  >
+                                    <div
+                                      className={cn(
+                                        "w-1.5 h-1.5 rounded-full transition-all duration-150",
+                                        isSubItemActive
+                                          ? "bg-primary"
+                                          : "bg-muted-foreground/40",
+                                      )}
+                                    />
+                                    {translateLabel(subItem.name)}
+                                    {isSubItemActive && (
+                                      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
+                                    )}
+                                  </Link>
+                                );
+                              })}
+                            </>
+                          )}
+                        </div>
+                      );
+                    })
+                  : item.subItems?.map((subItem) => {
+                      const isSubItemActive = pathname === subItem.href;
+                      return (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          onClick={subItem.href === "/admin/operations/orders" ? onOrdersClick : undefined}
+                          className={cn(
+                            "relative pl-4 pr-4 py-2 text-xs transition-all duration-150 flex items-center gap-2",
+                            isSubItemActive
+                              ? "text-primary font-medium bg-primary/20 border-l-2 border-primary"
+                              : "text-muted-foreground/70 hover:text-foreground hover:bg-primary/10",
+                          )}
+                        >
+                          <div
+                            className={cn(
+                              "w-1.5 h-1.5 rounded-full transition-all duration-150",
+                              isSubItemActive ? "bg-primary" : "bg-muted-foreground/40",
+                            )}
+                          />
+                          {translateLabel(subItem.name)}
+                          {subItem.href === "/admin/operations/orders" && newOrderCount > 0 && (
+                            <span className="ml-auto rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">{newOrderCount}</span>
+                          )}
+                          {isSubItemActive && (
+                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary" />
+                          )}
+                        </Link>
+                      );
+                    })}
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <Link
+          href={item.href || "#"}
+          className={cn(
+            "flex items-center gap-3 px-4 py-2.5 transition-all duration-150 group",
+            isActive
+              ? "text-primary bg-primary/10 hover:bg-primary/20 border-l-2 border-primary"
+              : "text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-l-2 hover:border-primary/50 border-l-2 border-transparent",
+          )}
+        >
+          {item.icon && (
+            <item.icon
+              className={cn(
+                "h-4 w-4 transition-all duration-150",
+                isActive
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground/60 group-hover:text-muted-foreground bg-primary/10 group-hover:translate-x-0.5",
+              )}
+            />
+          )}
+          <span className="text-sm font-medium">{translateLabel(item.name)}</span>
+        </Link>
+      )}
+    </div>
+  );
+};
+
+// Sidebar Content wrapper
+const SidebarContent = ({
+  newOrderCount,
+  onOrdersClick,
+  pathname,
+  items,
+  isWarehouseScopedOnly = false,
+  compactSubSections = false,
+  translateLabel,
+}: {
+  newOrderCount: number;
+  onOrdersClick: () => void;
+  pathname: string;
+  items: MenuItem[];
+  isWarehouseScopedOnly?: boolean;
+  compactSubSections?: boolean;
+  translateLabel: TranslateLabel;
+}) => (
+  <nav className="py-6 space-y-2 overflow-y-auto scrollbar-hide-on-idle">
+    {items.map((section) => {
+      if (section.items) {
+        // Section with items
+        const visibleItems = section.items.filter(
+          (item) => item.href !== "/admin" || !isWarehouseScopedOnly,
+        );
+        if (visibleItems.length === 0) return null;
+
+        return (
+          <div key={section.name}>
+            <div className="px-4 pb-2">
+              <h3 className="text-[10px] font-semibold tracking-widest text-muted-foreground/60 uppercase">
+                {translateLabel(section.name)}
+              </h3>
+            </div>
+            <div className="space-y-0.5">
+              {visibleItems.map((item) => (
+                <MenuItem
+                  key={`${item.name}:${item.href ?? "item"}`}
+                  item={item}
+                  pathname={pathname}
+                  compactSubSections={compactSubSections}
+                  translateLabel={translateLabel}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      } else {
+        // Single menu item (collapsible or regular)
+        return (
+          <div key={`${section.name}:${section.href ?? "group"}`}>
+            <MenuItem
+              item={section}
+              newOrderCount={newOrderCount}
+              onOrdersClick={onOrdersClick}
+              pathname={pathname}
+              translateLabel={translateLabel}
+            />
+          </div>
+        );
+      }
+    })}
+  </nav>
+);
+
+export default function Sidebar({
+  isMobile = false,
+  onClose,
+}: {
+  isMobile?: boolean;
+  onClose?: () => void;
+}) {
+  const pathname = usePathname() ?? "";
+  const [menuSearch, setMenuSearch] = useState("");
+  const { data: orderNotifications, acknowledgeOrders } = useOrderNotifications(true);
+  const locale = useLocale();
+  const messages = useMessages();
+  const direction = getLocaleDirection(locale);
+  const isRtl = direction === "rtl";
+  const { data: session } = useSession();
+  const [siteSettings, setSiteSettings] = useState<any>(null);
+  const [enabledFeatures, setEnabledFeatures] = useState<Set<string>>(() => new Set());
+  const permissionKeys = Array.isArray((session?.user as any)?.permissions)
+    ? ((session?.user as any).permissions as string[])
+    : [];
+  const globalPermissionKeys = Array.isArray(
+    (session?.user as any)?.globalPermissions,
+  )
+    ? ((session?.user as any).globalPermissions as string[])
+    : [];
+  const warehouseIds = Array.isArray((session?.user as any)?.warehouseIds)
+    ? ((session?.user as any).warehouseIds as number[])
+    : [];
+  const defaultAdminRoute = (session?.user as any)?.defaultAdminRoute as
+    | "/admin"
+    | "/admin/warehouse"
+    | undefined;
+  const isWarehouseScopedOnly =
+    defaultAdminRoute === "/admin/warehouse" && warehouseIds.length > 0;
+
+  const roleNames =
+    Array.isArray((session?.user as any)?.roleNames) &&
+    ((session?.user as any).roleNames as string[]).length > 0
+      ? ((session?.user as any).roleNames as string[])
+      : [];
+  const userRoleLabel =
+    roleNames.length > 0
+      ? roleNames.join(", ")
+      : ((session?.user as any)?.role as string) || "Admin";
+
+  useEffect(() => {
+    const fetchSiteSettings = async () => {
+      try {
+        const response = await fetch("/api/site");
+        const data = await response.json();
+        setSiteSettings(data);
+      } catch (error) {
+        console.error("Failed to fetch site settings:", error);
+      }
+    };
+
+    fetchSiteSettings();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    void fetch("/api/store-features", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((payload) => {
+        if (!active) return;
+        setEnabledFeatures(
+          new Set(
+            Object.entries(payload?.features ?? {})
+              .filter(([, enabled]) => enabled === true)
+              .map(([key]) => key),
+          ),
+        );
+      })
+      .catch(() => {
+        if (active) setEnabledFeatures(new Set());
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const hasRequiredFeature = useCallback(
+    (required?: string) => !required || enabledFeatures.has(required),
+    [enabledFeatures],
+  );
+
+  const hasPermission = useCallback(
+    (required?: string[]) => {
+      if (!required || required.length === 0) return true;
+      return required.some((permission) => permissionKeys.includes(permission));
+    },
+    [permissionKeys],
+  );
+
+  const hasGlobalPermission = useCallback(
+    (required?: string[]) => {
+      if (!required || required.length === 0) return true;
+      return required.some((permission) =>
+        globalPermissionKeys.includes(permission),
+      );
+    },
+    [globalPermissionKeys],
+  );
+
+  const visibleMenuItems = useMemo<MenuItem[]>(() => {
+    return menuItems
+      .map((section) => {
+        if (section.items) {
+          // Handle section with items
+          const visibleItems = section.items.filter((item) => {
+            if (item.href === "/admin" && isWarehouseScopedOnly) return false;
+            if (item.href === "/admin/warehouse" && warehouseIds.length === 0)
+              return false;
+            return (
+              hasPermission(item.requiredPermissions) &&
+              hasGlobalPermission(item.requiredGlobalPermissions) &&
+              hasRequiredFeature(item.requiredFeature)
+            );
+          });
+          if (visibleItems.length === 0) return null;
+          return { ...section, items: visibleItems };
+        } else if (section.subSections && section.subSections.length > 0) {
+          const visibleSubSections = section.subSections
+            .map((subSection) => ({
+              ...subSection,
+              items: subSection.items.filter(
+                (subItem) =>
+                  hasPermission(subItem.requiredPermissions) &&
+                  hasGlobalPermission(subItem.requiredGlobalPermissions) &&
+                  hasRequiredFeature(subItem.requiredFeature),
+              ),
+            }))
+            .filter((subSection) => subSection.items.length > 0);
+          if (visibleSubSections.length === 0) {
+            return null;
+          }
+          return {
+            ...section,
+            subSections: visibleSubSections,
+          };
+        } else if (section.subItems && section.subItems.length > 0) {
+          // Handle collapsible group with subItems
+          const visibleSubItems = section.subItems.filter(
+            (subItem) =>
+              hasPermission(subItem.requiredPermissions) &&
+              hasGlobalPermission(subItem.requiredGlobalPermissions) &&
+              hasRequiredFeature(subItem.requiredFeature),
+          );
+          if (visibleSubItems.length === 0) {
+            return null;
+          }
+          return {
+            ...section,
+            subItems: visibleSubItems,
+          };
+        } else {
+          // Handle single item
+          if (
+            !hasPermission(section.requiredPermissions) ||
+            !hasGlobalPermission(section.requiredGlobalPermissions)
+            || !hasRequiredFeature(section.requiredFeature)
+          ) {
+            return null;
+          }
+          return section;
+        }
+      })
+      .filter((item): item is MenuItem => item !== null);
+  }, [
+    hasGlobalPermission,
+    hasPermission,
+    hasRequiredFeature,
+    isWarehouseScopedOnly,
+    warehouseIds.length,
+  ]);
+
+  // Using CSS variables from global.css
+  const themeBg = "bg-background";
+  const themeBorder = "border-border";
+  const siteTitle = siteSettings?.siteTitle?.trim() || DEFAULT_SITE_TITLE;
+  const sidebarMessages = (
+    messages as unknown as Record<string, Record<string, string> | undefined>
+  ).AdminSidebar;
+  const translateLabel = useCallback(
+    (label: string) => sidebarMessages?.[label] ?? label,
+    [sidebarMessages],
+  );
+
+  const matchingLinks = useMemo(() => {
+    const query = menuSearch.trim().toLocaleLowerCase();
+    if (!query) return [];
+    return visibleMenuItems.flatMap(section => {
+      if (section.name === "Overview" && !permissionKeys.includes("dashboard.read") && !permissionKeys.includes("reports.read")) return [];
+      const links: Array<{ name: string; href: string; icon?: LucideIcon }> = section.items ?? section.subSections?.flatMap(group => group.items) ?? section.subItems ?? (section.href ? [{ name: section.name, href: section.href }] : []);
+      return links.filter(item => (permissionKeys.includes("dashboard.read") || !["/admin", "/admin/analytics"].includes(item.href)) && [item.name, section.name, translateLabel(item.name), translateLabel(section.name)].join(" ").toLocaleLowerCase().includes(query))
+        .map(item => ({ name: item.name, href: item.href, icon: item.icon || section.icon || LayoutDashboard }));
+    });
+  }, [menuSearch, visibleMenuItems, translateLabel, permissionKeys]);
+
+  const brand = <div className="boed-admin-brand"><Link href="/admin" aria-label={siteTitle}><span className="boed-admin-brand-icon" aria-hidden="true">A</span><img src="/AURA_BOED_Logo.svg" alt={siteTitle} width="180" height="65" /></Link>{isMobile ? <button type="button" aria-label="Close admin navigation" onClick={onClose}><X size={18} /></button> : null}</div>;
+  const searchField = <label className="boed-admin-menu-search"><Search size={15} aria-hidden="true" /><input type="search" aria-label="Search admin menu" placeholder="Find a menu..." value={menuSearch} onChange={event => setMenuSearch(event.target.value)} />{menuSearch ? <button type="button" aria-label="Clear menu search" onClick={() => setMenuSearch("")}><X size={13} /></button> : null}</label>;
+  const navigation = <div className="boed-admin-nav" onClick={event => { if ((event.target as HTMLElement).closest("a[href]")) onClose?.(); }}>
+    {menuSearch.trim() ? matchingLinks.length ? <nav className="boed-admin-search-results" aria-label="Admin search results">{matchingLinks.map(item => <Link key={item.href} href={item.href} aria-current={pathname === item.href ? "page" : undefined}><item.icon size={17} /><span>{translateLabel(item.name)}</span></Link>)}</nav> : <p className="boed-admin-search-empty">No menu items found.<br />Try another name.</p> : <SidebarContent newOrderCount={orderNotifications?.newOrderCount ?? 0} onOrdersClick={acknowledgeOrders} pathname={pathname} items={visibleMenuItems} isWarehouseScopedOnly={isWarehouseScopedOnly} compactSubSections={isMobile} translateLabel={translateLabel} />}
+  </div>;
+  const footer = <div className="boed-admin-sidebar-footer"><div className="boed-admin-workspace-status"><ShieldCheck size={19} /><div>Store workspace<small>{userRoleLabel}</small></div></div><Link href="/"><ArrowLeft size={15} />Back to storefront</Link></div>;
+  if (isMobile) return <div dir={direction} className="boed-admin-sidebar h-full flex flex-col">{brand}{searchField}{navigation}{footer}</div>;
+  return <aside dir={direction} className={cn("boed-admin-sidebar h-screen fixed top-0 flex flex-col", isRtl ? "right-0 left-auto border-l" : "left-0 right-auto border-r", themeBg, themeBorder)}>{brand}{searchField}{navigation}{footer}</aside>;
+}

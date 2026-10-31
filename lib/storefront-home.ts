@@ -1,0 +1,442 @@
+import { unstable_cache } from "next/cache";
+import { Prisma } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
+import { resolveFlashSalePricing } from "@/lib/flash-sale";
+import { getDisabledStorefrontProductTypes } from "@/lib/store-feature-gates-server";
+import type { FeatureControlledProductType } from "@/lib/store-features";
+import { getEffectiveStorefrontCategoryIds } from "@/lib/category-navigation-server";
+import { getBookProductVisibilityWhere } from "@/lib/book-product-visibility-server";
+import {
+  configurableBundleGroupSelect,
+} from "@/lib/configurable-bundle";
+import { serializeStorefrontProductInventory } from "@/lib/storefront-product";
+
+export const storefrontHomeProductSelect = {
+  id: true,
+  name: true,
+  slug: true,
+  type: true,
+  categoryId: true,
+  basePrice: true,
+  originalPrice: true,
+  flashSaleEnabled: true,
+  flashSalePrice: true,
+  flashSaleStartsAt: true,
+  flashSaleEndsAt: true,
+  flashSaleSortOrder: true,
+  currency: true,
+  available: true,
+  featured: true,
+  image: true,
+  shortDesc: true,
+  soldCount: true,
+  ratingAvg: true,
+  ratingCount: true,
+  createdAt: true,
+  updatedAt: true,
+  bundleStockLimit: true,
+  bundleWarehouseId: true,
+  bundleFulfillmentMode: true,
+  assembledStockLevels: {
+    select: { warehouseId: true, quantity: true, reserved: true },
+  },
+  attributes: {
+    orderBy: { id: "asc" as const },
+    take: 4,
+    select: {
+      value: true,
+      attribute: { select: { name: true } },
+    },
+  },
+  variants: {
+    where: { active: true },
+    orderBy: { id: "asc" as const },
+    select: {
+      id: true,
+      productId: true,
+      sku: true,
+      price: true,
+      currency: true,
+      stock: true,
+      options: true,
+      colorImage: true,
+      isDefault: true,
+      active: true,
+      stockLevels: {
+        select: { quantity: true, reserved: true },
+      },
+    },
+  },
+  bundleItems: {
+    orderBy: { sortOrder: "asc" as const },
+    select: {
+      id: true,
+      productId: true,
+      quantity: true,
+      sortOrder: true,
+      product: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          available: true,
+          deleted: true,
+        },
+      },
+    },
+  },
+  bundleGroups: {
+    orderBy: { sortOrder: "asc" as const },
+    select: configurableBundleGroupSelect,
+  },
+} as const satisfies Prisma.ProductSelect;
+
+type RawStorefrontProduct = Prisma.ProductGetPayload<{
+  select: typeof storefrontHomeProductSelect;
+}>;
+
+export function serializeStorefrontHomeProduct(
+  product: RawStorefrontProduct,
+  now = new Date(),
+) {
+  const regularBasePrice = Number(product.basePrice);
+  const flashSale = resolveFlashSalePricing(product, regularBasePrice, now);
+  return serializeStorefrontProductInventory({
+    ...product,
+    basePrice: flashSale.salePrice,
+    originalPrice: flashSale.active
+      ? flashSale.regularPrice
+      : product.originalPrice === null
+        ? null
+        : Number(product.originalPrice),
+    flashSale,
+    flashSalePrice:
+      product.flashSalePrice === null ? null : Number(product.flashSalePrice),
+    flashSaleStartsAt: product.flashSaleStartsAt?.toISOString() ?? null,
+    flashSaleEndsAt: product.flashSaleEndsAt?.toISOString() ?? null,
+    createdAt: product.createdAt.toISOString(),
+    updatedAt: product.updatedAt.toISOString(),
+    variants: product.variants.map((variant) => ({
+      ...variant,
+      price: resolveFlashSalePricing(product, variant.price, now).salePrice,
+    })),
+    // Nested Prisma prices must also be plain numbers at the Server/Client boundary.
+    bundleGroups: product.bundleGroups.map((group) => ({
+      ...group,
+      options: group.options.map((option) => ({
+        ...option,
+        priceAdjustment: Number(option.priceAdjustment),
+        product: {
+          ...option.product,
+          basePrice: Number(option.product.basePrice),
+          variants: option.product.variants.map((variant) => ({
+            ...variant,
+            price: Number(variant.price),
+          })),
+        },
+        variant: option.variant
+          ? { ...option.variant, price: Number(option.variant.price) }
+          : null,
+      })),
+    })),
+  });
+}
+
+const readStorefrontHomeData = unstable_cache(
+  async (serializedDisabledTypes: string, serializedBookVisibility: string) => {
+    const now = new Date();
+    const disabledTypes = JSON.parse(
+      serializedDisabledTypes,
+    ) as FeatureControlledProductType[];
+    const typeFilter = disabledTypes.length
+      ? { type: { notIn: disabledTypes } }
+      : {};
+    const bookVisibility = JSON.parse(serializedBookVisibility) as Prisma.ProductWhereInput;
+    const activeCategoryIds = await getEffectiveStorefrontCategoryIds();
+    const activeCategoryFilter = { categoryId: { in: activeCategoryIds } };
+    const [products, discountedProducts, topSelling, categories, banners, settings] =
+      await Promise.all([
+        prisma.product.findMany({
+          where: {
+            deleted: false,
+            available: true,
+            ...typeFilter,
+            ...activeCategoryFilter,
+            ...bookVisibility,
+          },
+          orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+          take: 160,
+          select: storefrontHomeProductSelect,
+        }),
+        prisma.product.findMany({
+          where: {
+            deleted: false,
+            available: true,
+            ...typeFilter,
+            ...activeCategoryFilter,
+            ...bookVisibility,
+            flashSaleEnabled: true,
+            flashSalePrice: { not: null },
+            flashSaleStartsAt: { lte: now },
+            flashSaleEndsAt: { gt: now },
+          },
+          orderBy: [{ flashSaleSortOrder: "asc" }, { flashSaleEndsAt: "asc" }],
+          take: 80,
+          select: storefrontHomeProductSelect,
+        }),
+        prisma.product.findMany({
+          where: {
+            deleted: false,
+            available: true,
+            OR: [{ bestSelling: true }, { soldCount: { gt: 0 } }],
+            ...typeFilter,
+            ...activeCategoryFilter,
+            ...bookVisibility,
+          },
+          orderBy: [
+            { bestSelling: "desc" },
+            { soldCount: "desc" },
+            { updatedAt: "desc" },
+          ],
+          take: 20,
+          select: storefrontHomeProductSelect,
+        }),
+      prisma.category.findMany({
+        where: { id: { in: activeCategoryIds }, deleted: false },
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }, { id: "asc" }],
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          image: true,
+          parentId: true,
+          isActive: true,
+          sortOrder: true,
+          showInHeader: true,
+          showInFooter: true,
+          featured: true,
+            _count: {
+              select: {
+                products: {
+                  where: { deleted: false, available: true, ...typeFilter },
+                },
+              },
+            },
+          },
+        }),
+        prisma.banner.findMany({
+          where: {
+            isActive: true,
+            OR: [{ startDate: null }, { startDate: { lte: now } }],
+            AND: [
+              { OR: [{ endDate: null }, { endDate: { gte: now } }] },
+            ],
+          },
+          orderBy: { position: "asc" },
+          select: {
+            id: true,
+            title: true,
+            subtitle: true,
+            description: true,
+            image: true,
+            mobileImage: true,
+            buttonText: true,
+            buttonLink: true,
+            position: true,
+            isActive: true,
+            startDate: true,
+            endDate: true,
+            type: true,
+          },
+        }),
+        prisma.sitesettings.findFirst({
+          orderBy: { id: "asc" },
+          select: {
+            id: true,
+            logo: true,
+            siteTitle: true,
+            storeName: true,
+            storeTagline: true,
+            defaultSeoTitle: true,
+            defaultSeoDescription: true,
+            defaultSeoKeywords: true,
+            defaultOgImage: true,
+            favicon: true,
+            currency: true,
+            currencyPosition: true,
+            timezone: true,
+            locale: true,
+            storeType: true,
+            footerDescription: true,
+            homeFooterDescriptionEnabled: true,
+            homeFooterDescriptionTitle: true,
+            homeFooterDescription: true,
+            contactNumber: true,
+            contactEmail: true,
+            address: true,
+            facebookLink: true,
+            instagramLink: true,
+            twitterLink: true,
+            tiktokLink: true,
+            youtubeLink: true,
+          },
+        }),
+      ]);
+
+    const directCounts = new Map(
+      categories.map((category) => [category.id, category._count.products]),
+    );
+    const categoryNames = new Map(
+      categories.map((category) => [category.id, category.name]),
+    );
+    const childIds = new Map<number, number[]>();
+    for (const category of categories) {
+      if (category.parentId === null) continue;
+      const children = childIds.get(category.parentId) ?? [];
+      children.push(category.id);
+      childIds.set(category.parentId, children);
+    }
+    const totalCountCache = new Map<number, number>();
+    const totalProductCount = (categoryId: number, trail = new Set<number>()): number => {
+      const cached = totalCountCache.get(categoryId);
+      if (cached !== undefined) return cached;
+      if (trail.has(categoryId)) return directCounts.get(categoryId) ?? 0;
+
+      const nextTrail = new Set(trail).add(categoryId);
+      const total =
+        (directCounts.get(categoryId) ?? 0) +
+        (childIds.get(categoryId) ?? []).reduce(
+          (sum, childId) => sum + totalProductCount(childId, nextTrail),
+          0,
+        );
+      totalCountCache.set(categoryId, total);
+      return total;
+    };
+
+    const serializedProducts = products.map((product) =>
+      serializeStorefrontHomeProduct(product, now),
+    );
+    const flashSaleProducts = discountedProducts
+      .map((product) => serializeStorefrontHomeProduct(product, now))
+      .filter((product) => product.flashSale.active)
+      .slice(0, 20);
+
+    return {
+      products: serializedProducts,
+      flashSaleProducts,
+      topSellingProducts: topSelling.map((product, index) => ({
+        ...serializeStorefrontHomeProduct(product, now),
+        totalSold: product.soldCount,
+        rank: index + 1,
+      })),
+      categories: categories.map((category) => ({
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        image: category.image,
+        parentId: category.parentId,
+        isActive: category.isActive,
+        sortOrder: category.sortOrder,
+        showInHeader: category.showInHeader,
+        showInFooter: category.showInFooter,
+        featured: category.featured,
+        parentName:
+          category.parentId === null
+            ? null
+            : categoryNames.get(category.parentId) ?? null,
+        productCount: totalProductCount(category.id),
+        childrenCount: (childIds.get(category.id) ?? []).length,
+      })),
+      banners: banners.map((banner) => ({
+        ...banner,
+        startDate: banner.startDate?.toISOString() ?? null,
+        endDate: banner.endDate?.toISOString() ?? null,
+      })),
+      siteSettings: settings ?? {
+        id: 0,
+        logo: null,
+        siteTitle: null,
+        storeName: null,
+        storeTagline: null,
+        defaultSeoTitle: null,
+        defaultSeoDescription: null,
+        defaultSeoKeywords: [],
+        defaultOgImage: null,
+        favicon: null,
+        currency: null,
+        currencyPosition: null,
+        timezone: null,
+        locale: null,
+        storeType: null,
+        footerDescription: null,
+        homeFooterDescriptionEnabled: false,
+        homeFooterDescriptionTitle: null,
+        homeFooterDescription: null,
+        contactNumber: null,
+        contactEmail: null,
+        address: null,
+        facebookLink: null,
+        instagramLink: null,
+        twitterLink: null,
+        tiktokLink: null,
+        youtubeLink: null,
+      },
+    };
+  },
+  ["storefront-home-v3"],
+  {
+    revalidate: 30,
+    tags: ["storefront-home", "products", "flash-sales", "categories", "banners", "site-settings"],
+  },
+);
+
+export type StorefrontHomeData = Awaited<
+  ReturnType<typeof readStorefrontHomeData>
+>;
+
+export async function getStorefrontHomeData() {
+  const [disabledTypes, bookVisibility] = await Promise.all([
+    getDisabledStorefrontProductTypes(),
+    getBookProductVisibilityWhere(),
+  ]);
+  return readStorefrontHomeData(JSON.stringify(disabledTypes), JSON.stringify(bookVisibility));
+}
+
+export function emptyStorefrontHomeData(): StorefrontHomeData {
+  return {
+    products: [],
+    flashSaleProducts: [],
+    topSellingProducts: [],
+    categories: [],
+    banners: [],
+    siteSettings: {
+      id: 0,
+      logo: null,
+      siteTitle: null,
+      storeName: null,
+      storeTagline: null,
+      defaultSeoTitle: null,
+      defaultSeoDescription: null,
+      defaultSeoKeywords: [],
+      defaultOgImage: null,
+      favicon: null,
+      currency: null,
+      currencyPosition: null,
+      timezone: null,
+      locale: null,
+      storeType: null,
+      footerDescription: null,
+      homeFooterDescriptionEnabled: false,
+      homeFooterDescriptionTitle: null,
+      homeFooterDescription: null,
+      contactNumber: null,
+      contactEmail: null,
+      address: null,
+      facebookLink: null,
+      instagramLink: null,
+      twitterLink: null,
+      tiktokLink: null,
+      youtubeLink: null,
+    },
+  };
+}

@@ -1,0 +1,390 @@
+// app/api/cart/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { gateProductType } from '@/lib/store-feature-gates-server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { applyFlashSalePricingToProduct } from '@/lib/flash-sale';
+import { computeVariantAvailableStock } from '@/lib/warehouse-stock';
+import { evaluateCartReminderNotifications } from '@/lib/cart-reminder-notifications';
+import {
+  getEffectiveStorefrontCategoryIds,
+  isCategoryEffectivelyActive,
+} from '@/lib/category-navigation-server';
+import { getBookProductVisibilityWhere } from '@/lib/book-product-visibility-server';
+import {
+  configurableBundleInclude,
+  resolveBundleConfiguration,
+} from '@/lib/configurable-bundle';
+import {
+  normalizeCartQuantityWriteMode,
+  resolveCartQuantity,
+} from '@/lib/cart-quantity';
+
+async function findStandardCartItem(
+  userId: string,
+  productId: number,
+  variantId: number | null,
+) {
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    'SELECT "id" FROM "CartItem" WHERE "userId" = $1 AND "productId" = $2 AND "variantId" IS NOT DISTINCT FROM $3 AND "lineKey" = \'standard\' LIMIT 1',
+    userId,
+    productId,
+    variantId,
+  );
+  const id = rows[0]?.id;
+  return id
+    ? prisma.cartItem.findUnique({ where: { id } })
+    : null;
+}
+
+async function findConfiguredBundleCartItem(
+  userId: string,
+  productId: number,
+  lineKey: string,
+) {
+  const rows = await prisma.$queryRawUnsafe<Array<{ id: number }>>(
+    'SELECT "id" FROM "CartItem" WHERE "userId" = $1 AND "productId" = $2 AND "variantId" IS NULL AND "lineKey" = $3 LIMIT 1',
+    userId,
+    productId,
+    lineKey,
+  );
+  return rows[0]?.id ? prisma.cartItem.findUnique({ where: { id: rows[0].id } }) : null;
+}
+
+// GET cart items - Logged in user only
+export async function GET() {
+  try {
+    const session = await getServerSession(authOptions);
+    const user = session?.user as { id?: string } | undefined;
+    const userId = user?.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await evaluateCartReminderNotifications({ userId });
+
+    const activeCategoryIds = await getEffectiveStorefrontCategoryIds();
+    const items = await prisma.cartItem.findMany({
+      where: {
+        userId,
+        product: {
+          available: true,
+          deleted: false,
+          categoryId: { in: activeCategoryIds },
+        },
+      },
+      include: {
+        product: {
+          include: {
+            variants: {
+              orderBy: { id: 'asc' },
+            },
+            VatClass: true,
+            bundleItems: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                    basePrice: true,
+                  }
+                }
+              },
+              orderBy: { sortOrder: 'asc' }
+            },
+          },
+        },
+        variant: true,
+      },
+      orderBy: { id: 'asc' },
+    });
+
+    return NextResponse.json({
+      items: items.map((item) => ({
+        ...item,
+        product: applyFlashSalePricingToProduct(item.product),
+        variant: item.variant
+          ? {
+              ...item.variant,
+              price: applyFlashSalePricingToProduct({
+                ...item.product,
+                variants: [item.variant],
+              }).variants?.[0]?.price ?? Number(item.variant.price),
+            }
+          : null,
+      })),
+    });
+  } catch (error) {
+    console.error('Error fetching cart:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+// ADD to cart - Logged in user only
+// Body: { productId: number, variantId?: number, quantity?: number }
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    const user = session?.user as { id?: string } | undefined;
+    const userId = user?.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const productId = Number(body.productId);
+    const variantId =
+      body.variantId !== undefined && body.variantId !== null
+        ? Number(body.variantId)
+        : null;
+    const quantity = Number(body.quantity ?? 1);
+    const quantityMode = normalizeCartQuantityWriteMode(body.quantityMode);
+
+    if (!productId || Number.isNaN(productId) || quantity <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid productId or quantity' },
+        { status: 400 }
+      );
+    }
+
+    const bookVisibility = await getBookProductVisibilityWhere();
+    const product = await prisma.product.findFirst({
+      where: { id: productId, ...bookVisibility },
+      include: {
+        variants: {
+          include: {
+            stockLevels: {
+              select: { quantity: true, reserved: true },
+            },
+          },
+          orderBy: { isDefault: 'desc' },
+        },
+        bundleItems: {
+          include: {
+            product: {
+              include: {
+                variants: {
+                  include: {
+                    stockLevels: {
+                      select: { quantity: true, reserved: true },
+                    },
+                  },
+                  orderBy: { isDefault: 'desc' },
+                },
+              },
+            },
+          },
+          orderBy: { sortOrder: 'asc' },
+        },
+        ...configurableBundleInclude,
+      },
+    });
+
+    if (
+      !product ||
+      product.deleted ||
+      !product.available ||
+      !(await isCategoryEffectivelyActive(product.categoryId))
+    ) {
+      return NextResponse.json(
+        { error: 'Product not available' },
+        { status: 404 }
+      );
+    }
+
+    const typeGate = await gateProductType(product.type);
+    if (typeGate) return typeGate;
+
+    if (product.type === 'BUNDLE') {
+      const configuration = resolveBundleConfiguration({
+        bundle: product,
+        selections: body.bundleSelections,
+        strictWarehouseStock: true,
+      });
+      const lineKey = `bundle:${configuration.configurationKey}`;
+      const existing = await findConfiguredBundleCartItem(userId, productId, lineKey);
+      const nextQuantity = resolveCartQuantity(
+        existing?.quantity ?? 0,
+        quantity,
+        quantityMode,
+      );
+      if (nextQuantity > configuration.availableQuantity) {
+        return NextResponse.json(
+          { error: `Requested bundle quantity exceeds available stock. Available: ${configuration.availableQuantity}` },
+          { status: 400 },
+        );
+      }
+      const bundleConfiguration = {
+        ...configuration,
+        summary: configuration.components.map(
+          (component) => `${component.groupName}: ${component.productName}${component.variantLabel ? ` (${component.variantLabel})` : ""} × ${component.quantity}`,
+        ),
+      };
+      const writeConfiguredLine = async (id: number) => {
+        const updated = await prisma.cartItem.updateMany({
+          where: {
+            id,
+            ...(quantityMode === 'increment'
+              ? { quantity: { lte: configuration.availableQuantity - quantity } }
+              : {}),
+          },
+          data: {
+            quantity:
+              quantityMode === 'set' ? quantity : { increment: quantity },
+            bundleConfiguration,
+            lastReminderAt: null,
+          },
+        });
+        if (updated.count !== 1) {
+          throw new Error(`Requested bundle quantity exceeds available stock. Available: ${configuration.availableQuantity}`);
+        }
+        return prisma.cartItem.findUniqueOrThrow({ where: { id } });
+      };
+      let cartItem;
+      if (existing) {
+        cartItem = await writeConfiguredLine(existing.id);
+      } else {
+        try {
+          cartItem = await prisma.cartItem.create({
+            data: {
+              userId,
+              productId,
+              variantId: null,
+              lineKey,
+              quantity,
+              bundleConfiguration,
+            },
+          });
+        } catch (error) {
+          if (!(error && typeof error === "object" && "code" in error && error.code === "P2002")) throw error;
+          const raced = await findConfiguredBundleCartItem(userId, productId, lineKey);
+          if (!raced) throw error;
+          cartItem = await writeConfiguredLine(raced.id);
+        }
+      }
+      return NextResponse.json(cartItem, { status: 201 });
+    }
+
+    const targetVariant =
+      variantId !== null
+        ? product.variants.find((variant) => variant.id === variantId) ?? null
+        : product.variants.find((variant) => variant.isDefault) ??
+          product.variants[0] ??
+          null;
+
+    if (!targetVariant) {
+      return NextResponse.json(
+        { error: 'Product inventory is not configured' },
+        { status: 400 }
+      );
+    }
+
+    if (!targetVariant.active) {
+      return NextResponse.json(
+        { error: 'Selected variant is inactive' },
+        { status: 400 }
+      );
+    }
+
+    if (targetVariant.productId !== productId) {
+      return NextResponse.json(
+        { error: 'Variant does not belong to the selected product' },
+        { status: 400 }
+      );
+    }
+
+    const availableStock = computeVariantAvailableStock(targetVariant);
+    if (product.type === 'PHYSICAL' && Number(availableStock) < quantity) {
+      return NextResponse.json(
+        { error: 'Requested quantity exceeds available stock' },
+        { status: 400 }
+      );
+    }
+
+    const existing = await findStandardCartItem(
+      userId,
+      productId,
+      targetVariant.id,
+    );
+
+    let cartItem;
+
+    if (existing) {
+      const nextQuantity = resolveCartQuantity(
+        existing.quantity,
+        quantity,
+        quantityMode,
+      );
+      if (product.type === 'PHYSICAL' && Number(availableStock) < nextQuantity) {
+        return NextResponse.json(
+          { error: 'Requested quantity exceeds available stock' },
+          { status: 400 }
+        );
+      }
+
+      cartItem = await prisma.cartItem.update({
+        where: { id: existing.id },
+          data: {
+            quantity:
+              quantityMode === 'set' ? quantity : { increment: quantity },
+            lastReminderAt: null,
+          },
+        });
+    } else {
+      cartItem = await prisma.cartItem.create({
+        data: {
+          userId,
+          productId,
+          variantId: targetVariant.id,
+          quantity,
+        },
+      });
+    }
+
+    return NextResponse.json(cartItem, { status: 201 });
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+    if (
+      error instanceof Error &&
+      /(bundle|stock|quantity|choice|inventory|warehouse|fixed|available)/i.test(error.message)
+    ) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+// CLEAR cart - Logged in user only
+export async function DELETE() {
+  try {
+    const session = await getServerSession(authOptions);
+    const user = session?.user as { id?: string } | undefined;
+    const userId = user?.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await prisma.cartItem.deleteMany({
+      where: { userId },
+    });
+
+    return NextResponse.json({ message: 'Cart cleared' });
+  } catch (error) {
+    console.error('Error clearing cart:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

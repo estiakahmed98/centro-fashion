@@ -1,0 +1,291 @@
+import {
+  configurableBundleVariantOrderBy,
+  configurableBundleVariantSelect,
+  getDefaultBundleAvailableQuantity,
+} from "@/lib/configurable-bundle";
+import {
+  computeVariantAvailableStock,
+  computeWarehouseAvailableStockAtWarehouse,
+} from "@/lib/warehouse-stock";
+
+type PublicStockVariant = {
+  stock: unknown;
+  stockLevels?: Array<{
+    warehouseId?: number;
+    quantity: number;
+    reserved: number;
+  }> | null;
+};
+
+type PublicBundleItemInput = {
+  product: object;
+};
+
+function serializePublicBundleItem<T extends PublicBundleItemInput>(item: T) {
+  const publicProduct = { ...item.product } as T["product"] & {
+    variants?: unknown;
+  };
+  // Bundle-item inventory is used only by server calculations. Product cards
+  // need the item identity/media, never warehouse or reservation details.
+  delete publicProduct.variants;
+  return { ...item, product: publicProduct };
+}
+
+function serializePublicVariant<T extends PublicStockVariant>(
+  variant: T,
+  warehouseId?: number | null,
+) {
+  const warehouseStock = warehouseId
+    ? computeWarehouseAvailableStockAtWarehouse(variant, warehouseId)
+    : null;
+  const stock = warehouseId
+    ? (warehouseStock ?? 0)
+    : computeVariantAvailableStock(variant);
+  const publicVariant = { ...variant };
+  delete publicVariant.stockLevels;
+  return { ...publicVariant, stock };
+}
+
+/** Converts private inventory rows into the public sellable-stock projection. */
+export function serializeStorefrontProductInventory<
+  T extends {
+    type?: string;
+    variants?: readonly PublicStockVariant[];
+    bundleWarehouseId?: number | null;
+    assembledStockLevels?: unknown;
+    bundleItems?: readonly PublicBundleItemInput[];
+    bundleGroups?: Array<{
+      options: Array<{
+        product: { variants: PublicStockVariant[] };
+        variant: PublicStockVariant | null;
+      }>;
+    }>;
+  },
+>(product: T) {
+  const productStock =
+    product.type === "BUNDLE"
+      ? getDefaultBundleAvailableQuantity(
+          product as unknown as Parameters<
+            typeof getDefaultBundleAvailableQuantity
+          >[0],
+        )
+      : product.type === "DIGITAL" || product.type === "SERVICE"
+        ? 1
+        : undefined;
+  const publicProduct = { ...product };
+  delete publicProduct.assembledStockLevels;
+
+  return {
+    ...publicProduct,
+    ...(productStock === undefined ? {} : { stock: productStock }),
+    variants: (product.variants ?? []).map((variant) =>
+      serializePublicVariant(variant),
+    ),
+    bundleItems: (product.bundleItems ?? []).map((item) =>
+      serializePublicBundleItem(item),
+    ),
+    bundleGroups: (product.bundleGroups ?? []).map((group) => ({
+      ...group,
+      options: group.options.map((option) => ({
+        ...option,
+        product: {
+          ...option.product,
+          variants: option.product.variants.map((variant) =>
+            serializePublicVariant(variant, product.bundleWarehouseId),
+          ),
+        },
+        variant: option.variant
+          ? serializePublicVariant(option.variant, product.bundleWarehouseId)
+          : null,
+      })),
+    })),
+  };
+}
+
+/**
+ * Public product projection.
+ *
+ * Keep this as an explicit allowlist: adding an internal Product or
+ * ProductVariant column must never make it public by accident.
+ */
+export const storefrontProductSelect = {
+  id: true,
+  name: true,
+  slug: true,
+  type: true,
+  sku: true,
+  categoryId: true,
+  brandId: true,
+  description: true,
+  shortDesc: true,
+  model: true,
+  warranty: true,
+  basePrice: true,
+  originalPrice: true,
+  flashSaleEnabled: true,
+  flashSalePrice: true,
+  flashSaleStartsAt: true,
+  flashSaleEndsAt: true,
+  flashSaleSortOrder: true,
+  currency: true,
+  weight: true,
+  dimensions: true,
+  serviceDurationMinutes: true,
+  serviceLocation: true,
+  available: true,
+  featured: true,
+  image: true,
+  gallery: true,
+  videoUrl: true,
+  soldCount: true,
+  ratingAvg: true,
+  ratingCount: true,
+  createdAt: true,
+  updatedAt: true,
+  bundleStockLimit: true,
+  bundleWarehouseId: true,
+  bundleFulfillmentMode: true,
+  assembledStockLevels: {
+    select: { warehouseId: true, quantity: true, reserved: true },
+  },
+  category: {
+    select: { id: true, name: true, slug: true, image: true, parentId: true },
+  },
+  brand: {
+    select: { id: true, name: true, slug: true, logo: true },
+  },
+  bookMetadata: {
+    select: {
+      writer: {
+        where: { deleted: false },
+        select: { id: true, name: true },
+      },
+      publisher: {
+        where: { deleted: false },
+        select: { id: true, name: true },
+      },
+    },
+  },
+  variantOptions: {
+    orderBy: { position: "asc" as const },
+    select: {
+      id: true,
+      name: true,
+      position: true,
+      values: {
+        orderBy: { position: "asc" as const },
+        select: { id: true, optionId: true, value: true, position: true },
+      },
+    },
+  },
+  variants: {
+    where: { active: true },
+    orderBy: { id: "asc" as const },
+    select: {
+      id: true,
+      productId: true,
+      sku: true,
+      price: true,
+      currency: true,
+      stock: true,
+      options: true,
+      colorImage: true,
+      isDefault: true,
+      active: true,
+      stockLevels: {
+        select: { quantity: true, reserved: true },
+      },
+    },
+  },
+  attributes: {
+    select: {
+      id: true,
+      value: true,
+      attribute: { select: { id: true, name: true } },
+    },
+  },
+  specificationGroups: {
+    orderBy: { position: "asc" as const },
+    select: {
+      id: true,
+      name: true,
+      position: true,
+      items: {
+        orderBy: { position: "asc" as const },
+        select: { id: true, label: true, value: true, position: true },
+      },
+    },
+  },
+  bundleItems: {
+    orderBy: { sortOrder: "asc" as const },
+    select: {
+      id: true,
+      productId: true,
+      quantity: true,
+      sortOrder: true,
+      product: {
+        select: { id: true, name: true, image: true, available: true },
+      },
+    },
+  },
+  bundleGroups: {
+    orderBy: { sortOrder: "asc" as const },
+    select: {
+      id: true,
+      name: true,
+      selectionType: true,
+      pricingMode: true,
+      required: true,
+      minSelect: true,
+      maxSelect: true,
+      defaultQuantity: true,
+      minQuantity: true,
+      maxQuantity: true,
+      allowQuantityChange: true,
+      sortOrder: true,
+      options: {
+        orderBy: { sortOrder: "asc" as const },
+        select: {
+          id: true,
+          productId: true,
+          variantId: true,
+          isDefault: true,
+          priceAdjustment: true,
+          sortOrder: true,
+          product: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              type: true,
+              available: true,
+              basePrice: true,
+              variants: {
+                where: { active: true },
+                orderBy: configurableBundleVariantOrderBy,
+                select: configurableBundleVariantSelect,
+              },
+            },
+          },
+          variant: {
+            select: {
+              id: true,
+              productId: true,
+              sku: true,
+              price: true,
+              currency: true,
+              stock: true,
+              options: true,
+              colorImage: true,
+              active: true,
+              isDefault: true,
+              stockLevels: {
+                select: { warehouseId: true, quantity: true, reserved: true },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+} as const;

@@ -1,0 +1,610 @@
+"use client";
+
+import { translateDynamic } from "@/i18n/dynamic-messages";
+import Image from "next/image";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+  CalendarClock,
+  Flame,
+  Loader2,
+  Pencil,
+  Search,
+  Trash2,
+} from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+type FlashProduct = {
+  id: number;
+  name: string;
+  sku: string | null;
+  image: string | null;
+  available: boolean;
+  basePrice: number;
+  currency: string;
+  flashSaleEnabled: boolean;
+  flashSalePrice: number | null;
+  flashSaleStartsAt: string | null;
+  flashSaleEndsAt: string | null;
+  flashSaleSortOrder: number;
+  updatedAt: string;
+  stock: number;
+  category: { id: number; name: string };
+  brand: { id: number; name: string } | null;
+};
+
+type ListResponse = {
+  items: FlashProduct[];
+  categories: { id: number; name: string }[];
+  features: { DIGITAL_PRODUCTS: boolean; SERVICE_PRODUCTS: boolean; BUNDLES: boolean };
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    pageCount: number;
+  };
+};
+
+function localInputValue(value: Date | string) {
+  const date = new Date(value);
+  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
+  return local.toISOString().slice(0, 16);
+}
+
+function statusOf(product: FlashProduct) {
+  if (
+    !product.flashSaleEnabled ||
+    !product.flashSaleStartsAt ||
+    !product.flashSaleEndsAt
+  )
+    return "not-configured";
+  const now = Date.now();
+  if (new Date(product.flashSaleStartsAt).getTime() > now) return "scheduled";
+  if (new Date(product.flashSaleEndsAt).getTime() <= now) return "expired";
+  return "live";
+}
+
+const price = (value: number) =>
+  `৳${Math.round(value).toLocaleString("en-US")}`;
+
+export default function FlashSaleManager() {
+  const t = useTranslations("AdminFlashSaleManager");
+  const productT = useTranslations("AdminProductManager");
+  const [categories, setCategories] = useState<ListResponse["categories"]>([]);
+  const [features, setFeatures] = useState<ListResponse["features"]>({ DIGITAL_PRODUCTS: false, SERVICE_PRODUCTS: false, BUNDLES: false });
+  const [filters, setFilters] = useState({ category: "", type: "", availability: "", featured: "", stock: "", sort: "flash-sale" });
+  const requestId = useRef(0);
+
+  const [items, setItems] = useState<FlashProduct[]>([]);
+  const [pagination, setPagination] = useState<ListResponse["pagination"]>({
+    page: 1,
+    pageSize: 50,
+    total: 0,
+    pageCount: 1,
+  });
+  const [search, setSearch] = useState("");
+  const hasActiveFilters = Boolean(search || filters.category || filters.type || filters.availability || filters.featured || filters.stock || filters.sort !== "flash-sale");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [selected, setSelected] = useState<FlashProduct | null>(null);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState({
+    enabled: true,
+    salePrice: "",
+    startsAt: "",
+    endsAt: "",
+    sortOrder: "0",
+  });
+
+  const load = useCallback(
+    async (page = 1, term = search) => {
+      const currentRequest = ++requestId.current;
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: String(page),
+          pageSize: "50",
+          ...filters,
+        });
+        if (term.trim()) params.set("search", term.trim());
+        const response = await fetch(`/api/admin/flash-sales?${params}`, {
+          cache: "no-store",
+        });
+        const data = (await response.json()) as ListResponse & {
+          error?: string;
+        };
+        if (!response.ok)
+          throw new Error(data.error || t("errors.loadProducts"));
+        if (currentRequest !== requestId.current) return;
+        setItems(data.items);
+        setPagination(data.pagination);
+        setCategories(data.categories);
+        setFeatures(data.features);
+      } catch (loadError) {
+        if (currentRequest !== requestId.current) return;
+        toast({
+          title: t("toasts.loadFailedTitle"),
+          description:
+            loadError instanceof Error
+              ? loadError.message
+              : t("errors.tryAgain"),
+          variant: "destructive",
+        });
+      } finally {
+        if (currentRequest === requestId.current) setLoading(false);
+      }
+    },
+    [search, filters, t],
+  );
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void load(1, search), 300);
+    return () => {
+      window.clearTimeout(timer);
+      requestId.current++;
+    };
+  }, [load, search]);
+
+  const counts = useMemo(
+    () =>
+      items.reduce(
+        (result, item) => ({
+          ...result,
+          [statusOf(item)]: result[statusOf(item)] + 1,
+        }),
+        { live: 0, scheduled: 0, expired: 0, "not-configured": 0 } as Record<
+          string,
+          number
+        >,
+      ),
+    [items],
+  );
+
+  const openEditor = (product: FlashProduct) => {
+    const start = product.flashSaleStartsAt
+      ? new Date(product.flashSaleStartsAt)
+      : new Date();
+    const end = product.flashSaleEndsAt
+      ? new Date(product.flashSaleEndsAt)
+      : new Date(Date.now() + 24 * 60 * 60 * 1000);
+    setSelected(product);
+    setError("");
+    setForm({
+      enabled: product.flashSaleEnabled || !product.flashSalePrice,
+      salePrice: String(
+        product.flashSalePrice ??
+          Math.max(1, Math.round(product.basePrice * 0.9)),
+      ),
+      startsAt: localInputValue(start),
+      endsAt: localInputValue(end),
+      sortOrder: String(product.flashSaleSortOrder),
+    });
+  };
+
+  const save = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!selected) return;
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/flash-sales/${selected.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          enabled: form.enabled,
+          salePrice: Number(form.salePrice),
+          startsAt: new Date(form.startsAt).toISOString(),
+          endsAt: new Date(form.endsAt).toISOString(),
+          sortOrder: Number(form.sortOrder),
+          expectedUpdatedAt: selected.updatedAt,
+        }),
+      });
+      const data = (await response.json()) as { error?: string };
+      if (!response.ok) throw new Error(data.error || t("errors.saveFailed"));
+      toast({
+        title: t("toasts.savedTitle"),
+        description: t("toasts.savedDescription", { name: selected.name }),
+      });
+      setSelected(null);
+      await load(pagination.page);
+    } catch (saveError) {
+      setError(
+        saveError instanceof Error ? saveError.message : t("errors.saveFailed"),
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const remove = async (product: FlashProduct) => {
+    if (!window.confirm(t("confirm.remove", { name: product.name }))) return;
+    try {
+      const response = await fetch(`/api/admin/flash-sales/${product.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ expectedUpdatedAt: product.updatedAt }),
+      });
+      const data = (await response.json()) as { error?: string };
+      if (!response.ok) throw new Error(data.error || t("errors.removeFailed"));
+      toast({
+        title: t("toasts.removedTitle"),
+        description: product.name,
+      });
+      await load(pagination.page);
+    } catch (removeError) {
+      toast({
+        title: t("toasts.removeFailedTitle"),
+        description:
+          removeError instanceof Error
+            ? removeError.message
+            : t("errors.tryAgain"),
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="space-y-6 p-4 sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <Flame className="h-7 w-7 fill-orange-500 text-orange-500" />
+            <h1 className="text-3xl font-bold">{t("header.title")}</h1>
+          </div>
+          <p className="mt-1 text-muted-foreground">
+            {t("header.description")}
+          </p>
+        </div>
+      </div>
+
+      <Card>
+        <CardContent className="space-y-4 p-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="font-semibold">{productT("filters.title")}</h2>
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={() => {
+                setSearch("");
+                setFilters({ category: "", type: "", availability: "", featured: "", stock: "", sort: "flash-sale" });
+              }}>{productT("filters.clearAll")}</Button>
+            )}
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder={t("searchPlaceholder")}
+            aria-label={productT("filters.searchPlaceholder")}
+            className="pl-9"
+          />
+        </div>
+            <select aria-label={productT("filters.allCategories")} value={filters.category}
+              onChange={event => setFilters(previous => ({ ...previous, category: event.target.value }))}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+              <option value="">{productT("filters.allCategories")}</option>
+              {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+            </select>
+            {([
+              { key: "type", label: "filters.allTypes", options: [["", "filters.allTypes"], ["PHYSICAL", "productTypes.physical"], ["DIGITAL", "productTypes.digital"], ["SERVICE", "productTypes.service"], ["BUNDLE", "productTypes.bundle"]] },
+              { key: "availability", label: "filters.allAvailability", options: [["", "filters.allAvailability"], ["available", "filters.available"], ["unavailable", "filters.unavailable"]] },
+              { key: "featured", label: "filters.allVisibility", options: [["", "filters.allVisibility"], ["featured", "filters.featured"], ["regular", "filters.regular"]] },
+              { key: "stock", label: "filters.allStockStates", options: [["", "filters.allStockStates"], ["in-stock", "stockStatus.inStock"], ["low-stock", "stockStatus.lowStock"], ["out-of-stock", "stockStatus.outOfStock"], ["non-physical", "stockStatus.nonPhysical"]] },
+              { key: "sort", label: "sort.nameAsc", options: [["name-asc", "sort.nameAsc"], ["name-desc", "sort.nameDesc"], ["category-asc", "sort.categoryAsc"], ["category-desc", "sort.categoryDesc"], ["price-asc", "sort.priceAsc"], ["price-desc", "sort.priceDesc"], ["stock-asc", "sort.stockAsc"], ["stock-desc", "sort.stockDesc"]] },
+            ] as const).map(filter => (
+              <select key={filter.key} aria-label={translateDynamic(productT, filter.label)} value={filters[filter.key]}
+                onChange={event => setFilters(previous => ({ ...previous, [filter.key]: event.target.value }))}
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
+                {filter.key === "sort" && <option value="flash-sale">{t("header.title")}</option>}
+                {filter.options.filter(([value]) => filter.key !== "type" ||
+                  (value !== "DIGITAL" || features.DIGITAL_PRODUCTS) &&
+                  (value !== "SERVICE" || features.SERVICE_PRODUCTS) &&
+                  (value !== "BUNDLE" || features.BUNDLES)
+                ).map(([value, label]) => <option key={value} value={value}>{translateDynamic(productT, label)}</option>)}
+              </select>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[
+          {
+            key: "live",
+            value: counts.live,
+            style: "text-emerald-600",
+          },
+          {
+            key: "scheduled",
+            value: counts.scheduled,
+            style: "text-blue-600",
+          },
+          {
+            key: "expired",
+            value: counts.expired,
+            style: "text-slate-500",
+          },
+        ].map((entry) => (
+          <Card key={entry.key}>
+            <CardContent className="p-4">
+              <p className="text-sm text-muted-foreground">
+                {translateDynamic(t, `stats.${entry.key}`)}
+              </p>
+              <p className={`text-3xl font-black ${entry.style}`}>
+                {entry.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card>
+        <CardContent className="p-0">
+          {loading ? (
+            <div className="flex min-h-64 items-center justify-center gap-2 text-muted-foreground">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              {t("loading")}
+            </div>
+          ) : items.length === 0 ? (
+            <div className="py-20 text-center text-muted-foreground">
+              {t("empty")}
+            </div>
+          ) : (
+            <div className="divide-y">
+              {items.map((product) => {
+                const status = statusOf(product);
+                return (
+                  <div
+                    key={product.id}
+                    className="grid gap-4 p-4 sm:grid-cols-[56px_1fr_auto] sm:items-center"
+                  >
+                    <div className="relative h-14 w-14 overflow-hidden rounded-lg border bg-white">
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt=""
+                          fill
+                          sizes="56px"
+                          className="object-contain p-1"
+                        />
+                      ) : null}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="truncate font-semibold">{product.name}</p>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-[11px] font-bold uppercase ${
+                            status === "live"
+                              ? "bg-emerald-100 text-emerald-700"
+                              : status === "scheduled"
+                                ? "bg-blue-100 text-blue-700"
+                                : status === "expired"
+                                  ? "bg-slate-200 text-slate-600"
+                                  : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {t(`statuses.${status}`)}
+                        </span>
+                        {!product.available && (
+                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-[11px] font-bold text-red-700">
+                            {t("inactiveProduct")}
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {product.category.name}
+                        {product.sku ? ` · ${product.sku}` : ""} ·{" "}
+                        {t("stockLabel", { count: product.stock })}
+                      </p>
+                      <p className="mt-1 text-sm">
+                        <span className="font-semibold">
+                          {price(product.basePrice)}
+                        </span>
+                        {product.flashSalePrice !== null && (
+                          <>
+                            <span className="mx-2">→</span>
+                            <span className="font-bold text-red-600">
+                              {price(product.flashSalePrice)}
+                            </span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => openEditor(product)}
+                      >
+                        <Pencil className="mr-1.5 h-4 w-4" />
+                        {t("actions.configure")}
+                      </Button>
+                      {product.flashSalePrice !== null && (
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => void remove(product)}
+                          aria-label={t("actions.removeAria", {
+                            name: product.name,
+                          })}
+                        >
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-muted-foreground">
+          {t("pagination.summary", {
+            total: pagination.total,
+            page: pagination.page,
+            pageCount: pagination.pageCount,
+          })}
+        </span>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            disabled={pagination.page <= 1 || loading}
+            onClick={() => void load(pagination.page - 1)}
+          >
+            {t("pagination.previous")}
+          </Button>
+          <Button
+            variant="outline"
+            disabled={pagination.page >= pagination.pageCount || loading}
+            onClick={() => void load(pagination.page + 1)}
+          >
+            {t("pagination.next")}
+          </Button>
+        </div>
+      </div>
+
+      <Dialog
+        open={Boolean(selected)}
+        onOpenChange={(open) => !open && !saving && setSelected(null)}
+      >
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarClock className="h-5 w-5 text-orange-600" />
+              {t("modal.title")}
+            </DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <form onSubmit={save} className="space-y-5">
+              <div className="rounded-lg border bg-muted/40 p-3">
+                <p className="font-semibold">{selected.name}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t("modal.regularPrice", {
+                    price: price(selected.basePrice),
+                  })}
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="sale-price">{t("modal.salePrice")}</Label>
+                  <Input
+                    id="sale-price"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    max={selected.basePrice - 0.01}
+                    required
+                    value={form.salePrice}
+                    onChange={(event) =>
+                      setForm({ ...form, salePrice: event.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sort-order">{t("modal.displayOrder")}</Label>
+                  <Input
+                    id="sort-order"
+                    type="number"
+                    min="0"
+                    max="9999"
+                    required
+                    value={form.sortOrder}
+                    onChange={(event) =>
+                      setForm({ ...form, sortOrder: event.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="starts-at">{t("modal.startsAt")}</Label>
+                  <Input
+                    id="starts-at"
+                    type="datetime-local"
+                    required
+                    value={form.startsAt}
+                    onChange={(event) =>
+                      setForm({ ...form, startsAt: event.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="ends-at">{t("modal.endsAt")}</Label>
+                  <Input
+                    id="ends-at"
+                    type="datetime-local"
+                    required
+                    value={form.endsAt}
+                    onChange={(event) =>
+                      setForm({ ...form, endsAt: event.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <label className="flex cursor-pointer items-center gap-3 rounded-lg border p-3">
+                <input
+                  type="checkbox"
+                  checked={form.enabled}
+                  onChange={(event) =>
+                    setForm({ ...form, enabled: event.target.checked })
+                  }
+                  className="h-4 w-4 accent-orange-600"
+                />
+                <span>
+                  <span className="block font-semibold">
+                    {t("modal.enable")}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {t("modal.enableDescription")}
+                  </span>
+                </span>
+              </label>
+              {error && (
+                <p
+                  role="alert"
+                  className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700"
+                >
+                  {error}
+                </p>
+              )}
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={saving}
+                  onClick={() => setSelected(null)}
+                >
+                  {t("actions.cancel")}
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={saving || !selected.available}
+                  className="bg-orange-600 text-white hover:bg-orange-700"
+                >
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{" "}
+                  {t("actions.save")}
+                </Button>
+              </div>
+              {!selected.available && (
+                <p className="text-right text-sm text-red-600">
+                  {t("modal.inactiveWarning")}
+                </p>
+              )}
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

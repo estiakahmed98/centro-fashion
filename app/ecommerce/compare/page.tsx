@@ -1,0 +1,32 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import CompareWorkspace from "@/components/ecommarce/compare/CompareWorkspace";
+import { normalizeCompareProductIds } from "@/lib/product-compare";
+import { getStorefrontProductDetail } from "@/lib/storefront-product-detail";
+import { isFeatureEnabled } from "@/lib/store-features-server";
+import { getTranslations } from "next-intl/server";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("StorefrontCompare.metadata");
+  return {
+    title: t("title"),
+    description: t("description"),
+    robots: { index: false, follow: true, googleBot: { index: false, follow: true } },
+  };
+}
+
+type ComparePageProps = {
+  searchParams: Promise<{ ids?: string | string[] }>;
+};
+
+export default async function ComparePage({ searchParams }: ComparePageProps) {
+  if (!(await isFeatureEnabled("COMPARE"))) notFound();
+  const params = await searchParams;
+  const rawIds = Array.isArray(params.ids) ? params.ids.join(",") : params.ids || "";
+  const ids = normalizeCompareProductIds(rawIds.split(","));
+  const products = (
+    await Promise.all(ids.map((id) => getStorefrontProductDetail(id)))
+  ).filter((product): product is NonNullable<typeof product> => Boolean(product));
+
+  return <CompareWorkspace products={products} />;
+}

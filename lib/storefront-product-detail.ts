@@ -1,0 +1,149 @@
+import { unstable_cache } from "next/cache";
+import { Prisma } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma";
+import {
+  serializeStorefrontProductInventory,
+  storefrontProductSelect,
+} from "@/lib/storefront-product";
+import { resolveFlashSalePricing } from "@/lib/flash-sale";
+import { getDisabledStorefrontProductTypes } from "@/lib/store-feature-gates-server";
+import type { FeatureControlledProductType } from "@/lib/store-features";
+import { getEffectiveStorefrontCategoryIds } from "@/lib/category-navigation-server";
+import { getBookProductVisibilityWhere } from "@/lib/book-product-visibility-server";
+import {
+  computeVariantAvailableStock,
+  computeWarehouseAvailableStockAtWarehouse,
+} from "@/lib/warehouse-stock";
+
+type RawProduct = Prisma.ProductGetPayload<{
+  select: typeof storefrontProductSelect;
+}>;
+
+function serializeProduct(product: RawProduct) {
+  const flashSale = resolveFlashSalePricing(product);
+  return serializeStorefrontProductInventory({
+    ...product,
+    basePrice: flashSale.salePrice,
+    originalPrice: flashSale.active
+      ? flashSale.regularPrice
+      : product.originalPrice === null
+        ? null
+        : Number(product.originalPrice),
+    flashSale,
+    flashSalePrice:
+      product.flashSalePrice === null ? null : Number(product.flashSalePrice),
+    flashSaleStartsAt: product.flashSaleStartsAt?.toISOString() ?? null,
+    flashSaleEndsAt: product.flashSaleEndsAt?.toISOString() ?? null,
+    createdAt: product.createdAt.toISOString(),
+    updatedAt: product.updatedAt.toISOString(),
+    variants: product.variants.map((variant) => ({
+      ...variant,
+      price: resolveFlashSalePricing(product, variant.price).salePrice,
+      stock: computeVariantAvailableStock(variant),
+    })),
+    bundleGroups: product.bundleGroups.map((group) => ({
+      ...group,
+      options: group.options.map((option) => {
+        const resolvedVariant =
+          option.variant ??
+          option.product.variants.find(
+            (variant) => variant.isDefault && variant.active,
+          ) ??
+          option.product.variants.find((variant) => variant.active) ??
+          null;
+        const serializeBundleVariant = (variant: typeof resolvedVariant) =>
+          variant
+            ? {
+                ...variant,
+                price: Number(variant.price),
+                stock:
+                  product.type === "BUNDLE"
+                    ? product.bundleWarehouseId
+                      ? (computeWarehouseAvailableStockAtWarehouse(
+                          variant,
+                          product.bundleWarehouseId,
+                        ) ?? 0)
+                      : 0
+                    : computeVariantAvailableStock(variant),
+              }
+            : null;
+        return {
+          ...option,
+          priceAdjustment: Number(option.priceAdjustment),
+          product: {
+            ...option.product,
+            basePrice: Number(option.product.basePrice),
+          },
+          variant: serializeBundleVariant(resolvedVariant),
+        };
+      }),
+    })),
+  });
+}
+
+type ProductIdentifier = { id: number } | { slug: string };
+
+export function parseStorefrontProductIdentifier(
+  value: string,
+): ProductIdentifier | null {
+  let normalized: string;
+  try {
+    normalized = decodeURIComponent(value).trim().toLowerCase();
+  } catch {
+    return null;
+  }
+  if (/^[1-9]\d*$/.test(normalized)) {
+    const id = Number(normalized);
+    return Number.isSafeInteger(id) ? { id } : null;
+  }
+  if (
+    normalized.length > 0 &&
+    normalized.length <= 191 &&
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(normalized)
+  ) {
+    return { slug: normalized };
+  }
+  return null;
+}
+
+const readProductDetail = unstable_cache(
+  async (identifier: string, serializedDisabledTypes: string, serializedBookVisibility: string) => {
+    const where = parseStorefrontProductIdentifier(identifier);
+    if (!where) return null;
+    const disabledTypes = JSON.parse(
+      serializedDisabledTypes,
+    ) as FeatureControlledProductType[];
+    const bookVisibility = JSON.parse(serializedBookVisibility) as Prisma.ProductWhereInput;
+    const activeCategoryIds = await getEffectiveStorefrontCategoryIds();
+    const product = await prisma.product.findFirst({
+      where: {
+        ...where,
+        deleted: false,
+        available: true,
+        categoryId: { in: activeCategoryIds },
+        ...(disabledTypes.length ? { type: { notIn: disabledTypes } } : {}),
+        ...bookVisibility,
+      },
+      select: storefrontProductSelect,
+    });
+    return product ? serializeProduct(product) : null;
+  },
+  ["storefront-product-detail-v2"],
+  { revalidate: 30, tags: ["storefront-product-detail", "products", "flash-sales"] },
+);
+
+export type StorefrontProductDetail = NonNullable<
+  Awaited<ReturnType<typeof readProductDetail>>
+>;
+
+export async function getStorefrontProductDetail(identifier: string | number) {
+  const [disabledTypes, bookVisibility] = await Promise.all([
+    getDisabledStorefrontProductTypes(),
+    getBookProductVisibilityWhere(),
+  ]);
+  return readProductDetail(
+    String(identifier),
+    JSON.stringify(disabledTypes),
+    JSON.stringify(bookVisibility),
+  );
+}

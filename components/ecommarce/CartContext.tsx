@@ -1,0 +1,619 @@
+"use client";
+import { useStorefrontSettings } from "@/providers/storefront-settings-provider";
+import { ecommerceFromRows } from "@/lib/analytics/ecommerce";
+import { trackAddToCart, trackRemoveFromCart } from "@/lib/analytics/data-layer";
+import { formatVariantOptionLabel } from "@/lib/product-variants";
+import { useSession } from "@/lib/auth-client";
+
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+
+// API থেকে যেটুকু লাগবে শুধু সেটার টাইপ
+interface ProductApiItem {
+  id: number | string;
+  name: string;
+  type?: string | null;
+  price: number;
+  image?: string | null;
+  variants?: Array<{
+    id: number | string;
+    price?: number;
+    sku?: string | null;
+    options?: Record<string, string> | null;
+  }>;
+}
+
+export interface CartItem {
+  id: string | number; // local row id
+  productId: string | number; // product id
+  variantId?: string | number | null;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  variantLabel?: string | null;
+  hasVariants?: boolean;
+  pcBuildId?: string | null;
+  pcBuildSlot?: string | null;
+  bundleSelections?: Array<{ groupId: number; optionId: number | null; quantity: number; omitted?: boolean }> | null;
+  bundleSummary?: string[] | null;
+  bundleConfigurationKey?: string | null;
+}
+
+type CartAnimationRect = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+type CartAnimationOptions = {
+  startX?: number;
+  startY?: number;
+  image?: string;
+  imageRect?: CartAnimationRect;
+  product?: ProductApiItem;
+  pcBuilder?: boolean;
+  bundleSelections?: Array<{ groupId: number; optionId: number | null; quantity: number; omitted?: boolean }>;
+  bundleSummary?: string[];
+  bundlePrice?: number;
+};
+
+interface CartContextType {
+  cartItems: CartItem[];
+  cartHydrated: boolean;
+
+  addToCart: (
+    productId: string | number,
+    quantity?: number,
+    variantId?: string | number | null,
+    options?: CartAnimationOptions
+  ) => Promise<boolean>;
+
+  // row-id based
+  removeFromCart: (id: string | number) => void;
+  updateQuantity: (id: string | number, quantity: number) => void;
+
+  // product-id based helpers ✅ (for +/- in details page)
+  getQuantityByProductId: (
+    productId: string | number,
+    variantId?: string | number | null
+  ) => number;
+  setProductQty: (
+    productId: string | number,
+    quantity: number,
+    variantId?: string | number | null
+  ) => void;
+  incProductQty: (
+    productId: string | number,
+    step?: number,
+    variantId?: string | number | null
+  ) => void;
+  decProductQty: (
+    productId: string | number,
+    step?: number,
+    variantId?: string | number | null
+  ) => void;
+
+  clearCart: () => void;
+  cartCount: number;
+
+  // external replace (server sync / cart page sync)
+  replaceCart: (items: CartItem[]) => void;
+}
+
+const CartContext = createContext<CartContextType | undefined>(undefined);
+
+const norm = (v: string | number) => String(v);
+const normVariant = (v: string | number | null | undefined) =>
+  v === null || v === undefined || v === "" ? "" : String(v);
+const clamp = (n: number) => Math.max(0, Math.min(99, n));
+let cartRowSequence = 0;
+const createCartRowId = () =>
+  typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now()}-${++cartRowSequence}`;
+
+export function CartProvider({ children }: { children: ReactNode }) {
+  // 🛒 cartItems -> localStorage synced
+  // The server and first client render must both start with an empty cart.
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartHydrated, setCartHydrated] = useState(false);
+  const { status: sessionStatus } = useSession();
+
+  const { currency } = useStorefrontSettings();
+  const previousCartRef = useRef(cartItems);
+  const trackingMutations = useRef(new Set<string>());
+  useEffect(() => {
+    const previous = previousCartRef.current;
+    previousCartRef.current = cartItems;
+    const changedProducts = new Set(trackingMutations.current);
+    trackingMutations.current.clear();
+    const key = (row: CartItem) => JSON.stringify([row.productId, row.variantId ?? null, row.bundleConfigurationKey ?? null, row.pcBuildId ?? null, row.pcBuildSlot ?? null]);
+    for (const productId of changedProducts) {
+      const before = new Map(previous.filter((row) => String(row.productId) === productId).map((row) => [key(row), row]));
+      const after = new Map(cartItems.filter((row) => String(row.productId) === productId).map((row) => [key(row), row]));
+      for (const rowKey of new Set([...before.keys(), ...after.keys()])) {
+        const oldRow = before.get(rowKey), newRow = after.get(rowKey);
+        const delta = (newRow?.quantity ?? 0) - (oldRow?.quantity ?? 0);
+        const row = delta > 0 ? newRow : oldRow;
+        if (!row || !delta) continue;
+        const payload = ecommerceFromRows([{ ...row, quantity: Math.abs(delta) }], currency);
+        if (delta > 0) trackAddToCart(payload); else trackRemoveFromCart(payload);
+      }
+    }
+  }, [cartItems, currency]);
+
+  // Product snapshots are populated only for products the shopper interacts with.
+  const productCacheRef = useRef(new Map<string, ProductApiItem>());
+
+  // ✅ safer replace (also normalize + sanitize)
+  const replaceCart = useCallback((items: CartItem[]) => {
+    const safe = Array.isArray(items)
+      ? items
+          .filter((x) => x && x.productId != null)
+          .map((x) => ({
+            ...x,
+            productId: x.productId,
+            variantId: x.variantId ?? null,
+            hasVariants:
+              typeof x.hasVariants === "boolean" ? x.hasVariants : undefined,
+            quantity: clamp(Number(x.quantity ?? 1)),
+            image: x.image || "/placeholder.svg",
+            pcBuildId: x.pcBuildId ?? null,
+            pcBuildSlot: x.pcBuildSlot ?? null,
+            bundleSelections: Array.isArray(x.bundleSelections) ? x.bundleSelections : null,
+            bundleSummary: Array.isArray(x.bundleSummary) ? x.bundleSummary : null,
+            bundleConfigurationKey: x.bundleConfigurationKey ?? null,
+          }))
+      : [];
+    setCartItems(safe);
+  }, []);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("cartItems");
+      if (saved) replaceCart(JSON.parse(saved));
+    } catch (error) {
+      console.error("Failed to restore cartItems from localStorage:", error);
+    } finally {
+      setCartHydrated(true);
+    }
+  }, [replaceCart]);
+
+  // cartItems localStorage এ sync
+  useEffect(() => {
+    if (!cartHydrated) return;
+    try {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } catch (e) {
+      console.error("Failed to save cartItems to localStorage:", e);
+    }
+  }, [cartItems, cartHydrated]);
+
+  // 🔁 অন্য ট্যাব বা কোড থেকে localStorage change হলে অটো sync
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "cartItems") {
+        try {
+          if (!e.newValue) {
+            setCartItems([]);
+            return;
+          }
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed)) setCartItems(parsed);
+          else setCartItems([]);
+        } catch (err) {
+          console.error("Failed to sync cartItems from storage event:", err);
+          setCartItems([]);
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  const cartCount = useMemo(
+    () => cartItems.reduce((total, item) => total + (Number(item.quantity) || 0), 0),
+    [cartItems]
+  );
+
+  // ✅ productId দিয়ে qty read (standard cart rows only)
+  const getQuantityByProductId = useCallback(
+    (productId: string | number, variantId?: string | number | null) => {
+      const pid = norm(productId);
+      const vid = normVariant(variantId);
+      return (
+        cartItems.find(
+          (x) =>
+            !x.pcBuildId &&
+            norm(x.productId) === pid &&
+            normVariant(x.variantId) === vid
+        )?.quantity ?? 0
+      );
+    },
+    [cartItems]
+  );
+
+  // ✅ productId দিয়ে qty set (0 => remove), standard rows only
+  const setProductQty = useCallback(
+    (productId: string | number, quantity: number, variantId?: string | number | null) => {
+      const pid = norm(productId);
+      const vid = normVariant(variantId);
+      const nextQty = clamp(Number(quantity) || 0);
+
+      trackingMutations.current.add(pid);
+      setCartItems((prev) => {
+        const idx = prev.findIndex(
+          (x) =>
+            !x.pcBuildId &&
+            norm(x.productId) === pid &&
+            normVariant(x.variantId) === vid
+        );
+
+        // remove if 0
+        if (nextQty === 0) {
+          if (idx === -1) return prev;
+          return prev.filter((_, i) => i !== idx);
+        }
+
+        // if not exists -> create (needs product)
+        if (idx === -1) {
+          const product = productCacheRef.current.get(pid);
+          if (!product) return prev;
+          const variant =
+            vid !== ""
+              ? product.variants?.find((item) => norm(item.id) === vid) ?? null
+              : null;
+          const hasVariants =
+            product.type !== "BUNDLE" && (product.variants?.length ?? 0) > 0;
+          const variantLabel = formatVariantOptionLabel(variant?.options);
+
+          return [
+            ...prev,
+            {
+              id: createCartRowId(),
+              productId: product.id,
+              variantId: variant?.id ?? null,
+              hasVariants,
+              name: product.name,
+              price: Number(variant?.price ?? product.price),
+              quantity: nextQty,
+              image: product.image || "/placeholder.svg",
+              variantLabel,
+            },
+          ];
+        }
+
+        // update existing
+        return prev.map((it, i) => (i === idx ? { ...it, quantity: nextQty } : it));
+      });
+    },
+    []
+  );
+
+  const incProductQty = useCallback(
+    (productId: string | number, step: number = 1, variantId?: string | number | null) => {
+      const cur = getQuantityByProductId(productId, variantId);
+      setProductQty(productId, cur + (Number(step) || 1), variantId);
+    },
+    [getQuantityByProductId, setProductQty]
+  );
+
+  const decProductQty = useCallback(
+    (productId: string | number, step: number = 1, variantId?: string | number | null) => {
+      const cur = getQuantityByProductId(productId, variantId);
+      setProductQty(productId, cur - (Number(step) || 1), variantId);
+    },
+    [getQuantityByProductId, setProductQty]
+  );
+
+  // ✅ addToCart increments standard rows, but PC Builder keeps one row per build.
+  const addToCart = useCallback(
+    async (
+      productId: string | number,
+      quantity: number = 1,
+      variantId?: string | number | null,
+      options?: CartAnimationOptions
+    ) => {
+      const pid = norm(productId);
+      const vid = normVariant(variantId);
+      const add = clamp(Number(quantity) || 1);
+      if (add <= 0) return false;
+
+      let product = options?.product ?? productCacheRef.current.get(pid);
+      if (!product) {
+        try {
+          const response = await fetch(`/api/products/${encodeURIComponent(pid)}?view=storefront`, {
+            cache: "force-cache",
+          });
+          if (response.ok) {
+            const data = await response.json();
+            product = {
+              id: data.id,
+              name: String(data.name || "Product"),
+              type: data.type ?? null,
+              price: Number(data.basePrice ?? 0),
+              image: data.image ?? "/placeholder.svg",
+              variants: Array.isArray(data.variants)
+                ? data.variants.map((variant: any) => ({
+                    id: variant.id,
+                    price: Number(variant.price ?? data.basePrice ?? 0),
+                    sku: variant.sku ?? null,
+                    options:
+                      variant.options && typeof variant.options === "object"
+                        ? variant.options
+                        : null,
+                  }))
+                : [],
+            };
+          }
+        } catch (error) {
+          console.error("Failed to load product for cart:", error);
+        }
+      }
+      if (!product) {
+        console.warn("Product could not be loaded for cart:", productId);
+        return false;
+      }
+      productCacheRef.current.set(pid, product);
+
+      const requestedVariant =
+        vid !== ""
+          ? product.variants?.find((item) => norm(item.id) === vid) ?? null
+          : null;
+      const variant =
+        product.type === "BUNDLE"
+          ? requestedVariant ?? product.variants?.[0] ?? null
+          : requestedVariant;
+      const hasVariants =
+        product.type !== "BUNDLE" && (product.variants?.length ?? 0) > 0;
+      const variantLabel = formatVariantOptionLabel(variant?.options);
+
+      const fromPcBuilder =
+        options?.pcBuilder ??
+        (typeof window !== "undefined" &&
+          window.location.pathname.includes("/pc-builder"));
+      let pcBuildId: string | null = null;
+      let pcBuildSlot: string | null = null;
+      let persistedBundleKey: string | null = null;
+      let persistedBundleSummary = options?.bundleSummary ?? null;
+      let persistedBundlePrice = options?.bundlePrice;
+      let persistedCartItemId: string | number | undefined;
+      let persistedVariantId: string | number | null = variant?.id ?? null;
+      let persistedVariantPrice = Number(variant?.price ?? product.price);
+      let persistedVariantLabel = variantLabel;
+
+      if (fromPcBuilder && sessionStatus === "authenticated") {
+        try {
+          const response = await fetch("/api/cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              productId: product.id,
+              variantId: variant?.id ?? null,
+              quantity: 1,
+              pcBuilder: true,
+            }),
+          });
+          const data = await response.json().catch(() => null);
+          if (response.ok) {
+            persistedCartItemId = data?.id;
+            if (data?.variantId !== undefined) {
+              persistedVariantId = data.variantId;
+            }
+            pcBuildId = typeof data?.pcBuildId === "string" ? data.pcBuildId : null;
+            pcBuildSlot = typeof data?.pcBuildSlot === "string" ? data.pcBuildSlot : null;
+          } else if (response.status !== 401) {
+            console.error("Failed to persist PC Builder cart row:", data?.error || response.status);
+            return false;
+          }
+        } catch (error) {
+          console.error("Failed to sync PC Builder cart row:", error);
+          return false;
+        }
+      }
+
+      if (!fromPcBuilder && sessionStatus === "authenticated") {
+        try {
+          const response = await fetch("/api/cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              productId: product.id,
+              variantId: variant?.id ?? null,
+              quantity: add,
+              bundleSelections: options?.bundleSelections,
+            }),
+          });
+          if (!response.ok && response.status !== 401) {
+            const data = await response.json().catch(() => null);
+            console.error(
+              "Failed to persist cart row:",
+              data?.error || response.status,
+            );
+            return false;
+          }
+          if (response.ok) {
+            const data = await response.json().catch(() => null);
+            persistedCartItemId = data?.id;
+            if (data?.variantId !== undefined) {
+              persistedVariantId = data.variantId;
+              const persistedVariant = product.variants?.find(
+                (candidate) => norm(candidate.id) === norm(data.variantId),
+              );
+              if (persistedVariant) {
+                persistedVariantPrice = Number(persistedVariant.price ?? product.price);
+                persistedVariantLabel = formatVariantOptionLabel(persistedVariant.options);
+              }
+            }
+            persistedBundleKey = typeof data?.lineKey === "string" ? data.lineKey : null;
+            const config = data?.bundleConfiguration;
+            if (config && typeof config === "object") {
+              persistedBundlePrice = Number(config.finalPrice ?? persistedBundlePrice ?? product.price);
+              persistedBundleSummary = Array.isArray(config.summary)
+                ? config.summary.map(String)
+                : persistedBundleSummary;
+            }
+          }
+        } catch (error) {
+          console.error("Failed to sync cart row:", error);
+        }
+      }
+
+      const cartVariantKey = normVariant(persistedVariantId);
+      trackingMutations.current.add(pid);
+
+      setCartItems((prevItems) => {
+        if (fromPcBuilder) {
+          if (pcBuildId) {
+            const existingBuildRow = prevItems.find(
+              (item) =>
+                item.pcBuildId === pcBuildId &&
+                norm(item.productId) === pid &&
+                normVariant(item.variantId) === cartVariantKey,
+            );
+            if (existingBuildRow) return prevItems;
+          }
+          return [
+            ...prevItems,
+            {
+              id: persistedCartItemId ?? createCartRowId(),
+              productId: product.id,
+              variantId: persistedVariantId,
+              name: product.name,
+              price: persistedVariantPrice,
+              quantity: 1,
+              image: product.image || "/placeholder.svg",
+              variantLabel: persistedVariantLabel,
+              pcBuildId,
+              pcBuildSlot,
+            },
+          ];
+        }
+
+        const fallbackBundleKey = options?.bundleSelections
+          ? `bundle:${JSON.stringify([...options.bundleSelections].sort((a, b) => a.groupId - b.groupId || (a.optionId ?? -1) - (b.optionId ?? -1)))}`
+          : null;
+        const bundleConfigurationKey = persistedBundleKey ?? fallbackBundleKey;
+        const idx = prevItems.findIndex(
+          (item) =>
+            !item.pcBuildId &&
+            norm(item.productId) === pid &&
+            (normVariant(item.variantId) === cartVariantKey ||
+              (variant === null && persistedVariantId !== null && item.variantId == null)) &&
+            (product.type !== "BUNDLE" || item.bundleConfigurationKey === bundleConfigurationKey)
+        );
+
+        if (idx !== -1) {
+          const nextQty = clamp(prevItems[idx].quantity + add);
+          return prevItems.map((it, i) =>
+            i === idx
+              ? {
+                  ...it,
+                  id: persistedCartItemId ?? it.id,
+                  variantId: persistedVariantId,
+                  price: Number(persistedBundlePrice ?? persistedVariantPrice),
+                  variantLabel: persistedVariantLabel,
+                  quantity: nextQty,
+                }
+              : it,
+          );
+        }
+
+        return [
+          ...prevItems,
+          {
+            id: persistedCartItemId ?? createCartRowId(),
+            productId: product.id,
+            variantId: persistedVariantId,
+            hasVariants,
+            name: product.name,
+              price: Number(persistedBundlePrice ?? persistedVariantPrice),
+            quantity: add,
+            image: product.image || "/placeholder.svg",
+              variantLabel: persistedVariantLabel,
+              bundleSelections: options?.bundleSelections ?? null,
+              bundleSummary: persistedBundleSummary,
+              bundleConfigurationKey,
+            },
+        ];
+      });
+
+      // Dispatch custom event to trigger animation on FloatingCartButton
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("cart-item-added", {
+          detail: {
+            startX: options?.startX,
+            startY: options?.startY,
+            image: options?.image || product.image || "/placeholder.svg",
+            imageRect: options?.imageRect,
+          },
+        }));
+      }
+      return true;
+    },
+    [sessionStatus]
+  );
+
+  const removeFromCart = useCallback((id: string | number) => {
+    const row = previousCartRef.current.find((item) => item.id === id);
+    if (row) trackingMutations.current.add(String(row.productId));
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  }, []);
+
+  // ✅ quantity < 1 হলে remove
+  const updateQuantity = useCallback((id: string | number, quantity: number) => {
+    const q = clamp(Number(quantity) || 0);
+    const row = previousCartRef.current.find((item) => item.id === id);
+    if (row) trackingMutations.current.add(String(row.productId));
+    setCartItems((prev) => {
+      if (q <= 0) return prev.filter((x) => x.id !== id);
+      return prev.map((item) => (item.id === id ? { ...item, quantity: q } : item));
+    });
+  }, []);
+
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+  }, []);
+
+  return (
+    <CartContext.Provider
+      value={{
+        cartItems,
+        cartHydrated,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        cartCount,
+        replaceCart,
+
+        // ✅ NEW helpers
+        getQuantityByProductId,
+        setProductQty,
+        incProductQty,
+        decProductQty,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
+}

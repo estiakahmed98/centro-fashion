@@ -1,0 +1,220 @@
+import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
+
+const nextConfig: NextConfig = {
+  // Keep isolated stock-verification builds separate from an active dev server.
+  ...(process.env.WAREHOUSE_BUNDLE_VERIFY === "true" ? {
+    distDir: ".next/warehouse-bundle-verification-build",
+    typescript: { tsconfigPath: "tsconfig.warehouse-verification.json" },
+  } : {}),
+  compress: true,
+  // Allow cross-origin requests from specific development origins
+  allowedDevOrigins: [
+    '*.trycloudflare.com',
+    '192.168.0.114',
+    'crawling-gauging-supernova.ngrok-free.dev',
+  ],
+  experimental: {
+    serverSourceMaps: false,
+    // Avoid the persistent cache database compaction failure during builds.
+    // Development still uses its own filesystem cache.
+    turbopackFileSystemCacheForBuild: false,
+  },
+  productionBrowserSourceMaps: false,
+  turbopack: {
+    rules: {
+      'index.js': {
+        condition: { path: /(?:^|\/)generated\/prisma\/index\.js$/ },
+        loaders: [require.resolve('./scripts/prisma-tracing-loader.cjs')],
+        as: '*.js',
+      },
+      'library.js': {
+        condition: { path: /(?:^|\/)generated\/prisma\/runtime\/library\.js$/ },
+        loaders: [require.resolve('./scripts/prisma-tracing-loader.cjs')],
+        as: '*.js',
+      },
+    },
+  },
+  // Explicitly include runtime assets skipped by Prisma's dynamic path tracing.
+  outputFileTracingIncludes: {
+    '/*': [
+      './generated/prisma/schema.prisma',
+      './generated/prisma/*.node',
+    ],
+  },
+  // Additional build optimizations
+  poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 86400,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/ecommerce",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/authors/:path*",
+        destination: "/ecommerce/brands",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/publishers/:path*",
+        destination: "/ecommerce/brands",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/books",
+        destination: "/ecommerce/products",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/books/:identifier",
+        destination: "/ecommerce/products/:identifier",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/book-fair",
+        destination: "/ecommerce/flash-sale",
+        permanent: true,
+      },
+      {
+        source: "/ecommerce/track-order",
+        destination: "/ecommerce/user/orders",
+        permanent: true,
+      },
+      {
+        source: "/books",
+        destination: "/ecommerce/products",
+        permanent: true,
+      },
+      {
+        source: "/books/:identifier",
+        destination: "/ecommerce/books/:identifier",
+        permanent: true,
+      },
+      {
+        source: "/authors/:path*",
+        destination: "/ecommerce/brands",
+        permanent: true,
+      },
+      {
+        source: "/publishers/:path*",
+        destination: "/ecommerce/brands",
+        permanent: true,
+      },
+      {
+        source: "/about",
+        destination: "/ecommerce/about",
+        permanent: true,
+      },
+      {
+        source: "/contact",
+        destination: "/ecommerce/contact",
+        permanent: true,
+      },
+      {
+        source: "/shipping",
+        destination: "/ecommerce/shipping",
+        permanent: true,
+      },
+      {
+        source: "/returns",
+        destination: "/ecommerce/returns",
+        permanent: true,
+      },
+      {
+        source: "/privacy",
+        destination: "/ecommerce/privacy",
+        permanent: true,
+      },
+      {
+        source: "/terms",
+        destination: "/ecommerce/terms",
+        permanent: true,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(self), payment=(self)",
+          },
+        ],
+      },
+      {
+        source: "/api/business/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Vary", value: "Cookie" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, nosnippet" },
+        ],
+      },
+      {
+        source: "/api/admin/business-network/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Vary", value: "Cookie" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, nosnippet" },
+        ],
+      },
+      {
+        source: "/api/cron/business-network/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, nosnippet" },
+        ],
+      },
+      {
+        source: "/api/public/partner/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow, nosnippet" },
+        ],
+      },
+      {
+        source: "/upload/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/models/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
+  // Load server dependencies through Node.js instead of compiling them into
+  // route bundles. Client imports (such as the OCR form) remain bundled.
+  serverExternalPackages: ['nodemailer', 'tesseract.js', 'bwip-js', 'pdf-lib'],
+};
+
+export default withNextIntl(nextConfig);
