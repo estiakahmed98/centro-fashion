@@ -1572,3 +1572,86 @@
 @media(max-width:800px){.editorial-header{height:75px;grid-template-columns:1fr auto 1fr}.editorial-mobile-menu{grid-column:1;grid-row:1;justify-self:start;display:block}.editorial-wordmark{grid-column:2;justify-self:center;width:115px}.editorial-wordmark img{width:115px;height:48px}.editorial-desktop-nav{display:none}.editorial-header-actions{grid-column:3;gap:15px}.editorial-header-actions .editorial-action-label,.editorial-header-divider,.editorial-stores-link{display:none}.editorial-action-icon{display:block}.editorial-account-avatar{display:none}.editorial-mega-panel,.editorial-menu-shade{display:none}.editorial-mobile-nav{top:104px;max-height:calc(100dvh - 104px);overflow-y:auto}.editorial-announcement> a{display:none}.editorial-announcement{justify-content:center;font-size:7px}.centro-hero{grid-template-columns:1fr 1fr;min-height:590px;padding:40px 5%;gap:25px}.centro-hero h1{font-size:68px}.centro-hero-art{min-height:470px}.centro-hero-main{inset:10px 6% 20px 0;border-radius:100px 8px 8px 8px}.centro-hero-stamp{width:80px;height:80px;font-size:7px;right:-5%;top:0}.centro-hero-detail{width:48%;right:-5%;border-width:5px}.centro-hero-actions{align-items:start;flex-direction:column;gap:20px}.centro-hero-copy>p{font-size:11px}.centro-scroll{margin-top:25px;font-size:6px}.centro-collections,.centro-latest,.centro-journal{padding:55px 5%}.centro-story{gap:7%;padding:60px 5%}.centro-story-image{height:460px}.centro-story h2{font-size:48px}.centro-journal-card>div{height:220px}.centro-journal-card h3{font-size:23px}.centro-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.editorial-header-actions .editorial-wishlist-link{display:none}.editorial-header-actions{gap:13px}.centro-hero{grid-template-columns:1fr;padding:35px 6% 28px;gap:25px}.centro-hero h1{font-size:75px;margin:22px 0}.centro-hero h1 br:nth-child(2){display:none}.centro-hero-copy>p{max-width:300px}.centro-hero-actions{flex-direction:row;align-items:center;gap:22px}.centro-hero-art{min-height:470px;max-width:390px;margin-top:5px;justify-self:center}.centro-hero-main{inset:0 8% 20px 0;border-radius:110px 8px 8px 8px}.centro-hero-detail{width:40%;height:48%;right:0}.centro-hero-detail>span{font-size:21px}.centro-hero-stamp{right:0;top:15px}.centro-scroll{display:none}.centro-button{font-size:9px;padding:13px 16px;gap:18px;min-height:45px}.centro-text-link{font-size:9px;gap:10px}.centro-section-heading{align-items:start;gap:18px}.centro-section-heading h2{font-size:36px}.centro-section-heading>.centro-text-link{white-space:nowrap;margin-top:30px;font-size:8px;gap:7px}.centro-eyebrow{font-size:7px}.centro-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px}.centro-category-card h3{font-size:11px;margin-top:12px}.centro-category-card>div{border-radius:6px 6px 30px 6px}.centro-category-card:nth-child(3n+2)>div{border-radius:55px 6px 6px 6px}.centro-product-grid{gap:12px}.centro-story{grid-template-columns:1fr;padding:45px 6%;gap:30px}.centro-story-image{height:420px;border-radius:8px 90px 8px 8px}.centro-story h2{font-size:58px}.centro-story h2 br{display:none}.centro-story p{font-size:12px}.centro-journal-grid{grid-template-columns:1fr;gap:32px}.centro-journal-card>div{height:340px}.centro-journal-card h3{font-size:30px}.centro-section-note{display:none}.centro-contact-banner{padding:55px 6%;border-top-left-radius:60px}.centro-contact-banner h2{font-size:52px}.centro-company-page>header{padding:45px 6% 30px}.centro-company-page h1{font-size:58px}.centro-company-hero{width:88%;margin:0 6%;height:390px;border-radius:8px 65px 8px 8px}.centro-company-copy{grid-template-columns:1fr;padding:45px 6%;gap:25px}.centro-company-copy>h2{font-size:40px}.centro-about-links{grid-template-columns:1fr;padding:0 6% 50px}.centro-company-source{padding:0 6% 40px}.editorial-footer-columns{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.centro-home *,.centro-mega-panel *{transition:none!important}}
+
+.centro-editorial-page{background:#fff}
+.centro-editorial-page .centro-page-intro{max-width:1180px;margin:0 auto;padding:86px 7% 48px}
+.centro-editorial-page .centro-page-intro h1{font:400 clamp(58px,7vw,96px)/.98 var(--serif);letter-spacing:-.045em;margin:24px 0}
+.centro-editorial-page .centro-page-intro>p{max-width:570px;margin:0;color:#747a72;font-size:14px;line-height:1.9}
+.centro-page-hero{position:relative;width:86%;margin:0 auto}
+.centro-page-hero img{display:block;width:100%;height:clamp(390px,52vw,650px);object-fit:cover;object-position:center 42%;border-radius:8px 72px 8px 8px}
+.centro-page-hero figcaption{padding:12px 2px 0;color:#85877f;font-size:10px;letter-spacing:.04em}
+.centro-social-hero img{object-position:center 48%}
+.centro-editorial-story{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:center;gap:8%;padding:108px 10%;max-width:1500px;margin:0 auto}
+.centro-editorial-story-image{position:relative;min-width:0}
+.centro-editorial-story-image img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px 70px 6px 6px}
+.centro-editorial-story-image>span{display:inline-block;margin-top:12px;color:#85877f;font-size:9px;letter-spacing:.12em}
+.centro-editorial-story-copy h2,.centro-impact-intro h2{margin:20px 0 24px;font:400 clamp(40px,4vw,58px)/1.08 var(--serif);letter-spacing:-.025em}
+.centro-editorial-story-copy p,.centro-impact-intro p{max-width:550px;margin:0 0 18px;color:#73796f;font-size:13px;line-height:1.95}
+.centro-editorial-story-copy .centro-text-link{margin-top:12px}
+.centro-company-links{padding:72px 7% 88px;background:#f6f6f1}
+.centro-company-links-heading{max-width:1180px;margin:0 auto 30px}
+.centro-company-links-heading h2{margin:12px 0 0;font:400 clamp(36px,4vw,52px)/1.1 var(--serif);letter-spacing:-.025em}
+.centro-company-links-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;max-width:1180px;margin:0 auto}
+.centro-company-links-grid>a{display:grid;grid-template-columns:1fr auto;align-items:end;gap:14px;padding:22px 0;border-top:1px solid #d8dbd2}
+.centro-company-links-grid>a>span{grid-column:1/-1;color:#85877f;font-size:9px;letter-spacing:.12em}
+.centro-company-links-grid>a>strong{font:400 23px/1.2 var(--serif)}
+.centro-company-links-grid>a>svg{color:#71806f;transition:transform .2s ease}
+.centro-company-links-grid>a:hover>svg{transform:translate(3px,-3px)}
+.centro-impact-intro{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:8%;align-items:start;padding:92px 10% 70px;max-width:1450px;margin:0 auto}
+.centro-impact-intro h2{margin-top:20px}
+.centro-impact-intro .centro-button{margin-top:10px}
+.centro-community-gallery{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);align-items:start;gap:28px;width:86%;max-width:1320px;margin:0 auto}
+.centro-community-gallery figure{min-width:0;margin:0}
+.centro-community-gallery figure:nth-child(2){margin-top:72px}
+.centro-community-gallery img{display:block;width:100%;height:clamp(300px,38vw,490px);object-fit:cover;border-radius:6px 56px 6px 6px}
+.centro-community-gallery figure:nth-child(2) img{height:clamp(300px,34vw,440px);object-position:center 35%;border-radius:56px 6px 6px}
+.centro-community-gallery figcaption{padding:12px 2px;color:#85877f;font-size:10px}
+.centro-community-note{max-width:820px;margin:0 auto;padding:85px 7% 110px;text-align:center}
+.centro-community-note>p{margin:20px auto 24px;font:400 clamp(27px,3vw,38px)/1.35 var(--serif);color:#35473b}
+.centro-community-note .centro-text-link{justify-content:center}
+.centro-history-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:22px;width:86%;max-width:1320px;margin:0 auto}
+.centro-history-gallery figure{min-width:0;margin:0}
+.centro-history-gallery figure:nth-child(2){transform:translateY(38px)}
+.centro-history-gallery img{display:block;width:100%;height:clamp(240px,30vw,390px);object-fit:cover;border-radius:6px 48px 6px 6px}
+.centro-history-gallery figure:nth-child(2) img{border-radius:48px 6px 6px}
+.centro-history-gallery figure:nth-child(3) img{object-position:center 25%}
+.centro-leadership-hero img{object-position:center 38%}
+.centro-leadership-team-image img{aspect-ratio:5/4;object-position:center}
+.centro-leadership-visionaries{width:80%;max-width:1100px;margin:0 auto 100px;padding:35px 0;border-top:1px solid #e0e2d9;border-bottom:1px solid #e0e2d9}
+.centro-leadership-visionaries img{display:block;width:100%;height:auto;max-height:300px;object-fit:contain}
+.centro-process-intro{max-width:850px;margin:0 auto;padding:88px 7% 42px;text-align:center}
+.centro-process-intro h2{margin:18px 0;font:400 clamp(36px,4vw,54px)/1.1 var(--serif);letter-spacing:-.025em}
+.centro-process-intro p{max-width:580px;margin:0 auto;color:#747a72;font-size:13px;line-height:1.9}
+.centro-process-stages{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px 26px;width:86%;max-width:1320px;margin:0 auto 90px}
+.centro-process-stage{min-width:0}
+.centro-process-stage>img{display:block;width:100%;height:clamp(280px,36vw,460px);object-fit:cover;border-radius:6px 58px 6px 6px}
+.centro-process-stage:nth-child(2)>img,.centro-process-stage:nth-child(3)>img{border-radius:58px 6px 6px}
+.centro-process-stage-copy{padding:18px 2px 0}
+.centro-process-stage-copy>span{color:#85877f;font-size:9px;letter-spacing:.13em}
+.centro-process-stage-copy h3{margin:10px 0;font:400 clamp(25px,2.7vw,34px)/1.15 var(--serif)}
+.centro-process-stage-copy p{max-width:470px;margin:0;color:#747a72;font-size:12px;line-height:1.8}
+@media(max-width:700px){
+  .centro-editorial-page .centro-page-intro{padding:54px 6% 32px}
+  .centro-editorial-page .centro-page-intro h1{font-size:clamp(48px,12vw,68px);margin:18px 0}
+  .centro-editorial-page .centro-page-intro>p{font-size:13px}
+  .centro-page-hero{width:88%}
+  .centro-page-hero img{height:clamp(300px,95vw,470px);border-top-right-radius:48px}
+  .centro-editorial-story{grid-template-columns:1fr;gap:30px;padding:62px 7%}
+  .centro-editorial-story-image img{max-height:520px;aspect-ratio:5/4}
+  .centro-editorial-story-copy h2,.centro-impact-intro h2{font-size:42px}
+  .centro-company-links{padding:52px 7% 60px}
+  .centro-company-links-grid{grid-template-columns:1fr;gap:0}
+  .centro-impact-intro{grid-template-columns:1fr;gap:10px;padding:58px 7% 40px}
+  .centro-community-gallery{grid-template-columns:1fr;gap:22px;width:88%}
+  .centro-community-gallery figure:nth-child(2){margin-top:0}
+  .centro-community-gallery img,.centro-community-gallery figure:nth-child(2) img{height:clamp(280px,78vw,440px)}
+  .centro-community-note{padding:62px 7% 78px}
+  .centro-history-gallery{grid-template-columns:1fr 1fr;width:88%;gap:14px}
+  .centro-history-gallery figure:nth-child(2){transform:translateY(24px)}
+  .centro-history-gallery img{height:clamp(210px,58vw,310px);border-top-right-radius:38px}
+  .centro-leadership-visionaries{width:88%;margin-bottom:65px;padding:24px 0}
+  .centro-process-intro{padding:60px 7% 30px}
+  .centro-process-stages{grid-template-columns:1fr;gap:28px;width:88%;margin-bottom:55px}
+  .centro-process-stage>img{height:clamp(280px,78vw,430px)}
+}
+@media(prefers-reduced-motion:reduce){.centro-company-links-grid>a>svg{transition:none}}

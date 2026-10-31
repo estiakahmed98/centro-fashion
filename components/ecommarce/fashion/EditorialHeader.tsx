@@ -13,10 +13,12 @@ export type MenuProduct = { id: number; slug: string; name: string; image: strin
 type MenuName = "shop" | "company";
 const collection = (slug: string) => `/ecommerce/collections/${slug}`;
 const companyLinks = [
-  ["Our story", "/ecommerce/about"],
-  ["Design & production", "/ecommerce/centro/process"],
+  ["About Centro", "/ecommerce/about"],
+  ["History", "/ecommerce/history"],
+  ["Leadership", "/ecommerce/leadership"],
+  ["Design & production", "/ecommerce/process"],
   ["Sustainability", "/ecommerce/centro/sustainability"],
-  ["Centro cares", "/ecommerce/centro/cares"],
+  ["Social responsibilities", "/ecommerce/centro/social-responsibilities"],
   ["Get in touch", "/ecommerce/contact"],
 ];
 
@@ -94,7 +96,7 @@ export function EditorialHeader({ highlights, categories, contactEmail, onOpenBa
         {activeMenu === "company" ? <>
           <div className="editorial-mega-column"><h2>THE WORLD OF CENTRO</h2>{companyLinks.map(([label, href]) => <Link key={href} href={href} onClick={close}>{label} <ArrowRight size={13} /></Link>)}</div>
           <div className="centro-mega-intro"><span className="editorial-kicker">IDEAS INTO EVERYDAY</span><h2>More than what<br />you wear.</h2><p>Discover the people, creativity and care behind Centro.</p><Link href="/ecommerce/about" onClick={close}>Meet Centro <ArrowRight size={16} /></Link></div>
-          <Link className="editorial-mega-promo" href="/ecommerce/centro/process" onClick={close}><img src="/centro/images/The_Centro_Design_and_Production_Process/790608ef71881125.png" alt="Centro design and production" /><span><strong>From first idea<br />to final detail.</strong><span>Explore our process <ArrowRight size={16} /></span></span></Link>
+          <Link className="editorial-mega-promo" href="/ecommerce/process" onClick={close}><img src="/centro/images/The_Centro_Design_and_Production_Process/790608ef71881125.png" alt="Centro design and production" /><span><strong>From first idea<br />to final detail.</strong><span>Explore our process <ArrowRight size={16} /></span></span></Link>
         </> : <>
           <div className="editorial-mega-column"><h2>EXPLORE COLLECTIONS</h2>{roots.map(category => <Link key={category.id} href={collection(category.slug)} onMouseEnter={() => setPreviewId(category.id)} onFocus={() => setPreviewId(category.id)} onClick={close}>{category.name} <ArrowRight size={13} /></Link>)}<Link href="/ecommerce/products" onClick={close}>Shop all pieces</Link></div>
           <div className="editorial-mega-column"><h2>{preview?.name || "THE LATEST EDIT"}</h2>{children.map(category => <Link key={category.id} href={collection(category.slug)} onClick={close}>{category.name}</Link>)}<Link href={preview ? collection(preview.slug) : "/ecommerce/products"} onClick={close}>Explore the collection <ArrowRight size={13} /></Link><div className="editorial-mega-products">{highlights.slice(0, 2).map(product => <Link key={product.id} className="editorial-mega-product" href={`/ecommerce/products/${product.slug}`} onClick={close}><img src={product.image || "/placeholder.svg"} alt={product.name} /><span>{product.name}<strong>Discover piece</strong></span></Link>)}</div></div>

@@ -7,7 +7,7 @@ import { Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 
 const information = [
   { title: "CUSTOMER SERVICE", links: [["Shipping & Returns", "/ecommerce/shipping"], ["Make a Return", "/ecommerce/returns"], ["Account", "/ecommerce/user"], ["My orders", "/ecommerce/user/orders"], ["F.A.Q.", "/ecommerce/faq"], ["Contact Us", "/ecommerce/contact"]] },
-  { title: "COMPANY", links: [["Our story", "/ecommerce/about"], ["Design & production", "/ecommerce/centro/process"], ["Sustainability", "/ecommerce/centro/sustainability"], ["Centro cares", "/ecommerce/centro/cares"], ["Terms & Conditions", "/ecommerce/terms"], ["Privacy Policy", "/ecommerce/privacy"]] },
+  { title: "COMPANY", links: [["About Centro", "/ecommerce/about"], ["History", "/ecommerce/history"], ["Leadership", "/ecommerce/leadership"], ["Design & production", "/ecommerce/process"], ["Sustainability", "/ecommerce/centro/sustainability"], ["Social responsibilities", "/ecommerce/centro/social-responsibilities"], ["Terms & Conditions", "/ecommerce/terms"], ["Privacy Policy", "/ecommerce/privacy"]] },
 ];
 const icons = { Facebook, Instagram, YouTube: Youtube, X: Twitter };
 
