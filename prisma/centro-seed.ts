@@ -16,7 +16,7 @@ export async function importCentroCatalog(
       { slug: { in: catalog.map(item => item.product.slug) } },
       { sku: { in: catalog.map(item => item.product.sku) } },
     ] },
-    select: { slug: true, sku: true, name: true },
+    select: { slug: true, sku: true, name: true, basePrice: true },
   });
   for (const item of catalog) {
     if (existing.some(row => (row.slug === item.product.slug || row.sku === item.product.sku) &&
@@ -39,8 +39,24 @@ export async function importCentroCatalog(
     if (imported.has(item.product.sku)) {
       const previous = existing.find(row => row.sku === item.product.sku);
       // Replace only the old generated placeholder, preserving manual names.
-      if (previous?.name && /^Centro .+ [a-f0-9]{16}$/.test(previous.name)) {
-        await db.product.updateMany({ where: { sku: item.product.sku, name: previous.name }, data: { name: item.product.name } });
+      const data = {
+        ...(previous?.name && /^Centro .+ [a-f0-9]{16}$/.test(previous.name)
+          ? { name: item.product.name }
+          : {}),
+        ...(previous?.basePrice !== undefined && Number(previous.basePrice) === 0
+          ? {
+              basePrice: item.product.basePrice,
+              variants: {
+                updateMany: {
+                  where: { price: 0 },
+                  data: { price: item.variants[0].price },
+                },
+              },
+            }
+          : {}),
+      };
+      if (Object.keys(data).length) {
+        await db.product.update({ where: { sku: item.product.sku }, data });
       }
       continue;
     }

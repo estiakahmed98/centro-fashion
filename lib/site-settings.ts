@@ -22,8 +22,8 @@ export const SITE_SETTINGS_DEFAULTS = {
   timezone: "Asia/Dhaka",
   locale: "en-BD",
   storeType: "GENERAL" as StoreType,
-  logo: "/centro/brand.svg",
-  favicon: "/centro/brand.svg",
+  logo: "/centro/logo.svg",
+  favicon: "/centro/logo.svg",
 } as const;
 
 export type SiteSettingsInput = GoogleAnalyticsSettings & {

@@ -25,11 +25,19 @@ export async function seedCentroPresentation(db: PrismaClient, catalog: CentroPr
       siteTitle: "Centro", storeName: "Centro", storeTagline: "Designed with purpose. Made for everyday.",
       defaultSeoTitle: "Centro | Made for the way you live",
       defaultSeoDescription: "Discover Centro collections, from everyday apparel to home textiles. Explore our people, design process and sustainability story.",
-      logo: "/centro/brand.svg", favicon: "/centro/brand.svg", storeType: "FASHION", currency: "BDT",
+      logo: "/centro/logo.svg", favicon: "/centro/logo.svg", storeType: "FASHION", currency: "BDT",
       address: "House 7/7A, Floor W-7, Sector 17, Block H-1, BGMEA Complex, Uttara, Dhaka-1230, Bangladesh",
       footerDescription: "A world of apparel, home textiles and creative possibilities. Discover the people and ideas behind Centro.",
     };
     if (settings) await db.sitesettings.update({ where: { id: settings.id }, data: identity });
     else await db.sitesettings.create({ data: identity });
+  } else {
+    const updates = {
+      ...(settings.logo === "/centro/brand.svg" ? { logo: "/centro/logo.svg" } : {}),
+      ...(settings.favicon === "/centro/brand.svg" ? { favicon: "/centro/logo.svg" } : {}),
+    };
+    if (Object.keys(updates).length) {
+      await db.sitesettings.update({ where: { id: settings.id }, data: updates });
+    }
   }
 }

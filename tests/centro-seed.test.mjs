@@ -10,10 +10,11 @@ function fixture({ existing = [], failure = false } = {}) {
   const db = {
     product: {
       findMany: async () => products,
+      update: async ({ where, data }) => { writes.push({ kind: "update", where, data }); },
       create: async ({ data }) => {
         if (failure) throw new Error("insert failed");
         writes.push({ kind: "create", data });
-        products.push({ slug: data.slug, sku: data.sku });
+        products.push({ slug: data.slug, sku: data.sku, basePrice: data.basePrice });
       },
       updateMany: async args => { writes.push({ kind: "archive", ...args }); return { count: 4 }; },
     },
@@ -47,4 +48,22 @@ test("identity collisions fail before writes; failed imports do not archive old 
   await assert.rejects(importCentroCatalog(failed.db, catalog), /insert failed/);
   assert.equal(failed.writes.length, 0);
   await assert.rejects(importCentroCatalog(failed.db, []), /empty/);
+});
+
+test("repeat imports add estimated prices only to existing zero-priced products and variants", async () => {
+  const existing = catalog.map(item => ({
+    slug: item.product.slug,
+    sku: item.product.sku,
+    basePrice: 0,
+  }));
+  const f = fixture({ existing });
+
+  assert.equal((await importCentroCatalog(f.db, catalog)).skipped, 2);
+  const updates = f.writes.filter(write => write.kind === "update");
+  assert.equal(updates.length, 2);
+  assert.equal(updates[0].data.basePrice, catalog[0].product.basePrice);
+  assert.deepEqual(updates[0].data.variants.updateMany, {
+    where: { price: 0 },
+    data: { price: catalog[0].variants[0].price },
+  });
 });

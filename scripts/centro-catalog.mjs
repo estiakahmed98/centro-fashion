@@ -9,6 +9,17 @@ export const CENTRO_CATEGORIES = {
 };
 export const CENTRO_REVIEWED_IMAGES = JSON.parse(readFileSync(new URL("../data/centro-reviewed-images.json", import.meta.url), "utf8"));
 const reviewedById = new Map(CENTRO_REVIEWED_IMAGES.map(item => [item.id, item]));
+const CENTRO_PRICE_FLOORS = {
+  activewear: 1290,
+  denim: 1790,
+  footwear: 1690,
+  homeTextiles: 990,
+  kids: 790,
+  knitwear: 1190,
+  menswear: 990,
+  outerwear: 1990,
+  womenswear: 990,
+};
 
 export function centroMediaPath(file, root = process.cwd()) {
   if (typeof file !== "string" || !/^images\/[A-Za-z0-9_]+\/[a-f0-9]{16}\.png$/.test(file)) {
@@ -55,12 +66,14 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
     const label = CENTRO_CATEGORIES[category];
     const slug = category.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
     const sku = `CENTRO-${item.id.toUpperCase()}`;
+    const price = CENTRO_PRICE_FLOORS[category] + (Number.parseInt(item.id.slice(-2), 16) % 4) * 100;
     const stock = randomInt(70, 201);
     const review = {
       sourceId: item.id, sourceUrl: sourcePages[0], sourcePages,
       sourceImageUrl: item.image_url, sourceCategories: item.categories || [],
       sourceChecksum: item.sha256, needsReview: true,
       nameSource: reviewed ? "visual-image-review" : "generated-category-name",
+      priceSource: "category-based-seed-estimate",
       stockSource: "user-requested-random-70-200",
       requiresNameVerification: true, requiresPriceVerification: true,
       requiresStockVerification: true, requiresSizeVerification: true,
@@ -70,11 +83,11 @@ export function normalizeCentroCatalog(source, root = process.cwd()) {
       categories: [{ name: label, slug: `centro-${slug}` }],
       product: {
         name: reviewed?.name || `Centro ${label} ${item.id}`, slug: `centro-${slug}-${item.id}`,
-        sku, type: "PHYSICAL", description: "", basePrice: 0, currency: "BDT",
+        sku, type: "PHYSICAL", description: "", basePrice: price, currency: "BDT",
         image, gallery: item.id === "3320106d9057096b" ? [image, centroMediaPath("images/The_Centro_Design_and_Production_Process/d48a20bc5afc7181.png", root)] : [image], available: true, featured: false,
       },
       variants: [{
-        sku: `${sku}-1`, price: 0, currency: "BDT", stock,
+        sku: `${sku}-1`, price, currency: "BDT", stock,
         active: true, isDefault: true, options: { __meta: review },
       }],
       review,

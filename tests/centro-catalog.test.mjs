@@ -5,6 +5,17 @@ import { loadCentroCatalog, normalizeCentroCatalog, centroMediaPath } from "../s
 
 const source = JSON.parse(readFileSync(new URL("../public/centro/images_report.json", import.meta.url), "utf8"));
 const sample = source.find(item => item.file?.startsWith("images/menswear/"));
+const priceFloors = {
+  activewear: 1290,
+  denim: 1790,
+  footwear: 1690,
+  homeTextiles: 990,
+  kids: 790,
+  knitwear: 1190,
+  menswear: 990,
+  outerwear: 1990,
+  womenswear: 990,
+};
 
 test("Centro product images map to stable identities and nine categories", () => {
   const rows = loadCentroCatalog();
@@ -15,7 +26,12 @@ test("Centro product images map to stable identities and nine categories", () =>
   for (const row of rows) {
     assert.ok(row.product.image.startsWith("/centro/images/"));
     assert.equal(row.product.available, true);
-    assert.equal(row.product.basePrice, 0);
+    const category = row.categories[0].slug.replace(/^centro-/, "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+    const minimum = priceFloors[category];
+    assert.ok(Number.isInteger(row.product.basePrice));
+    assert.ok(row.product.basePrice >= minimum && row.product.basePrice <= minimum + 300);
+    assert.equal(row.variants[0].price, row.product.basePrice);
+    assert.equal(row.review.priceSource, "category-based-seed-estimate");
     assert.ok(Number.isInteger(row.variants[0].stock) && row.variants[0].stock >= 70 && row.variants[0].stock <= 200);
     assert.equal(row.variants[0].options.__meta.requiresSizeVerification, true);
     assert.equal(row.variants[0].options.Size, undefined);

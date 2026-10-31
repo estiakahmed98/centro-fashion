@@ -1561,7 +1561,8 @@
 .centro-company-source>a{display:inline-flex;align-items:center;gap:12px}
 .centro-about-links{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 10% 75px}
 .centro-about-links>a{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #cdd3c6;padding-top:20px;font:400 26px var(--serif)}
-.editorial-catalog-heading{background:#f4f5ee}
+.editorial-catalog-heading{background:transparent}
+.centro-support-hero{background:linear-gradient(90deg,rgba(18,33,28,.82),rgba(18,33,28,.52)),url("/centro/images/centro-workforce-black-and-white-image.jpg") center 48%/cover no-repeat}
 .editorial-category-tabs{flex-wrap:wrap;row-gap:12px}
 .editorial-footer{background:#f5f5ef;color:#253b32}
 .editorial-footer-watermark{font-family:var(--sans);font-weight:600;letter-spacing:-.07em;color:#d7dfcf}

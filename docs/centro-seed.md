@@ -29,18 +29,22 @@ source image IDs provide stable product slugs and `CENTRO-` SKUs. Categories
 use `centro-` slugs so existing BOED category hierarchies cannot collide.
 
 The crawl provides no verified product names, descriptions, prices, sizes or
-inventory. Per the user's explicit request, new products are available and each
-default variant receives a random integer stock quantity from 70 through 200
-inclusive. Its initial warehouse quantity matches the variant stock. Generated
-names, blank descriptions and zero placeholder prices remain; price and size
-review flags are preserved. Stock metadata identifies the requested random
-quantity rather than claiming the quantity came from the source website.
+inventory. Per the user's explicit request, new products are available, get a
+conservative category-based BDT price estimate, and each default variant
+receives a random integer stock quantity from 70 through 200 inclusive. The
+variant price matches the product base price, and its initial warehouse
+quantity matches the variant stock. Price and size review flags remain set:
+estimates must be confirmed before sale. Stock metadata identifies the
+requested random quantity rather than claiming the quantity came from the
+source website.
 
 Each new product, default variant and warehouse balance is created with one
 atomic nested write. Normal repeat imports skip existing Centro products,
-preserving operator edits and stock after purchases. Slug/SKU collisions stop
-inserts. After all products exist, the importer soft-deletes the previous BOED
-products while retaining their orders and inventory history.
+preserving operator edits and stock after purchases; zero-priced products and
+variants are backfilled with the seed estimate without changing nonzero prices.
+Slug/SKU collisions stop inserts. After all products exist, the importer
+soft-deletes the previous BOED products while retaining their orders and
+inventory history.
 
 The explicit `seed:centro-stock -- --apply` command publishes existing Centro
 products and assigns fresh random stock to their active variants. It uses the

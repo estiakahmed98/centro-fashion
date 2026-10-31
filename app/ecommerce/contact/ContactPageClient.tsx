@@ -94,7 +94,7 @@ export default function ContactPageClient({
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <section className="border-b border-border bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+      <section className="centro-support-hero border-b border-border text-primary-foreground">
         <div className="container mx-auto max-w-6xl px-4 py-16 text-center sm:py-20">
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary-foreground/75">
             {t("eyebrow", { site: siteTitle })}
