@@ -6,9 +6,9 @@
 - `CRON_SECRET` protects inventory-reservation cleanup.
 - `BLOB_READ_WRITE_TOKEN` enables durable Vercel Blob upload storage and is required
   in production.
-- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` enable distributed rate
-  limiting and are required in production. `KV_REST_API_URL` and
-  `KV_REST_API_TOKEN` are accepted as compatible aliases.
+- `DATABASE_URL` supports shared PostgreSQL request rate limiting. Upstash/Redis
+  credentials are no longer used. Run `npm run prepare:rate-limit` once when
+  deploying outside Vercel; the Vercel build prepares the table automatically.
 - `MAILBOX_API_KEY` is optional. Without it, email checks fall back to format validation.
 
 Rotate the old MailboxLayer key that previously existed in Git history. Removing it
@@ -50,6 +50,13 @@ closed unless Vercel Blob is configured. Protected SCM, investor, payment, deliv
 and digital-asset objects are stored as private blobs and remain behind the existing
 route-level token/RBAC controls.
 
-Rate limiting uses an in-memory fallback only outside production. Production fails
-closed unless Upstash Redis is configured, preventing per-instance serverless limits
-from being mistaken for a distributed limit.
+Rate limiting uses atomic PostgreSQL counters in every environment. All serverless
+instances share the same counters, using the database clock for expiry. Raw IPs
+and user IDs are hashed before storage. Requests still fail closed if the database
+is unavailable. Expired counters are cleaned in bounded batches without a cron.
+
+The additive `RequestRateLimit` table is prepared during Vercel builds without
+resetting, pushing the full schema, or reseeding the store. The SQL is also tracked
+as a normal Prisma migration for installations using migration history.
+
+Verify with `npm run test:rate-limit` and `npm run verify:rate-limit-db`.

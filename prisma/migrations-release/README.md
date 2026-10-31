@@ -14,3 +14,11 @@ npx prisma db seed
 `npx prisma migrate reset` replays this baseline and runs the configured seed, but deletes existing data. It is unnecessary when only re-running the seed.
 
 For an existing populated database created with `prisma db push`, compare its schema with this baseline and reconcile differences before marking the baseline as applied. Do not apply the initial create-table migration directly to populated databases, and do not reset them to resolve migration history differences.
+
+## Shared request limits
+
+`20261031000000_request_rate_limit` adds the PostgreSQL counters used by checkout
+and other protected API routes. Existing installations can run
+`npm run prepare:rate-limit` to create only this table and its expiry index.
+Vercel runs this step before building; no Redis credentials are required.
+The preparation is idempotent and does not reset or seed application data.

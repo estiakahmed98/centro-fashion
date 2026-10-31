@@ -8,6 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model RequestRateLimit {
+  key       String   @id @db.VarChar(64)
+  count     Int
+  expiresAt DateTime @db.Timestamptz(3)
+
+  @@index([expiresAt])
+}
+
 model StorePolicyContent {
   id            String   @id @default(cuid())
   kind          String   @db.VarChar(20)

@@ -38,6 +38,7 @@ type Props = {
 
   onBack: () => void;
   onNext: () => void;
+  isSubmitting?: boolean;
   legalConsentAccepted: boolean;
   onLegalConsentChange: (accepted: boolean) => void;
   total: number;
@@ -59,6 +60,7 @@ export default function PaymentMethodSelector({
   isUploadingScreenshot,
   onBack,
   onNext,
+  isSubmitting = false,
   legalConsentAccepted,
   onLegalConsentChange,
   total,
@@ -279,7 +281,7 @@ export default function PaymentMethodSelector({
       </div>
 
       {isAibl && <p className="text-sm text-muted-foreground">You will enter your wallet details on the bank-hosted payment page.</p>}
-      <Button className="w-full" onClick={onNext} disabled={(!selectedMethod && aiblPendingOrderId === null) || (!legalConsentAccepted && aiblPendingOrderId === null) || epsVerificationBusy || aiblBusy}>
+      <Button className="w-full" onClick={onNext} aria-busy={isSubmitting} disabled={isSubmitting || (!selectedMethod && aiblPendingOrderId === null) || (!legalConsentAccepted && aiblPendingOrderId === null) || epsVerificationBusy || aiblBusy}>
         {aiblPendingOrderId !== null ? "Resume AIBL payment" : epsPendingOrderId !== null ? t("epsResume") : t("placeOrder")}
       </Button>
       {aiblPendingOrderId !== null && <div role="status" className="space-y-2 rounded border p-3">

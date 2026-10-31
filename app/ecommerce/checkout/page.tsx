@@ -45,6 +45,7 @@ import {
   getStaleServerCartItems,
   isSameCartLine,
 } from "@/lib/cart-reconciliation";
+import { formatVariantOptionLabel } from "@/lib/product-variants";
 
 function clearCompletedPcBuilderDraft() {
   try {
@@ -132,6 +133,7 @@ export default function CheckoutPage() {
   const [aiblBusy, setAiblBusy] = useState(false);
   const [aiblGuestCheckout, setAiblGuestCheckout] = useState(false);
   const placingOrder = useRef(false);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
     fetch("/api/aibl-wallet/pending", { cache: "no-store", signal: controller.signal }).then((r) => r.json()).then((value) => {
@@ -293,12 +295,9 @@ export default function CheckoutPage() {
           price: Number(item.bundleConfiguration?.finalPrice ?? item.variant?.price ?? item.product?.basePrice ?? item.product?.variants?.[0]?.price ?? 0),
           image: item.product?.image ?? "/placeholder.svg",
           quantity: Number(item.quantity ?? 1),
-          variantLabel:
-            item.variant?.options && typeof item.variant.options === "object"
-              ? Object.entries(item.variant.options)
-                  .map(([key, value]) => `${key}: ${String(value)}`)
-                  .join(", ")
-              : item.variant?.sku ?? null,
+          variantLabel: formatVariantOptionLabel(item.variant?.options),
+          pcBuildId: item.pcBuildId ?? null,
+          pcBuildSlot: item.pcBuildSlot ?? null,
           product: item.product, // Include full product data for VAT calculation
           bundleSelections: Array.isArray(item.bundleConfiguration?.selections)
             ? item.bundleConfiguration.selections
@@ -977,6 +976,7 @@ export default function CheckoutPage() {
     };
 
     placingOrder.current = true;
+    setIsPlacingOrder(true);
     if (isAiblWallet) setAiblBusy(true);
     try {
       const res = await fetch("/api/orders", {
@@ -987,7 +987,20 @@ export default function CheckoutPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        toast.error(t("errors.placeOrderFailedRetry"));
+        console.error("Checkout order request failed:", { status: res.status, code: data?.code });
+        if (res.status === 401) {
+          try {
+            sessionStorage.setItem("pendingCheckout", JSON.stringify(itemsToRender));
+            sessionStorage.setItem("redirectAfterLogin", "/ecommerce/checkout");
+          } catch { /* The cart is preserved even when session storage is unavailable. */ }
+          setCartAuthRequired(true);
+        }
+        // Validation and stock errors are actionable; unexpected server errors
+        // keep a friendly fallback without exposing database/config details.
+        const message = res.status < 500 && typeof data?.error === "string" && data.error.trim()
+          ? data.error.slice(0, 500)
+          : t("errors.placeOrderFailedRetry");
+        toast.error(message);
         return;
       }
 
@@ -1038,7 +1051,11 @@ export default function CheckoutPage() {
     } catch (err) {
       console.error(err);
       toast.error(t("errors.placeOrderFailed"));
-    } finally { placingOrder.current = false; if (isAiblWallet) setAiblBusy(false); }
+    } finally {
+      placingOrder.current = false;
+      setIsPlacingOrder(false);
+      if (isAiblWallet) setAiblBusy(false);
+    }
   };
 
   const handleConfirmOrder = async () => {
@@ -1389,6 +1406,7 @@ export default function CheckoutPage() {
                   isUploadingScreenshot={isUploadingScreenshot}
                   onBack={() => setStep("details")}
                   onNext={handlePlaceOrder}
+                  isSubmitting={isPlacingOrder}
                   legalConsentAccepted={legalConsentAccepted}
                   onLegalConsentChange={setLegalConsentAccepted}
                   total={total}
